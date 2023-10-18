@@ -1,4 +1,8 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .aws/*
+
+# examples
+examples
 
 # dependencies
 node_modules
@@ -11,8 +15,6 @@ coverage
 # production
 dist
 .parcel-cache
-docs/.vitepress/cache
-docs/.vitepress/cache/**/*
 
 # misc
 .DS_Store

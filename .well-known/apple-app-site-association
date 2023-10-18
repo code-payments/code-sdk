@@ -1,0 +1,24 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appIDs": [
+                    "83VHY3GSWL.com.kin.code"
+                ],
+                "components": [
+                    {
+                        "/": "/v1/elements/*/",
+                        "#": "/*/p=*",
+                        "comment": "Support for sdk elements"
+                    }
+                ]
+            }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "83VHY3GSWL.com.kin.code"
+        ]
+    }
+}
