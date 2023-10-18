@@ -27,8 +27,8 @@ npm run build --workspaces
 
 ## Getting Help
 
-If you have any questions or need help integrating Code into your website or application, please reach out to us on [Discord](https://discord.gg/...) or [Twitter](https://twitter.com/getcode).
+If you have any questions or need help integrating Code into your website or application, please reach out to us on [Discord](https://discord.gg/DunN9aNS) or [Twitter](https://twitter.com/getcode).
 
 ##  Contributing
 
-For now the best way to contribute is to share feedback on [Discord](https://discord.gg/...). This will evolve as we continue to build out the platform and open up more ways to contribute. 
+For now the best way to contribute is to share feedback on [Discord](https://discord.gg/DunN9aNS). This will evolve as we continue to build out the platform and open up more ways to contribute. 
