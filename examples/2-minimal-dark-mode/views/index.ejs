@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code SDK - Example/2-minimal-dark-mode</title>
+</head>
+
+<body>
+  <div style="padding: 10%; background-color: black;">
+    <span id="button-container1"></span>
+  </div>
+
+  <div style="padding: 10%; background-color: lightgray;">
+    <span id="button-container2"></span>
+  </div>
+
+  <script type="module">
+    import code from 'https://js.getcode.com/v1';
+
+    function mount(amount, id, appearance) {
+      const options = {
+        amount,
+        appearance, // Can accept 'light' or 'dark'
+        currency: 'usd',
+        destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
+      }
+
+      const { button } = code.elements.create('button', options);
+
+      button.on('success', () => {
+        alert('Thank you!');
+      });
+
+      button.mount(id);
+    }
+
+    // Mount two buttons (one light, one dark)
+    mount(0.25, '#button-container1', 'light');
+    mount(0.25, '#button-container2', 'dark');
+  </script>
+</body>
+
+</html>

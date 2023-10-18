@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code SDK - Example/3-minimal-with-webhook</title>
+</head>
+
+<body>
+  <div id="button-container"></div>
+
+  <script type="module">
+    import code from 'https://js.getcode.com/v1';
+
+    const { button } = code.elements.create('button', {
+      currency: 'usd',
+      destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
+      amount: 0.05,
+    });
+
+    button.on('success', () => {
+      alert('Thank you!');
+    });
+
+    // Wait for the button to be clicked
+    button.on('invoke', async () => {
+
+      // Get a payment intent from our own server
+      const res = await fetch('/create-intent', { method: 'POST' });
+      const { clientSecret } = await res.json();
+
+      // Update the button with the new client secret so that our server
+      // can be notified once the payment is complete.
+      button.update({ clientSecret });
+    })
+
+    button.mount('#button-container');
+  </script>
+</body>
+
+</html>

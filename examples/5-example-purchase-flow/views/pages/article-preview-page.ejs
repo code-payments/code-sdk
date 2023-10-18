@@ -1,0 +1,57 @@
+<script type="module">
+  import code from 'https://js.getcode.com/v1/';
+
+  // Passing the backend (EJS) item details to the frontend (JS)
+  const item = JSON.parse(`<%- JSON.stringify({id:item.id, price:item.price}) %>`);
+  const config = JSON.parse(`<%- JSON.stringify(config) %>`);
+
+  // Create the payment request button
+  const { button } = code.elements.create('button', {
+    currency: 'usd',
+    destination: config.destination,
+    amount: item.price,
+    confirmParams: {
+      // On mobile, the user will be redirected to the Code Wallet app which may
+      // return us here or open a new tab. This depends on the user's settings.
+      success: {
+        url: '/article/full/{{INTENT_ID}}',
+      }
+    }
+  });
+
+  // Wait for the button to be clicked
+  button.on('invoke', async () => {
+
+    // Get a payment intent from our own server
+    const res = await fetch(`/payment/create-intent/${item.id}`, { method: 'POST' });
+    const { clientSecret } = await res.json();
+
+    // Update the button with the new client secret so that our server
+    // can be notified once the payment is complete.
+    button.update({ clientSecret });
+  });
+
+  button.mount('#button-container');
+</script>
+
+<div class="mx-auto max-w-7xl">
+  <!-- Article Content -->
+  <div class="text-center p-10 -mt-10">
+    <%- content.title %>
+  </div>
+
+  <!-- Purchase Container -->
+  <div class="p-2 w-full max-w-lg mx-auto">
+    <div class="rounded-2xl p-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
+        <p class="font-serif text-lg font-light mt-5 mb-10">
+          Unlock the rest of this article <br> for $<%= item.price %>
+        </p>
+
+        <!-- Payment Button (mounted by the script above) -->
+        <div id="button-container" style="height: 3.75rem;"></div>
+
+        <p class="mt-6 text-xs leading-5 text-gray-600">Don’t have the Code Wallet app yet? <br>
+        <a href="https://www.getcode.com/#Download" target="_blank" class="underline">Download It Now</a> and get your first $1 free</p>
+    </div>
+  </div>
+</div>

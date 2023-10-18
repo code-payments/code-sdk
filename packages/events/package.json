@@ -1,0 +1,31 @@
+{
+    "name": "@code-wallet/events",
+    "version": "1.0.1",
+    "license": "MIT",
+    "source": "src/index.ts",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
+    "files": [
+        "./dist/"
+    ],
+    "scripts": {
+        "test": "echo \"no tests yet\"",
+        "build": "tsc && tsc -p tsconfig.cjs.json"
+    },
+    "browserslist": [
+        "supports bigint and not dead",
+        "maintained node versions"
+    ],
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@types/chai": "^4.3.5",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^20.5.7",
+        "chai": "^4.3.8",
+        "ts-mocha": "^10.0.0",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.1.6"
+    }
+}

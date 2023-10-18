@@ -1,0 +1,152 @@
+<script setup lang="ts">
+import { Ref, inject, nextTick, ref } from 'vue';
+import { 
+  PaymentRequestButton,
+  PaymentRequestModalDesktop,
+  PaymentRequestModalMobile,
+} from '../elements';
+import {
+  PreloadPaymentRequestModalDesktop,
+  PreloadPaymentRequestModalMobile,
+} from '../preload';
+
+import { isMobileDevice } from '../../types';
+import { ElementEventEmitter, ElementOptions, PaymentRequestIntent } from '@code-wallet/library';
+import { getURLParam } from '../../types/url';
+import { EventChannel, InternalEvents } from '@code-wallet/events';
+
+const fadeDuration = 500; // Animation duration in milliseconds (we use this to delay emitting events)
+const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+const options = inject<ElementOptions>('options');
+const sdkEmit = inject<ElementEventEmitter>('emit', async () => false);
+const channel : Ref<EventChannel<InternalEvents> | null> = ref(null);
+const intent = ref<string | null>(null);
+
+// We're going to try to guess these values later, so we have to keep track of
+// whether or not the user has provided them before we do that.
+const userProvidedSuccessUrl = options?.confirmParams?.success?.url !== undefined;
+const userProvidedCancelUrl = options?.confirmParams?.cancel?.url !== undefined;
+
+function canMount() {
+  return options && options.amount && options.currency && options.destination;
+}
+
+function onChannelCreated(val: EventChannel<InternalEvents>) {
+  channel.value = val;
+}
+
+async function onInvoke() {
+  open.value = true;
+
+  // Wait for the modal to be mounted, this is necessary because we need to wait
+  // for the iframe to be mounted before we can get the channel for it.
+  await nextTick();
+
+  if (!options) { throw new Error('Missing options'); }
+  if (!channel.value) { throw new Error('Missing channel'); }
+
+  // Let the iframe know that we're about to invoke user code
+  channel.value.emit('beforeInvoke');
+
+  // Invoke user code, if the user returns true, we'll cancel the invocation
+  const preventAction = await sdkEmit('invoke');
+  if (preventAction) {
+    open.value = false;
+    return;
+  }
+
+  // Get the intent id from the receiving app or iframe
+  intent.value = new PaymentRequestIntent(options).getIntentId();
+  const variables = {
+    INTENT_ID: intent.value,
+    // ...
+  }
+
+  // If the user doesn't provide a success or cancel url, we'll fallback to the
+  // current url (if possible). Additionally, we'll replace any variables in the
+  // url. For example, if the user provides a success url of
+  // https://example.com/success?intent_id={{INTENT_ID}}, we'll replace
+  // {{INTENT_ID}} with the actual intent id.
+  const fallback = window.location.href;
+  options.confirmParams = {
+    success: getURLParam(options.confirmParams?.success, fallback, variables),
+    cancel: getURLParam(options.confirmParams?.cancel, fallback, variables),
+  };
+
+  // Wait for the options to be injected into the iframe
+  await nextTick();
+
+  // It is possible that the user has already closed the modal before we get to
+  // this point, so we need to check if the modal is still open.
+  if (!channel.value) { throw new Error('Missing channel'); }
+
+  // Let the iframe know that we're done invoking user code
+  channel.value.emit('afterInvoke');
+}
+
+async function onSuccess() {
+  open.value = false;
+
+  // Ensure that the modal is fully closed before emitting events
+  await sleep(fadeDuration); 
+
+  const url = options?.confirmParams?.success?.url;
+  const preventAction = await sdkEmit('success', { url, options, intent: intent.value });
+  if (preventAction) {
+    return;
+  }
+
+  if (userProvidedSuccessUrl) {
+    window.location.href = url!;
+  }
+}
+
+async function onCancel() {
+  open.value = false;
+
+  // Ensure that the modal is fully closed before emitting events
+  await sleep(fadeDuration);
+
+  const url = options?.confirmParams?.cancel?.url;
+  const preventAction = await sdkEmit('cancel', { url, options, intent: intent.value });
+  if (preventAction) {
+    return;
+  }
+
+  if (userProvidedCancelUrl) {
+    window.location.href = url!;
+  }
+}
+
+const open = ref(false);
+const mobile = isMobileDevice();
+</script>
+
+<template>
+  <template v-if="canMount()">
+    <PaymentRequestButton 
+      @invoke="onInvoke" />
+    
+    <Teleport to="body">
+      <div v-if="open">
+        <PaymentRequestModalMobile
+          v-if="mobile"
+          @channel-created="onChannelCreated"
+          @intent-submitted="onSuccess"
+          @client-rejected-payment="onCancel"
+        />
+
+        <PaymentRequestModalDesktop
+          v-else
+          @channel-created="onChannelCreated"
+          @intent-submitted="onSuccess"
+          @client-rejected-payment="onCancel"
+        />
+      </div>
+      <div v-else>
+        <PreloadPaymentRequestModalMobile v-if="mobile" />
+        <PreloadPaymentRequestModalDesktop v-else />
+      </div>
+    </Teleport>
+  </template>
+</template>
