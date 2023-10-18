@@ -13,6 +13,7 @@ dist
 .parcel-cache
 docs/.vitepress/cache
 docs/.vitepress/cache/**/*
+docs/examples/*.html
 
 # misc
 .DS_Store
