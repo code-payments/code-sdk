@@ -30,6 +30,10 @@ With this snippet, you can create a payment button that looks like this:
 
 <br>
 
+::: danger Early Access
+The Code SDK is currently in early access, the maximum payment amount is $1 USD.
+:::
+
 ::: info Prerequisites
 While we have tried our best to keep things simple, the rest of the documentation assumes basic familiarity with HTML, CSS, and JavaScript. You can refer to this [JavaScript overview](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview). Prior experience with other frameworks helps, but is not required.
 :::
