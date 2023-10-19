@@ -1,6 +1,6 @@
 # Webhook Events
 
-Sometimes you may want to know when a payment has been made, or when a user has cancelled a payment. With the SDK, you can do this by listening to [Browser Events](./browser-events), or by setting up a callback endpoint (webhooks). 
+Sometimes you may want to know when a payment has been made, or when a user has canceled a payment. With the SDK, you can do this by listening to [Browser Events](./browser-events), or by setting up a callback endpoint (webhooks). 
 
 It is best practice to not exclusively rely on browser based events, as they can be tampered with or may not come through at all (eg: network outages). Instead, you can ask the Code Sequencer to notify you of events using a webhook.
 
