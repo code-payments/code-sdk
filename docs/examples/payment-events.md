@@ -1,6 +1,6 @@
 # Payment Events
 
-You may want to know when a payment has been made, or when a user has cancelled a payment. You can do this by listening to events.
+You may want to know when a payment has been made, or when a user has canceled a payment. You can do this by listening to events.
 
 You have the ability to listen for payment events on both the client- and server-side. The client-side uses a WebSocket connection to the Code Sequencer for [events](../reference/browser-events), while the server-side SDK uses a [webhook](../reference/webhook) endpoint.
 
