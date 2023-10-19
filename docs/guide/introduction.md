@@ -1,10 +1,10 @@
 # Introduction
 
-The Code SDK makes it simple to accept payments on your website or web app. It is open and permissionless, so you can get started with no sign up and just a few lines of code. 
+The Code SDK is the first and only payments platform that makes it simple for web developers to accept small payments from users anywhere in the world. It is open and permissionless, so you can get started with no sign up and just a few lines of code.
 
-We built the Code SDK after more than a decade of building developer platforms and finding that all existing payment platforms are incredibly limiting where as a developer you get limited global functionality (ie. large, one way payments), you have to build more innovative experiences region by region, and you pay relatively high fees. This constrains the experiences you can build, and the people you can build for. 
+We built the Code SDK after more than a decade of building mainstream consumer experiences and developer platforms and finding that existing payment platforms are incredibly limiting. As a developer you get limited global functionality (ie. large, one way payments), you can only build more innovative experiences country by country , there are a lot of hoops you have to jump through to get started, and after all that you still have to pay high fees. This constrains the experiences you can build, and the people you can build for.
 
-The Code SDK provides a set of tools that allows you to embed a "Pay with Code" button in your web experience and charge users as little as 5 cents, unlocking new and exciting experiences not previously possible with other payment platforms. The only cost as a developer is a flat 1 cent fee collected from every payment to cover blockchain transaction costs. 
+The Code SDK changes this. It provides a set of tools that allows you to embed a "Pay with Code" button in your web experience and charge users as little as 5 cents, unlocking new and exciting experiences not previously possible with other payment platforms. The only cost as a developer is a flat 1 penny fee collected out of each payment to cover blockchain transaction costs.
 
 ##  What is the Code SDK?
 
@@ -15,9 +15,7 @@ See the [docs](https://code-wallet.github.io/code-sdk/docs/guide/introduction) f
 
 ##  What is Code?
 
-[Code](https://getcode.com) is the mobile wallet app that users make payments with.
-
-The Code experience is both simple and elegant, where users get all the benefits of self custodial crypto (open, global, secure), without any of the complexity of managing private keys, gas fees, and slow or failed transactions. Code is built on the [Solana](https://solana.com/) blockchain, and uses the [Code Sequencer](https://code-wallet.github.io/code-sdk/docs/reference/sequencer.html) to deliver a payments experience that is instant, global, and private. 
+[Code](https://getcode.com) is the mobile wallet app that users make payments with. The experience is both simple and elegant, where users get all the benefits of self custodial crypto (open, global, secure), without any of the complexity (managing private keys, gas fees, and slow or failed transactions). Code is built on the [Solana](https://solana.com/) blockchain, and uses the [Code Sequencer](https://code-wallet.github.io/code-sdk/docs/reference/sequencer.html) to deliver a payments experience that is instant, global, and private. 
 
 ::: info Don’t have the Code Wallet app yet?
 [Download It Now](https://www.getcode.com/#Download) and get your first $1 free
