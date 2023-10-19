@@ -1,15 +1,15 @@
 # Code Privacy Protocol
 
-Blockchains unlocked a new financial paradigm with their open and permissionless nature. The challenge is this often comes at the cost of privacy. On blockchains, like Solana, when Alice makes a payment to Bob, both parties gain insight into each other's account balances. And if Charlie has ever payed Alice, he will see her payment to Bob, and no know Bob's account balance. A simple payment unlocks the ability to view the entirety of another party's financial state and history. This level of exposure is a standard characteristic across many blockchains, not just Solana. 
+Blockchains unlocked a new financial paradigm with their open and permissionless nature. The challenge is this often comes at the cost of privacy. On blockchains, like Solana, when Alice makes a payment to Bob, both parties gain insight into each other's account balances. And if Charlie has ever paid Alice, he will see her payment to Bob, and know know Bob's account balance. A simple payment unlocks the ability to view the entirety of another party's financial state and history. This level of exposure is a standard characteristic across many blockchains, not just Solana. 
 
-Our view is basic privacy is a fundamental requirement for any payments product. Without it, a user's financial life is on display, including what they have and who they've paid. 
+Our view is that basic privacy is a fundamental requirement for any payments product. Without it, a user's financial life is on display, including what they have and who they've paid. 
 
 To address this privacy concern, we have developed the Code Privacy Protocol. This protocol seeks to ensure confidentiality of both account balance and individual payments, providing users with a degree of privacy without compromising the integrity and security inherent in blockchain systems. 
 
 Privacy taken too far, however, can lead to bad outcomes. To mitigate the potential of Code being used for nefarious activity, Code users are limited to `$250 USD` per payment, up to `$1000 USD` per day. 
 
 ::: info Note
-This document is fairly dense and aimed at those who are familiar with Solana and blockchains. If you're new to Solana, we recommend you start with the [Solana docs](https://docs.solana.com/). Additionally, fimilarity with [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) is helpful.
+This document is fairly dense and aimed at those who are familiar with Solana and blockchains. If you're new to Solana, we recommend you start with the [Solana docs](https://docs.solana.com/). Additionally, familiarity with [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) is helpful.
 :::
 
 ## Overview
@@ -35,7 +35,7 @@ For a deep dive, continue reading.
 
 ## Background
 
-Before we can cover the protocol, we need to cover some basics. Spcifically, [transactions](https://docs.solana.com/developing/programming-model/transactions) and [durable nonces](https://docs.solana.com/offline-signing/durable-nonce) on Solana. If you're comfortable with these concepts, feel free to skip ahead.
+Before we can cover the protocol, we need to cover some basics. Specifically, [transactions](https://docs.solana.com/developing/programming-model/transactions) and [durable nonces](https://docs.solana.com/offline-signing/durable-nonce) on Solana. If you're comfortable with these concepts, feel free to skip ahead.
 
 ### Transactions on Solana
 Every transaction on Solana includes a fee payer, at least one signature (the fee payer), and a recent blockhash. The fee payer is the account that pays the transaction fee but is not necessarily the owner of the accounts that the transaction interacts with. The signatures cover the message and the recent blockhash. The recent blockhash is used to prevent replay attacks.
@@ -49,7 +49,7 @@ Durable nonces are a Solana feature that allows for the creation of a nonce acco
 Importantly, if a transaction using a durable nonce is submitted, the value of the durable nonce is advanced. This prevents replay attacks. It doesn't matter if the transaction fails or succeeds, the value of the durable nonce is advanced.
 :::
 
-This means that a durable nonced transaction has similar semantics to that of writing a [cheque](https://en.wikipedia.org/wiki/Cheque). A cheque can be cashed at any time, but it doesn't garantee that the funds are available. Similar to how a cheque can bounce, a transaction using a durable nonce can fail if the account doesn't exist or have enough funds.
+This means that a durable nonced transaction has similar semantics to that of writing a [cheque](https://en.wikipedia.org/wiki/Cheque). A cheque can be cashed at any time, but it doesn't guarantee that the funds are available. Similar to how a cheque can bounce, a transaction using a durable nonce can fail if the account doesn't exist or have enough funds.
 
 However, when combined with a [Timelock](./timelock.md) account, a durable nonced transaction is guaranteed to succeed within a certain time period. So long as the Timelock account has been observed to have enough funds, the transaction will succeed. To ensure that a Timelock account has the requisite funds while giving time for the Code Sequencer to accumulate enough batched transactions the current unlock period for a Timelock account is set to 21 days. 
 
@@ -80,19 +80,19 @@ The on-chain program advances tokens to Bob through `Tx2` first. Ensuring that B
 
 At minimum, Code users can expect their account and balance to be private for a short period of time. This was our initial goal when we started building the Code Privacy Protocol. We wanted to ensure that users could transact in the real world without worrying about their account balances being exposed during a purchase.
 
-The Code Sequncer will hang onto the `Tx1` transaction from the [example](#conditional-payments) above, for as long as possible before submitting it to Solana. An observer would see that Bob has received tokens but the source is hidden until `Tx1` is submitted. This is what we refer to as `Temporary Privacy`.
+The Code Sequencer will hang onto the `Tx1` transaction from the [example](#conditional-payments) above, for as long as possible before submitting it to Solana. An observer would see that Bob has received tokens but the source is hidden until `Tx1` is submitted. This is what we refer to as `Temporary Privacy`.
 
-While `Temporary Privacy` is a big step forward in protecting users, there is a lot more the protocol does to provide additional privacy guarantees to users. We'll cover these additional guarantees in further down.
+While `Temporary Privacy` is a big step forward in protecting users, there is a lot more the protocol does to provide additional privacy guarantees to users. We'll cover these additional guarantees further down.
 
 ## On-Chain Program
 
-We breifly mentioned above that an on-chain program is used to provide `proof-of-payment` and enables `conditional payments`. Anyone can use our on-chain program to create their own  associated treasury account. The treasury account can then be used to make token payments to any receipient. All payments made out of the treasury always result in a receipt being generated and stored on-chain. This receipt and private payment details can then later be used to create a special destination account that can only exist if the payment was actually made in the first place.
+We briefly mentioned above that an on-chain program is used to provide `proof-of-payment` and enables `conditional payments`. Anyone can use our on-chain program to create their own  associated treasury account. The treasury account can then be used to make token payments to any recipient. All payments made out of the treasury always result in a receipt being generated and stored on-chain. This receipt and private payment details can then later be used to create a special destination account that can only exist if the payment was actually made in the first place.
 
 The on-chain program is called `Splitter`. It is open source and can be found [here](https://github.com/code-wallet/code-program-library/tree/main/splitter). Review the [tests](https://github.com/code-wallet/code-program-library/blob/main/splitter/tests/cases/happy-path.ts#L188-L307) for more details on how it works.
 
 ## Commitments
 
-A critical component to our privacy protocol is the use of `commitment` values. A commitment is a Program Derived Address ([PDA](https://solanacookbook.com/core-concepts/pdas.html#facts)) from hash of the payment details and is associated to a particular treasury account. 
+A critical component to our privacy protocol is the use of `commitment` values. A commitment is a Program Derived Address ([PDA](https://solanacookbook.com/core-concepts/pdas.html#facts)) from a hash of the payment details and is associated to a particular treasury account. 
 
 ::: warning Destination and Amount
 The privacy protocol allows for the `destination` and `amount` to be publicly visible as those are made confidential through the use of [Anonymised Amounts](#anonymised-amounts) and [Shielded Accounts](#shielded-accounts). The `source` account never makes it on-chain and is completely private.
@@ -156,7 +156,7 @@ You can view a distilled example of this flow in the [code-program-library](http
 
 One of the challenges with the `Upgraded Privacy` approach above is that the `amount` of the payment is publicly visible. We solve for that using `Anonymised Amounts`. At a high level, all transactions are made using one of `63` possible amounts (7 x 9 bill types). The Code app will automatically split the payment intents into multiple transactions. The sum of all the transactions will equal the original payment amount.
 
-More specifically, the Code app stores the balance accross multiple accounts. Each account is associated with a different denomination that is derived from their access key. For example, a user's balance might be stored across 7 accounts, each storing a different denomination. The total balance is the sum of all the accounts. This is rougly analogous to how you might store your balance in a [Monopoly tray](https://www.google.com/search?q=monopoly+tray). When a user makes a payment, the Code app will split that payment intent into multiple transactions, each coming from one of the denomimations.
+More specifically, the Code app stores the balance across multiple accounts. Each account is associated with a different denomination that is derived from their access key. For example, a user's balance might be stored across 7 accounts, each storing a different denomination. The total balance is the sum of all the accounts. This is roughly analogous to how you might store your balance in a [Monopoly tray](https://www.google.com/search?q=monopoly+tray). When a user makes a payment, the Code app will split that payment intent into multiple transactions, each coming from one of the denominations.
 
 ```mermaid
 graph TD
@@ -182,7 +182,7 @@ In practice, this requires using the [change making](https://en.wikipedia.org/wi
 
 We briefly spoke about multiple accounts above for storing a users total balance. In addition to those accounts, we use two additional accounts for every payment intent. These accounts are called `shielded accounts` and are used to protect the privacy of the payment amount and the total balance. 
 
-Before a payment is made, the amount for that payment is moved to a newly derived `outgoing` account. This account is then used to make the payment. After the payment is made, the amount is moved to a newly derived `incoming` account on the recepient side. This account is then used to receive the payment into their denomination accounts.
+Before a payment is made, the amount for that payment is moved to a newly derived `outgoing` account. This account is then used to make the payment. After the payment is made, the amount is moved to a newly derived `incoming` account on the recipient side. This account is then used to receive the payment into their denomination accounts.
 
 In practice, this results in roughly `~25` transactions total for a typical payment (including account rotations, denomination movements, re-organizations, etc...). The Code app handles all of this for the user. 
 
