@@ -37,7 +37,7 @@ Once installed, you can import the SDK into your project.
 ```js [ES Module]
 import code from '@code-wallet/client';
 
-const { intent } = code.paymentIntents.create({
+const { intent } = await code.paymentIntents.create({
     // ...
 });
 ```
@@ -45,7 +45,7 @@ const { intent } = code.paymentIntents.create({
 ```js [CommonJS]
 const code = require('@code-wallet/client');
 
-const { intent } = code.paymentIntents.create({
+const { intent } = await code.paymentIntents.create({
     // ...
 });
 ```
