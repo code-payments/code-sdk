@@ -10,8 +10,6 @@ The Code SDK changes this. It provides a set of tools that allows you to embed a
 
 The Code SDK is a set of JavaScript packages that allow you to integrate Code into your website or web app. The SDK is available as a set of JavaScript packages on npm, and can be used in both the browser and on the server.
 
-See the [docs](https://code-wallet.github.io/code-sdk/docs/guide/introduction) for more information.
-
 
 ##  What is Code?
 
