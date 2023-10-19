@@ -46,5 +46,5 @@ If you want to get close to the metal you can use the raw `@code-wallet/rpc` pac
 Proceed to the next section to learn how to create [Payment Requests](./payment-requests.md) using the SDK.
 
 ::: info Example Usage
-You can also refer to the [examples](../examples/payment-verification) for more information.
+You can also refer to the [examples](../example/payment-verification) for more information.
 :::

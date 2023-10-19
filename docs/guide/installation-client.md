@@ -70,7 +70,7 @@ With this snippet, you can create a payment button that looks like this:
 
 <div id="button-container"></div>
 
-See a minimal example [here](../examples/request-payment).
+See a minimal example [here](../example/request-payment).
 
 ## Examples 
-You can also see the [React](../examples/react-example.md) or [Vue](../examples/vue-example.md) examples for more information.
+You can also see the [React](../example/react-example.md) or [Vue](../example/vue-example.md) examples for more information.

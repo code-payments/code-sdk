@@ -31,7 +31,7 @@ app.post('/create-intent', async (req, res) => {
 });
 ```
 
-See a full example [here](../examples/payment-verification).
+See a full example [here](../example/payment-verification).
 
 -------------------------------------------------------------------------------
 

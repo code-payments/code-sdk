@@ -18,7 +18,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/guide/introduction' },
-      { text: 'Examples', link: '/examples/request-payment' }
+      { text: 'Examples', link: '/example/request-payment' }
     ],
 
     sidebar: [
@@ -64,17 +64,17 @@ export default defineConfig({
       {
         text: 'Examples',
         items: [
-          { text: 'Full Examples', link: '/examples/introduction' },
+          { text: 'Full Examples', link: '/example/introduction' },
           {
             text: 'Payment Request',
             items: [
-              { text: 'Minimal (html)', link: '/examples/request-payment' },
-              { text: 'React Example', link: '/examples/react-example' },
-              { text: 'Vue Example', link: '/examples/vue-example' },
+              { text: 'Minimal (html)', link: '/example/request-payment' },
+              { text: 'React Example', link: '/example/react-example' },
+              { text: 'Vue Example', link: '/example/vue-example' },
             ]
           },
-          { text: 'Payment Verification', link: '/examples/payment-verification' },
-          { text: 'Payment Events', link: '/examples/payment-events' },
+          { text: 'Payment Verification', link: '/example/payment-verification' },
+          { text: 'Payment Events', link: '/example/payment-events' },
         ]
       },
 

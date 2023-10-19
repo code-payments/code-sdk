@@ -51,4 +51,4 @@ const { intent } = code.paymentIntents.create({
 ```
 :::
 
-See a minimal server example [here](../examples/payment-verification).
+See a minimal server example [here](../example/payment-verification).

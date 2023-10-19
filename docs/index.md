@@ -12,7 +12,7 @@ hero:
       link: /guide/quick-start
     - theme: alt
       text: Examples
-      link: /examples/introduction
+      link: /example/introduction
 
 features:
   - title: Simple

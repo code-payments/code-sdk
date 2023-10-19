@@ -117,4 +117,4 @@ See [Confirmation URLs](../reference/browser-events#confirmation-urls) to learn 
 
 ## Example
 
-You can find a full example [here](../examples/payment-verification).
+You can find a full example [here](../example/payment-verification).

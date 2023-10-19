@@ -22,7 +22,7 @@ On the server side, you'll likely want the `@code-wallet/client` package, which 
 
 ## Next Steps
 
-Take a look at the [client-side](./installation-client) or [server-side](./installation-server) guides to learn how to install the SDK. Or check out the [examples](../examples/request-payment) to see how to use the SDK in your project.
+Take a look at the [client-side](./installation-client) or [server-side](./installation-server) guides to learn how to install the SDK. Or check out the [examples](../example/request-payment) to see how to use the SDK in your project.
 
 ## Need Help?
 
