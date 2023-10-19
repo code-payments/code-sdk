@@ -1,6 +1,7 @@
 # Release Branch
 
-This is the release branch for the Code SDK. The latest stable build of the SDK is available in the v1 folder. You can also find the releases on [npm](https://www.npmjs.com/search?q=%40code-wallet).
+This is the release branch for the Code SDK. The latest stable build of the SDK is available in the v1 folder. You can also find the releases on [npm](https://www.npmjs.com/search?q=%40code-wallet). The [main](https://github.com/code-wallet/code-sdk) contains the source code.
+
 
 The Code SDK is a set of JavaScript packages that enables any web developer to integrate Code into their website or web app and easily start accepting payments for as little as 5 cents with no sign up required and just a few lines of code.
 
