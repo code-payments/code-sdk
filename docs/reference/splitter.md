@@ -1,6 +1,6 @@
 # Code Privacy Protocol
 
-Blockchains unlocked a new financial paradigm with their open and permissionless nature. The challenge is this often comes at the cost of privacy. On blockchains, like Solana, when Alice makes a payment to Bob, both parties gain insight into each other's account balances. And if Charlie has ever paid Alice, he will see her payment to Bob, and know know Bob's account balance. A simple payment unlocks the ability to view the entirety of another party's financial state and history. This level of exposure is a standard characteristic across many blockchains, not just Solana. 
+Blockchains unlocked a new financial paradigm with their open and permissionless nature. The challenge is this often comes at the cost of privacy. On blockchains, like Solana, when Alice makes a payment to Bob, both parties gain insight into each other's account balances. And if Charlie has ever paid Alice, he will see her payment to Bob, and know Bob's account balance. A simple payment unlocks the ability to view the entirety of another party's financial state and history. This level of exposure is a standard characteristic across many blockchains, not just Solana. 
 
 Our view is that basic privacy is a fundamental requirement for any payments product. Without it, a user's financial life is on display, including what they have and who they've paid. 
 
@@ -180,7 +180,7 @@ In practice, this requires using the [change making](https://en.wikipedia.org/wi
 
 ## Shielded Accounts
 
-We briefly spoke about multiple accounts above for storing a users total balance. In addition to those accounts, we use two additional accounts for every payment intent. These accounts are called `shielded accounts` and are used to protect the privacy of the payment amount and the total balance. 
+We briefly spoke about multiple accounts above for storing a user's total balance. In addition to those accounts, we use two additional accounts for every payment intent. These accounts are called `shielded accounts` and are used to protect the privacy of the payment amount and the total balance. 
 
 Before a payment is made, the amount for that payment is moved to a newly derived `outgoing` account. This account is then used to make the payment. After the payment is made, the amount is moved to a newly derived `incoming` account on the recipient side. This account is then used to receive the payment into their denomination accounts.
 
