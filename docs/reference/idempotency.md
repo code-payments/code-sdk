@@ -5,7 +5,7 @@ Take, for instance, the world of online gaming. Here, players often engage in fr
 
 Imagine a scenario where a player is making a purchase in a game integrated with the Code SDK. They pay for an in-game item but a technical hiccup, like the game's server going down, interferes with the transaction. As a result, the payment is processed, but the player doesn't receive the item they've paid for. This situation is not just a source of frustration, it can diminish trust in both the game and the payment system.
 
-In the absence of idempotenty:
+In the absence of idempotency:
 
 1) There's potential for players to pay for items but not receive them due to issues on the game's services.
 2) Players lack an efficient way to validate their purchase if they attempt to re-issue the same intent, potentially being charged again.
