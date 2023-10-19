@@ -9,41 +9,58 @@ export default {
   Layout: () => {
     const router = useRouter();
 
+    // Check if we are in the browser
     if (!(import.meta as any).env.SSR) {
 
+      // Weird hack to ensure that the script (and its dependencies) are not bundled by VitePress.
       const script = document.createElement('script');
       script.type = 'module';
       script.textContent = `
-      // Overrides
-      if (!document.querySelector('a.title').href.includes('introduction.html')) {
-        document.querySelector('a.title').href += 'guide/introduction.html';
+      // Wait for DOM to be ready
+      function ready(fn) {
+        if (document.readyState !== 'loading') {
+          fn();
+          return;
+        }
+        document.addEventListener('DOMContentLoaded', fn);
       }
+
+      // Overrides
+      ready(() => {
+        // Hack to change the link to the introduction page, VitePress seems to
+        // have a bug applying the setting from config.mts
+
+        if (!document.querySelector('a.title').href.includes('introduction.html')) {
+          document.querySelector('a.title').href += 'guide/introduction.html';
+        }
+      });
 
       // Code SDK
-
       import code from 'https://js.getcode.com/v1';
+      ready(() => {
+        if (document.querySelector('#button-container')) {
+          const darkMode = document.documentElement.classList.contains('dark');
+          const { button } = code.elements.create('button', {
+              currency: 'usd',
+              appearance: darkMode ? 'light' : 'dark',
+              destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
+              amount: 0.05,
+          });
 
-      if (document.querySelector('#button-container')) {
-        const darkMode = document.documentElement.classList.contains('dark');
-        const { button } = code.elements.create('button', {
-            currency: 'usd',
-            appearance: darkMode ? 'light' : 'dark',
-            destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
-            amount: 0.05,
-        });
-
-        button.mount('#button-container');
-      }
+          button.mount('#button-container');
+        }
+      });
 
       // Mermaid
-
       import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-      document.querySelectorAll('.language-mermaid')
-      .forEach($el => {
-        $el.outerHTML = \`<pre class="mermaid">\${$el.innerText.replace('mermaid', '')}</pre>\`
-      })
+      ready(() => {
+        document.querySelectorAll('.language-mermaid')
+        .forEach($el => {
+          $el.outerHTML = \`<pre class="mermaid">\${$el.innerText.replace('mermaid', '')}</pre>\`
+        })
 
-      mermaid.init();
+        mermaid.init();
+      });
       `;
 
       document.body.appendChild(script);
