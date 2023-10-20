@@ -14,6 +14,7 @@ import { isMobileDevice } from '../../types';
 import { ElementEventEmitter, ElementOptions, PaymentRequestIntent } from '@code-wallet/library';
 import { getURLParam } from '../../types/url';
 import { EventChannel, InternalEvents } from '@code-wallet/events';
+import * as code from "@code-wallet/client";
 
 const fadeDuration = 500; // Animation duration in milliseconds (we use this to delay emitting events)
 const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -21,6 +22,8 @@ const options = inject<ElementOptions>('options');
 const sdkEmit = inject<ElementEventEmitter>('emit', async () => false);
 const channel : Ref<EventChannel<InternalEvents> | null> = ref(null);
 const intent = ref<string | null>(null);
+const open = ref(false);
+const mobile = isMobileDevice();
 
 // We're going to try to guess these values later, so we have to keep track of
 // whether or not the user has provided them before we do that.
@@ -118,8 +121,20 @@ async function onCancel() {
   }
 }
 
-const open = ref(false);
-const mobile = isMobileDevice();
+// Add an event listener for the 'visibilitychange' event
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState === "visible") {
+    if (!intent.value) { return; }
+
+    // Background tabs that might miss the 'intent-submitted' event, so we need
+    // to check if the intent has been confirmed when the tab becomes visible.
+    const { status } = await code.paymentIntents.getStatus({ intent: intent.value }); 
+
+    if (status === 'confirmed') {
+      onSuccess();
+    }
+  }
+});
 </script>
 
 <template>

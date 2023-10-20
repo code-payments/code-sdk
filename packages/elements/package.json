@@ -1,7 +1,11 @@
 {
     "name": "@code-wallet/elements",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/code-wallet/code-sdk.git"
+    },
     "type": "module",
     "source": "src/index.ts",
     "main": "dist/elements.cjs",
@@ -23,6 +27,7 @@
     "dependencies": {
         "@code-wallet/events": "^1.0.0",
         "@code-wallet/library": "^1.0.0",
+        "@code-wallet/client": "^1.0.0",
         "@code-wallet/rpc": "^1.0.0",
         "@headlessui/vue": "^1.7.7",
         "@heroicons/vue": "^2.0.16"
