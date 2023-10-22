@@ -230,4 +230,22 @@ describe('Mnemonic', () => {
             })();
         }
     });
+
+    describe('wallet number tests', () => {
+        // Reference: https://twitter.com/jordaaash/status/1715934140321943861
+
+        const phrase = "install assume ketchup talk giant bone foster flight situate math hurt border deputy grab mesh hope update dream evolve caught erupt win danger thought";
+        const entropy = Buffer.from("7561bde7eec61a329702c7c9b121bf0ce3b4caa2f36bee8851389234cff68ddf", "hex")
+
+        const walletNumber = Mnemonic.toWalletNumber(phrase);
+        it('should derive the correct wallet number', () => {
+            expect(walletNumber.toString(16)).to.equal(entropy.toString('hex'), "Wallet number mismatch");
+        });
+
+        const mnemonic = Mnemonic.fromWalletNumber(walletNumber);
+        it('should derive the correct mnemonic', () => {
+            expect(mnemonic).to.equal(phrase, "Mnemonic mismatch");
+        });
+    });
+
 });

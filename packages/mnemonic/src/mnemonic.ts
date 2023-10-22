@@ -91,6 +91,43 @@ class Mnemonic {
 
         return entropy;
     }
+
+    /**
+     * Converts a mnemonic to a "wallet number".
+     * Reference: https://twitter.com/jordaaash/status/1715934140321943861
+     * 
+     * @param mnemonic The mnemonic string.
+     * @param wordList The word list to use for conversion.
+     * @returns The wallet number as a BigInt.
+     * 
+     * @example
+     * const mnemonic = 'install assume ketchup talk giant bone foster flight situate math hurt border deputy grab mesh hope update dream evolve caught erupt win danger thought';
+     * Mnemonic.toWalletNumber(mnemonic);
+     * // 53093298132478714238653147511221858728290144951976608433924547783910489492959n
+     * 
+     */
+    static toWalletNumber(mnemonic: string, wordList: string[] = defaultWordlist): BigInt {
+        const entropy = Mnemonic.toEntropy(mnemonic, wordList);
+        return BigInt(`0x${entropy.toString('hex')}`);
+    }
+
+    /**
+     * Converts a "wallet number" to a mnemonic.
+     * Reference: https://twitter.com/jordaaash/status/1715934140321943861
+     * 
+     * @param walletNumber 
+     * @param wordList 
+     * @returns The mnemonic string.
+     * 
+     * @example
+     * const walletNumber = 53093298132478714238653147511221858728290144951976608433924547783910489492959n;
+     * Mnemonic.fromWalletNumber(walletNumber);
+     * // 'install assume ketchup talk giant bone foster flight situate math hurt border deputy grab mesh hope update dream evolve caught erupt win danger thought'
+     */
+    static fromWalletNumber(walletNumber: BigInt, wordList: string[] = defaultWordlist): string {
+        const entropy = Buffer.from(walletNumber.toString(16), 'hex');
+        return Mnemonic.toMnemonic(entropy, wordList);
+    }
 }
 
 export {
