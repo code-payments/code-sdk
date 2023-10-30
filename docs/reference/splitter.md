@@ -43,7 +43,7 @@ Every transaction on Solana includes a fee payer, at least one signature (the fe
 Importantly, the Solana blockchain generates a new blockhash value roughly every `~400ms` and it keeps a list of recent blockhash values. Any transaction that is submitted must use a recent blockhash value. If a Solana validator receives a transaction with a blockhash value that is not in the recent blockhash list, the transaction will be rejected.
 
 ### Durable Nonces
-Durable nonces are a Solana feature that allows for the creation of a nonce account that can be used to store a blockhash derived value. This value can then be used instead of a blockhash and allows users to get around the recent blockhash requirement mentioned above. The primary use case is to give users time to sign multi-sig transactions.
+Durable nonces are a Solana feature that allows for the creation of a [nonce account](https://docs.solana.com/implemented-proposals/durable-tx-nonces) that can be used to store a blockhash derived value. This value can then be used instead of a blockhash and allows users to get around the recent blockhash requirement mentioned above. The primary use case is to give users time to sign multi-sig transactions.
 
 ::: warning Nonce Value
 Importantly, if a transaction using a durable nonce is submitted, the value of the durable nonce is advanced. This prevents replay attacks. It doesn't matter if the transaction fails or succeeds, the value of the durable nonce is advanced.
@@ -137,10 +137,33 @@ Now that you have an understanding of `conditional payments`, `commitments`, and
 After making a payment, whether it happens to be on the next app open or during another payment, the Code app will ask the Code Sequencer if there are any pending temporary privacy transactions that can be upgraded to permanent privacy. If there are, the Code Sequencer will respond with a `Merkle Proof` that can be used to re-create the original temporary privacy transaction for a past intent but with a different commitment value. The merkle proof can be used to prove that the original payment is included within a more recent merkle tree root. The mobile app can then re-create the original `Tx1` transaction with the new commitment value and submit it to the Code Sequencer. This effectively breaks the connection between `Tx1` and `Tx2` on-chain.
 
 ::: warning Atomicity of Durable Nonce Transactions
-One very important property of transactions that include a [durable nonce](#durable-nonces) is that we can create many transactions against the same durable nonce value. Only one of these transactions can ever be successfully executed on-chain. The rest will fail because the durable nonce value will be advanced atomically after the first transaction is submitted.
+One very important property of transactions that include a [durable nonce](#durable-nonces) is that we can create many transactions against the same durable nonce value. Only one of these transactions can ever be executed on-chain (successfully or not). The rest will fail because the durable nonce value will be advanced atomically after the first transaction is submitted. It doesn't matter if the first transaction is successful, the nonce value will be advanced.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Solana
+    participant NonceAccount
+
+    User->>User: Creates two transaction variations <br>(Tx1 and Tx2) with same nonce
+    
+    User->>+Solana: Submit Transaction Variation Tx1 with nonce
+    Solana->>+NonceAccount: Check and Advance nonce value
+    NonceAccount-->>-Solana: Confirm nonce advanced
+    Solana-->>-User: Tx1 is executed (successfully or not)
+
+    User->>+Solana: Submit Transaction Variation Tx2 with same nonce
+    Solana->>+NonceAccount: Check current nonce
+    NonceAccount-->>-Solana: Value does not match
+    Solana-->>-User: Tx2 failed due to nonce advance
+
+    Note over User,NonceAccount: Only one transaction with the same durable nonce value can ever be executed
+```
 
 This means that **it is safe to provide the Code Sequencer with two transaction variations of the same intent**. The Code Sequencer will only ever be able to execute one of them on the Solana blockchain.
 :::
+
+
 
 Reviewing our example from above, the `Tx2` transaction will be submitted at some point. Unrelated transactions from other Code users will also land. These will change the on-chain Merkle Root value. When the Code app is opened again, the Code Sequencer will respond with a merkle proof that can be used to re-create the original `Tx1` transaction with a new commitment value. This new commitment value will be based on some recent Merkle Root value. The Code app has all the information it needs to calculate if the provided proof actually includes the `Tx2` transaction. The Code app can then submit the new `Tx1` transaction to the Code Sequencer. 
 
