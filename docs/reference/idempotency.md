@@ -42,4 +42,4 @@ By incorporating the `idempotencyKey` with specific game and item IDs:
 * Should any interruptions occur during the buying process, like server outages or communication failures, the transaction can be re-validated without the threat of repeated charges.
 
 ::: info
-Since the `idempotencyKey` is global among all payments, developers should consider incorporating the `destination` address when appropriate. In the example above, this would be `E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR-${game.id}-${item.id}`
+Since the `idempotencyKey` is global among all payments, developers should consider incorporating a unique value to further differentiate a payment. For example, use  `destination` address when appropriate or also include a developer-specific random GUID.
