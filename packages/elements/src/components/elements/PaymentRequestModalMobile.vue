@@ -11,7 +11,10 @@
         'codeScanned',
         'clientRejectedPayment',
         'intentSubmitted',
-        'channelCreated'
+        'channelCreated',
+        'error',
+        'streamTimeout',
+        'streamClosed',
     ]);
 
     const channel = new EventChannel<InternalEvents>();
@@ -33,6 +36,25 @@
     channel.on('navigate' , (event) => {
         if (!event.url) { return; }
         window.location.href = event.url;
+    });
+
+    // Error states
+    channel.on('error' , (err) => {
+        if (`${err}`.includes('NGHTTP2_INTERNAL_ERROR')) {
+            console.warn('CodeSDK: GRPC stream closed.');
+            emit(`streamClosed`);
+        } else {
+            console.error(`CodeSDK: ${err}`);
+            emit('error', err);
+        }
+    });
+    channel.on('streamTimeout' , () => {
+        console.warn('CodeSDK: Websocket Stream timeout.');
+        emit('streamTimeout');
+    });
+    channel.on('streamClosed' , () => {
+        console.warn('CodeSDK: Websocket Stream closed.');
+        emit('streamClosed');
     });
 
     onMounted(() => {

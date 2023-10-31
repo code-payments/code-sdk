@@ -38,16 +38,9 @@
 
       const { button } = code.elements.create('button', options);
 
-      button.on('error', () => { console.log('sdk-error'); });
+      button.on('error', (e) => { console.log('sdk-error', e); });
       button.on('cancel', (e) => { console.log('sdk-cancel', e); });
-      button.on('success', (e) => { console.log('sdk-success', e); alert('thank you'); });
-
-      /*
-      button.on('invoke', async () => {
-        await sleep(2000);
-        button.update({ idempotencyKey: '123xyz'+Math.random() });
-      });
-      */
+      button.on('success', (e) => { console.log('sdk-success', e); alert('thank you'); return true; });
 
       button.mount(id);
     }

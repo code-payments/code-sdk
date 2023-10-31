@@ -121,6 +121,21 @@ async function onCancel() {
   }
 }
 
+async function onError(err: any) {
+  // Let the user know that something went wrong
+  await sdkEmit('error', { message: `${err}` });
+}
+
+async function onStreamTimeout() {
+  open.value = false;
+  await onError('stream_timed_out');
+}
+
+async function onStreamClosed() {
+  open.value = false;
+  await onError('stream_closed');
+}
+
 // Add an event listener for the 'visibilitychange' event
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState === "visible") {
@@ -149,6 +164,9 @@ document.addEventListener("visibilitychange", async () => {
           @channel-created="onChannelCreated"
           @intent-submitted="onSuccess"
           @client-rejected-payment="onCancel"
+          @error="onError"
+          @stream-timeout="onStreamTimeout"
+          @stream-closed="onStreamClosed"
         />
 
         <PaymentRequestModalDesktop
@@ -156,6 +174,9 @@ document.addEventListener("visibilitychange", async () => {
           @channel-created="onChannelCreated"
           @intent-submitted="onSuccess"
           @client-rejected-payment="onCancel"
+          @error="onError"
+          @stream-timeout="onStreamTimeout"
+          @stream-closed="onStreamClosed"
         />
       </div>
       <div v-else>
