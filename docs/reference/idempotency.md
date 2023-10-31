@@ -43,3 +43,4 @@ By incorporating the `idempotencyKey` with specific game and item IDs:
 
 ::: info
 Since the `idempotencyKey` is global among all payments, developers should consider incorporating a unique value to further differentiate a payment. For example, use  `destination` address when appropriate or also include a developer-specific random GUID.
+:::
