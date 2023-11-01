@@ -125,4 +125,41 @@ describe('PaymentRequestIntent', () => {
             expect(actual.toString()).to.equal(expected.toString());
         });
     });
+
+    describe('sign', () => {
+        it('should return correct signature bytes', () => {
+            const intent = new PaymentRequestIntent({
+                mode: 'payment',
+                destination,
+                amount: 10,
+                currency: 'usd',
+                idempotencyKey: '1234'
+            });
+
+            const actual = intent.sign();
+            const expected = {
+                message: new Uint8Array([
+                    10, 34, 10, 32, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 26, 14, 10, 3, 117, 115, 100, 17,
+                    0, 0, 0, 0, 0, 0, 36, 64
+                ]),
+                intent: 'GHEXGTE2r1PartuDip4VhDz8b2RY4xqRTRtMCUEaEXXN',
+                signautre: new Uint8Array([
+                    103, 103, 195, 242, 9, 66, 226, 48, 98, 182, 94,
+                    172, 255, 84, 166, 93, 138, 175, 245, 162, 121, 68,
+                    236, 16, 142, 46, 221, 160, 161, 70, 224, 49, 50,
+                    66, 74, 43, 247, 39, 69, 179, 130, 15, 140, 178,
+                    59, 255, 47, 104, 56, 75, 75, 193, 226, 2, 251,
+                    52, 183, 8, 41, 236, 218, 205, 21, 14
+                ])
+            }
+
+            expect(actual.intent).to.equal(expected.intent);
+            expect(actual.message.toString()).to.equal(expected.message.toString());
+            expect(actual.signature.toString()).to.equal(expected.signautre.toString());
+
+        });
+    });
 });
