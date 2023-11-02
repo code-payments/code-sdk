@@ -1,5 +1,12 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/library.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/library.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/library.svg
+
 # @code-wallet/library
-The `@code-wallet/library` is an internal toolkit designed to support the core
+This is an internal toolkit designed to support the core
 functionalities of the Code SDK. It has utilities ranging from currency
 operations to event handling and data validation used by other packages within
 the SDK.
