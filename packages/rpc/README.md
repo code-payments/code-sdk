@@ -1,5 +1,12 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/rpc.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/rpc.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/rpc.svg
+
 # @code-wallet/rpc
-The `@code-wallet/rpc` module provides a convenient way to wrap gRPC protocol
+This module provides a convenient way to wrap gRPC protocol
 messages into envelopes that can be seamlessly transmitted through a WebSocket
 proxy server. This package aids in the creation of WebSocket RPC streams for
 unary or bi-directional streaming gRPC methods. Additionally, this package
