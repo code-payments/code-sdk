@@ -43,7 +43,7 @@ export default defineConfig({
             collapsed: true,
             items: [
               { text: 'Client (browser)', link: '/guide/installation-client' },
-              { text: 'Server (node.js)', link: '/guide/installation-server' },
+              { text: 'Server', link: '/guide/installation-server' },
             ],
           },
         ],
