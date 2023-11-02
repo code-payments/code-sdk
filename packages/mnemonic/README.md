@@ -1,3 +1,10 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/mnemonic.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/mnemonic.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/mnemonic.svg
+
 # @code-wallet/mnemonic
 A TypeScript library to generate and manage cryptographic keys using mnemonics
 and HD (hierarchical deterministic) paths for the ED25519 curve based on the
