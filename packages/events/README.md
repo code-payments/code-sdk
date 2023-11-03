@@ -1,5 +1,12 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/events.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/events.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/events.svg
+
 # @code-wallet/events
-The `@code-wallet/events` package is an internal utility designed for managing
+This package is an internal utility designed for managing
 and broadcasting Code SDK element events. Built around the foundation of the
 EventChannel class, this package ensures efficient event propagation and
 response management within different facets of the Code platform, ranging from

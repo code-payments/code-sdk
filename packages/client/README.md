@@ -1,5 +1,12 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/client.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/client.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/client.svg
+
 # @code-wallet/client
-The `@code-wallet/client` module provides a seamless way to create a payment
+This module provides a seamless way to create a payment
 intent and verify payments directly from your server or client application.
 Whether you're building a web application or a server-side system, this module
 offers the tools you need to integrate with Code Wallet effectively.

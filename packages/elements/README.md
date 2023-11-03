@@ -1,5 +1,12 @@
+[![npm][npm-image]][npm-url]
+[![npm-downloads][npm-downloads-image]][npm-url]
+
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/elements.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/elements.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/elements.svg
+
 # @code-wallet/elements
-The `@code-wallet/elements` package provides the code.elements object, which you
+This package provides the code.elements object, which you
 can utilize to embed a [Code Payments](https://codepayments.org) button
 seamlessly into your website or application. This client-side package has a
 hassle-free integration process, enabling users to complete payments using the
