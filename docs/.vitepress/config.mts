@@ -86,6 +86,7 @@ export default defineConfig({
           { text: 'Code Privacy Protocol', link: '/reference/splitter' },
           { text: 'Timelock Program', link: '/reference/timelock' },
           { text: 'Rendezvous', link: '/reference/rendezvous' },
+          { text: 'Custom Backends', link: '/intents/custom-backends' },
         ]
       },
     ],

@@ -46,5 +46,5 @@ console.log(status); // Either 'pending' or 'confirmed'
 
 ## Need Help?
 If you have any questions or need help integrating Code into your website or
-application, please reach out to us on [Discord](https://discord.gg/DunN9aNS) or
+application, please reach out to us on [Discord](https://discord.gg/T8Tpj8DBFp) or
 [Twitter](https://twitter.com/getcode).

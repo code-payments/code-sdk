@@ -21,4 +21,4 @@ We've put a few samples in our documentation to help you get started. We also ha
 
 ## Need Help?
 
-Let us know if you have any questions or need help integrating Code into your website or application. You can reach us on [Discord](https://discord.gg/DunN9aNS) or [Twitter](https://twitter.com/getcode).
+Let us know if you have any questions or need help integrating Code into your website or application. You can reach us on [Discord](https://discord.gg/T8Tpj8DBFp) or [Twitter](https://twitter.com/getcode).

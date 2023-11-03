@@ -1,13 +1,24 @@
 # Server-side Install
 
-While server-side integration is optional, you'll usually want to confirm payment on the server-side. The SDK is split into multiple [packages](./installation#packages), each of which can be installed separately. This allows you to install only the packages you need, and avoid installing unnecessary dependencies. Additionally, there is a [Python SDK](https://github.com/code-wallet/code-sdk-python) available for server-side integration.
+While server-side integration is optional, you'll usually want to confirm payment on the server-side. The SDK is split into multiple [packages](./installation#packages), each of which can be installed separately. This allows you to install only the packages you need, and avoid installing unnecessary dependencies. 
 
-::: info ES vs CommonJS
-The SDK is available as both a CommonJS module and an ECMAScript module (ESM). The ESM version is recommended for use with bundlers, as it allows bundlers to perform tree-shaking and other optimizations.
+A typical server-side integration will look something like this:
 
-Learn more about JavaScript modules [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
-:::
+```mermaid
+sequenceDiagram
+  autonumber
+  participant User
+  participant Client
 
+  User->>Client: Land on payment page
+  Client->>Server: Send order information
+  Server->>Code Sequencer: POST /v1/createIntent
+  Code Sequencer->>Server: Return PaymentIntent status
+  Server->>Client: Return PaymentIntent's client_secret
+  Client->>Code Sequencer: Open message stream at rendezvous value
+```
+
+You can learn more about the payment flow [here](../intents/payment-requests).
 
 ## Installation
 
@@ -26,7 +37,7 @@ pip install code-wallet
 Once installed, you can import the SDK into your project.
 
 ::: code-group
-```js [Node]
+```js [Node.js / Bun]
 import code from '@code-wallet/client';
 
 const { intent } = await code.paymentIntents.create({
