@@ -1,0 +1,1 @@
+import{_ as e,o as a,c as o,Q as t}from"./chunks/framework.0c8e00f4.js";const m=JSON.parse('{"title":"Code SDK Documentation","description":"","frontmatter":{},"headers":[],"relativePath":"README.md","filePath":"README.md"}'),s={name:"README.md"},n=t("",28),l=[n];function r(i,p,c,d,u,h){return a(),o("div",null,l)}const g=e(s,[["render",r]]);export{m as __pageData,g as default};
