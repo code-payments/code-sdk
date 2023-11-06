@@ -124,7 +124,7 @@ class PaymentRequestIntent implements Intent {
                     currency: 'kin',
                     exchangeRate: 1,
                     quarks: Kin.fromDecimal(amount!).toQuarks(),
-                    nativeAmount: Kin.fromDecimal(amount!).toDecimal(),
+                    nativeAmount: amount,
                 })
             }
         } else {
