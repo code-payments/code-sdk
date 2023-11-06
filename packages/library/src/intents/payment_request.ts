@@ -13,6 +13,7 @@ import {
 import { generateRendezvousKeypair } from '../rendezvous';
 import { validateElementOptions } from '../elements/validate';
 import { ElementOptions  } from '../elements/options';
+import { Kin } from '../kin';
 
 /**
  * Represents a payment request and provides methods to construct, validate, and sign the request.
@@ -122,8 +123,8 @@ class PaymentRequestIntent implements Intent {
                 value: new proto.ExchangeData({
                     currency: 'kin',
                     exchangeRate: 1,
-                    quarks: BigInt(this.convertedAmount),
-                    nativeAmount: amount,
+                    quarks: Kin.fromDecimal(amount!).toQuarks(),
+                    nativeAmount: Kin.fromDecimal(amount!).toDecimal(),
                 })
             }
         } else {
