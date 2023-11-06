@@ -32,6 +32,18 @@ Learn more about JavaScript modules [here](https://developer.mozilla.org/en-US/d
 
 * [code-wallet](https://pypi.org/project/code-wallet/) - The Code Wallet Python SDK is a module that allows Python developers to integrate Code into their applications. Seamlessly start accepting payments with minimal setup and just a few lines of code.
 
+-------------------------------------------------------------------------------
+
+### PHP
+
+* [code-wallet](https://packagist.org/packages/code-wallet/client) - The Code Wallet PHP SDK is a module that allows PHP developers to integrate Code into their applications. Seamlessly start accepting payments with minimal setup and just a few lines of code.
+
+-------------------------------------------------------------------------------
+
+### Go-lang
+
+* [code-wallet](https://pkg.go.dev/github.com/code-wallet/code-sdk-go) - The Code Wallet Go SDK is a module that allows Go developers to integrate Code into their applications. Seamlessly start accepting payments with minimal setup and just a few lines of code.
+
 
 ## Next Steps
 

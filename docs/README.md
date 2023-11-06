@@ -32,7 +32,7 @@ To preview the documentation locally:
 npm run dev
 ```
 
-This will serve the documentation with live reloading. You can view it at http://localhost:5173/code-sdk/docs/ or the displayed port.
+This will serve the documentation with live reloading. You can view it at `http://localhost:5173/code-sdk/docs/` or the displayed port.
 
 ## Building for Production
 If you need to generate static files for the documentation:
