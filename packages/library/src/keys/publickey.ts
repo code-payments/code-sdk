@@ -1,6 +1,11 @@
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 
+import { ErrInvalidAddress } from "../errors";
+
+const ED25519_PUBLIC_KEY_LENGTH = 32; // Length of ED25519 public key in bytes
+const BASE_58_ALPHABET = /^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$/;
+
 /**
  * Represents a public key and provides utility methods for its manipulation and conversion.
  */
@@ -13,6 +18,9 @@ class PublicKey {
      * @param publicKey - The raw public key as a Uint8Array.
      */
     constructor(publicKey: Uint8Array) {
+        if (publicKey.length !== ED25519_PUBLIC_KEY_LENGTH) {
+            throw ErrInvalidAddress();
+        }
         this.publicKey = publicKey;
     }
 
@@ -23,7 +31,17 @@ class PublicKey {
      * @returns A new PublicKey instance.
      */
     static fromBase58(base58: string) {
-        return new PublicKey(bs58.decode(base58));
+        if (!base58.match(BASE_58_ALPHABET)) {
+            throw ErrInvalidAddress();
+        }
+
+        const decodedBuffer = bs58.decode(base58);
+
+        if (decodedBuffer.length !== ED25519_PUBLIC_KEY_LENGTH) {
+            throw ErrInvalidAddress();
+        }
+
+        return new PublicKey(decodedBuffer);
     }
 
     /**
