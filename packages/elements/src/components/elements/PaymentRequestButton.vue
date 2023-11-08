@@ -38,8 +38,8 @@
         const _ = (v:string) => v + ' !important';
         return {
             display: _('inline-block'),
-            width: _('13.875rem'),
-            height: _('3.75rem'),
+            width: _('222px'),
+            height: _('60px'),
             // We have to set this to make sure the iframe stays transparent.
             // Completely counter-intuitive.
             // https://bugs.chromium.org/p/chromium/issues/detail?id=1150352
