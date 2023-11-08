@@ -6,7 +6,6 @@ import {
     ErrDestinationRequired,
     Kin,
     PaymentRequestIntent,
-    PaymentRequestOptions,
 } from '../src';
 
 describe('PaymentRequestIntent', () => {
@@ -77,13 +76,12 @@ describe('PaymentRequestIntent', () => {
     });
 
     describe('toProto', () => {
-        it('should return correct protobuf json', () => {
-            const kinAmount = Kin.fromDecimal(10);
+        it('should return correct protobuf json for USD', () => {
             const intent = new PaymentRequestIntent({
                 mode: 'payment',
                 destination,
-                amount: Number(kinAmount.whole),
-                currency: 'kin'
+                amount: 10,
+                currency: 'usd'
             });
 
             const protoMessage = intent.toProto();
@@ -94,17 +92,42 @@ describe('PaymentRequestIntent', () => {
                     requestorAccount: {
                         value: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
                     }, 
-                    exact: {
-                        currency: 'kin',
-                        exchangeRate: 1,
+                    partial: {
+                        currency: 'usd',
                         nativeAmount: 10,
-                        quarks: Math.floor(kinAmount.toDecimal() * 100).toString()
                     }
                 }
             });
         });
 
-        it('should return correct protobuf bytes', () => {
+        it('should return correct protobuf json for KIN', () => {
+            const kinAmount = Kin.fromDecimal(54321.6789);
+            const intent = new PaymentRequestIntent({
+                mode: 'payment',
+                destination:'2q7pyhPwAwZ3QMfZrnAbDhnh9mDUqycszcpf86VgQxhF',
+                amount: kinAmount.toDecimal(),
+                currency: 'kin'
+            });
+
+            const protoMessage = intent.toProto();
+            const buf = protoMessage.toJson();
+
+            expect(buf).to.deep.equal({
+                requestToReceiveBill: {
+                    requestorAccount: {
+                        value: 'Gy9JCW4+Xb0Pz6nAwM2S2as7IVRLNNXdSmXZi4eLmSI='
+                    }, 
+                    exact: {
+                        currency: 'kin',
+                        exchangeRate: 1,
+                        nativeAmount: 54321.68,
+                        quarks: "5432168000"
+                    }
+                }
+            });
+        });
+
+        it('should return correct protobuf bytes for USD', () => {
             const intent = new PaymentRequestIntent({
                 mode: 'payment',
                 destination,
@@ -120,6 +143,29 @@ describe('PaymentRequestIntent', () => {
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x1A, 0x0E, 0x0A, 0x03, 0x75, 0x73, 0x64, 0x11, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x24, 0x40
+            ]);
+
+            expect(actual.toString()).to.equal(expected.toString());
+        });
+
+        it('should return correct protobuf bytes for KIN', () => {
+            const intent = new PaymentRequestIntent({
+                mode: 'payment',
+                destination: '2q7pyhPwAwZ3QMfZrnAbDhnh9mDUqycszcpf86VgQxhF',
+                amount: 54321.6789,
+                currency: 'kin'
+            });
+
+            const protoMessage = intent.toProto();
+            const actual = protoMessage.toBinary();
+            const expected = new Uint8Array([
+                0x2a, 0x43, 0x0a, 0x22, 0x0a, 0x20, 0x1b, 0x2f, 0x49, 0x09, 0x6e,
+                0x3e, 0x5d, 0xbd, 0x0f, 0xcf, 0xa9, 0xc0, 0xc0, 0xcd, 0x92, 0xd9,
+                0xab, 0x3b, 0x21, 0x54, 0x4b, 0x34, 0xd5, 0xdd, 0x4a, 0x65, 0xd9,
+                0x8b, 0x87, 0x8b, 0x99, 0x22, 0x12, 0x1d, 0x0a, 0x03, 0x6b, 0x69,
+                0x6e, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f, 0x19,
+                0x29, 0x5c, 0x8f, 0xc2, 0x35, 0x86, 0xea, 0x40, 0x20, 0xc0, 0x9c,
+                0xa1, 0x9e, 0x14
             ]);
 
             expect(actual.toString()).to.equal(expected.toString());
