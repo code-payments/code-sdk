@@ -20,7 +20,10 @@ class Connection {
     constructor(endpoint: string, fetch: Function = globalThis.fetch) {
         // The Fetch API is supported experimentally in Node 17.5+ and natively in Node 18+.
         this.endpoint = endpoint;
-        this.fetch = fetch;
+
+        // Ensure that the fetch function is called with the right context and
+        // doesn't trigger "Illegal invocation".
+        this.fetch = (...args: any) => fetch.apply(globalThis, args);
     }
 
     /**
