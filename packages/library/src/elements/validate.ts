@@ -6,8 +6,9 @@ import {
     ErrCurrencyRequired,
     ErrDestinationRequired,
     ErrInvalidCurrency,
-    ErrInvalidMode
+    ErrInvalidMode,
 } from '../errors';
+import { PublicKey } from '../keys';
 
 /**
  * Validates the properties of the given `ElementOptions` for intents.
@@ -34,6 +35,7 @@ function validateIntentOptions(intent: ElementOptions) {
  * @throws {ErrAmountRequired} If the `amount` property is undefined.
  * @throws {ErrCurrencyRequired} If the `currency` property is undefined.
  * @throws {ErrInvalidCurrency} If the `currency` property is not a valid currency.
+ * @throws {ErrInvalidAddress} If the `destination` property is not a valid base58 address.
  */
 function validatePaymentRequestOptions(intent: ElementOptions) {
     if (intent.destination === undefined) {
@@ -51,6 +53,9 @@ function validatePaymentRequestOptions(intent: ElementOptions) {
     if (!isValidCurrency(intent.currency)) {
         throw ErrInvalidCurrency();
     }
+
+    // Validate that the destination is a valid address.
+    PublicKey.fromBase58(intent.destination);
 }
 
 /**
