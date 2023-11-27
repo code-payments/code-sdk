@@ -1,14 +1,15 @@
+<img width="1280" alt="Code SDK" src="https://github.com/code-payments/code-sdk/assets/623790/78166c02-1d24-49b0-ae95-13f5aaff15b2">
+
+# Code SDK
+
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
+![license][license-image]
 
 [npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/elements.svg?style=flat
 [npm-image]: https://img.shields.io/npm/v/@code-wallet/elements.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/@code-wallet/elements.svg
-
-
-![Code SDK](https://github.com/code-wallet/code-sdk/assets/623790/1d1cf927-c63e-48ba-8515-e80960a91752)
-
-# Code SDK
+[license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 
 The Code SDK is a set of JavaScript packages that enables any web developer to integrate Code into their website or web app and easily start accepting payments for as little as 5 cents with no sign up required and just a few lines of code.
 
