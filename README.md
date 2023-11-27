@@ -12,7 +12,7 @@
 
 The Code SDK is a set of JavaScript packages that enables any web developer to integrate Code into their website or web app and easily start accepting payments for as little as 5 cents with no sign up required and just a few lines of code.
 
-See the [docs](https://code-wallet.github.io/code-sdk/docs/guide/introduction) for more information.
+See the [docs](https://code-payments.github.io/code-sdk/docs/guide/introduction) for more information.
 
 ##  What is Code?
 
