@@ -36,7 +36,7 @@ composer require code-wallet/client
 ```
 
 ```bash [go]
-go get github.com/code-wallet/code-sdk-go
+go get github.com/code-payments/code-sdk-go
 ```
 :::
 
@@ -107,5 +107,5 @@ See a minimal server example [here](../example/payment-verification).
 ::: info Full Examples
 If you prefer running full examples, we have a few available.
 
-Checkout the full [Node.js Examples](https://github.com/code-wallet/code-sdk/tree/main/examples), our [Python Example](https://github.com/code-wallet/code-sdk-python/tree/main/example), our [PHP Example](https://github.com/code-wallet/code-sdk-php/tree/main/example), or our [Go Example](https://github.com/code-wallet/code-sdk-go/tree/main/example).
+Checkout the full [Node.js Examples](https://github.com/code-payments/code-sdk/tree/main/examples), our [Python Example](https://github.com/code-payments/code-sdk-python/tree/main/example), our [PHP Example](https://github.com/code-payments/code-sdk-php/tree/main/example), or our [Go Example](https://github.com/code-payments/code-sdk-go/tree/main/example).
 :::
