@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 /**
  * Offset class to manage hardened and non-hardened values.
  */

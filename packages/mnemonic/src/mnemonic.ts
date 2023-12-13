@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { getEnglishWords } from "./wordlists";
 import { bytesToBinary, deriveChecksumBits, binaryToByte, lpad } from "./utils";
 import {
