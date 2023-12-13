@@ -1,6 +1,6 @@
 import bs58 from "bs58";
 import { Buffer } from "buffer";
-
+import { ed25519 } from '@noble/curves/ed25519';
 import { ErrInvalidAddress } from "../errors";
 
 const ED25519_PUBLIC_KEY_LENGTH = 32; // Length of ED25519 public key in bytes
@@ -69,6 +69,17 @@ class PublicKey {
      */
     toString() {
         return this.toBase58();
+    }
+
+    /**
+     * Verifies a signature against the public key.
+     * 
+     * @param message - The message to verify.
+     * @param signature - The signature to verify.
+     * @returns `true` if the signature is valid, otherwise `false`.
+     */
+    verify(message: ArrayBuffer | SharedArrayBuffer, signature: Uint8Array) {
+        return ed25519.verify(signature, new Uint8Array(message), this.publicKey);
     }
 }
 

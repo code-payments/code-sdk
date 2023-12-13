@@ -1,10 +1,10 @@
 {
     "name": "@code-wallet/library",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/code-wallet/code-sdk.git"
+        "url": "https://github.com/code-payments/code-sdk.git"
     },
     "source": "src/index.ts",
     "main": "dist/cjs/index.js",
