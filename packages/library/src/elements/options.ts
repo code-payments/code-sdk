@@ -21,7 +21,7 @@ type ElementLocale = string;
  * Defines the options needed for processing a payment request.
  */
 interface PaymentRequestOptions {
-    /** The destination identifier, e.g., an account or user ID. */
+    /** The destination token address as a base58 string. */
     destination: string;
 
     /** The monetary amount for the payment request. */
@@ -29,6 +29,19 @@ interface PaymentRequestOptions {
 
     /** The currency code of the requested payment amount. */
     currency: CurrencyCode;
+}
+
+/**
+ * Defines the options needed for processing a login request from a third-party.
+ */
+interface LoginRequestOptions {
+    login: {
+        /** The hostname of a third-party that is requesting this login. This hostname must serve a /.well-known/code-payments.json file with the verifier public key. */
+        domain: string;
+
+        /** The public key of the verifier that sign the login request as a base58 string. This public key must be found in the well-known file. */
+        verifier: string;
+    };
 }
 
 /**
@@ -53,6 +66,7 @@ interface AppearanceOptions {
  */
 type ElementOptions = Partial<IntentOptions> & 
     Partial<PaymentRequestOptions> & 
+    Partial<LoginRequestOptions> &
     Partial<LocaleOptions> & 
     Partial<AppearanceOptions> & 
     Partial<WebhookParams> &
@@ -68,4 +82,5 @@ export type {
     LocaleOptions,
     AppearanceOptions,
     PaymentRequestOptions,
+    LoginRequestOptions,
 };

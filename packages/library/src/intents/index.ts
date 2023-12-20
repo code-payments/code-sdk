@@ -1,1 +1,2 @@
-export * from './payment_request';
+export * from './PaymentRequestIntent';
+export * from './PaymentRequestWithLoginIntent';
