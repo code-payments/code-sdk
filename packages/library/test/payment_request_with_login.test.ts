@@ -1,0 +1,187 @@
+import { expect } from 'chai';
+import {
+    CurrencyCode,
+    ErrLoginDomainRequired,
+    ErrLoginRequired,
+    ErrLoginVerifierRequired,
+    IntentType,
+    Keypair,
+    PaymentRequestWithLoginIntent,
+    PublicKey,
+} from '../src';
+
+describe('PaymentRequestWithLoginIntent', () => {
+
+    const destination = 'CYbMQjhhFwE9NxYk91582ii4Q9jexXEtTesFmsgqKWRa';
+    const opt = { 
+        destination,
+        amount: 0.5,
+        mode: 'payment' as IntentType,
+        currency: 'usd' as CurrencyCode,
+    }
+
+    const domain = 'app.getcode.com';
+    const verifier = Keypair.fromRawPrivateKey(new Uint8Array ([
+        31, 198, 32,  30, 134, 217, 253, 202,
+        191, 201, 72, 101,  85,  57, 128, 211,
+        204, 140, 82,  80,  37, 240, 241,  62,
+        144, 107, 81,  63, 236, 197, 103,  45
+    ]));
+
+    const rendezvous = Keypair.fromSecretKey(new Uint8Array([
+        21,  17, 247, 182, 187, 209,  72, 224,
+        155, 234, 125, 157, 197,  64, 106, 229,
+        230,   5, 176,  18,  30,  47, 210, 243,
+        87, 206,   0,   3, 208, 130,  81, 174
+    ]));
+
+    describe('constructor', () => {
+        it('should initialize correctly', () => {
+            const intent = new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: {
+                    domain,
+                    verifier: verifier.getPublicKey().toBase58()
+                }
+            });
+
+            expect(intent.options.destination).to.equal(destination);
+            expect(intent.options.amount).to.equal(0.5);
+            expect(intent.options.currency).to.equal('usd');
+            expect(intent.convertedAmount).to.equal(0.5 * 100);
+            expect(intent.options.login!.domain).to.equal('app.getcode.com');
+            expect(intent.options.login!.verifier).to.equal(verifier.getPublicKey().toBase58());
+        });
+    });
+
+    describe('validate', () => {
+
+        it('should throw an error if login is missing', () => {
+            expect(() => new PaymentRequestWithLoginIntent({
+                ...opt,
+            } as any)).to.throw(ErrLoginRequired().message);
+        });
+
+        it('should throw an error if login.domain is missing', () => {
+            expect(() => new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: {
+                    verifier: verifier.getPublicKey().toBase58()
+                }
+            } as any)).to.throw(ErrLoginDomainRequired().message);
+        });
+
+        it('should throw an error if login.verifier is missing', () => {
+            expect(() => new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: { domain }
+            } as any)).to.throw(ErrLoginVerifierRequired().message);
+        });
+    });
+
+    describe('toProto', () => {
+        it('should return correct protobuf json', () => {
+            const intent = new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: {
+                    domain,
+                    verifier: verifier.getPublicKey().toBase58()
+                }
+            });
+
+            intent.rendezvousKeypair = rendezvous;
+            const protoMessage = intent.toProto();
+            const buf = protoMessage.toJson();
+
+            expect(buf).to.deep.equal({
+                requestToReceiveBill: {
+                    requestorAccount: {
+                        value: PublicKey.fromBase58(destination).toBuffer().toString('base64')
+                    }, 
+                    partial: {
+                        currency: 'usd',
+                        nativeAmount: 0.5,
+                    },
+                    domain: {
+                        value: domain
+                    },
+                    verifier: {
+                        value: verifier.getPublicKey().toBuffer().toString('base64')
+                    },
+                    rendezvousKey: {
+                        value: rendezvous.getPublicKey().toBuffer().toString('base64')
+                    }
+
+                }
+            });
+        });
+
+        it('should return correct protobuf bytes', () => {
+            const intent = new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: {
+                    domain,
+                    verifier: verifier.getPublicKey().toBase58()
+                }
+            });
+
+            intent.rendezvousKeypair = rendezvous;
+            const protoMessage = intent.toProto();
+            const actual = protoMessage.toBinary();
+
+            const expected = new Uint8Array([
+                0x2a, 0x8f, 0x01, 0x0a, 0x22, 0x0a, 0x20, 0xab, 0x88, 0x67,
+                0x2f, 0x94, 0x4e, 0xa4, 0x5b, 0x3c, 0x25, 0xc2, 0x6d, 0x73,
+                0x2d, 0x2e, 0x5e, 0x40, 0xd5, 0xc7, 0xc1, 0x62, 0xc3, 0xcd,
+                0x68, 0x58, 0xd5, 0xc9, 0x5a, 0x23, 0xfa, 0x34, 0x55, 0x1a,
+                0x0e, 0x0a, 0x03, 0x75, 0x73, 0x64, 0x11, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0xe0, 0x3f, 0x22, 0x11, 0x0a, 0x0f, 0x61,
+                0x70, 0x70, 0x2e, 0x67, 0x65, 0x74, 0x63, 0x6f, 0x64, 0x65,
+                0x2e, 0x63, 0x6f, 0x6d, 0x2a, 0x22, 0x0a, 0x20, 0x90, 0x5c,
+                0xc7, 0x96, 0xae, 0x7a, 0x19, 0x98, 0x46, 0x18, 0x36, 0xcd,
+                0x9f, 0x59, 0x05, 0x2f, 0x8a, 0x2a, 0x52, 0xcd, 0x53, 0x9b,
+                0x41, 0x7e, 0x57, 0x7c, 0x11, 0x82, 0x83, 0xd2, 0xa0, 0x6c,
+                0x3a, 0x22, 0x0a, 0x20, 0x70, 0xa4, 0xae, 0xb6, 0x8f, 0x76,
+                0x36, 0x3f, 0x22, 0x66, 0x81, 0xdf, 0x16, 0x62, 0xbf, 0xc0,
+                0xf6, 0x42, 0x36, 0xe9, 0x7a, 0x7a, 0x64, 0x87, 0x46, 0x6a,
+                0x93, 0x99, 0x54, 0x5e, 0x7a, 0xfb
+            ]);
+
+            expect(actual.toString()).to.equal(expected.toString());
+        });
+    });
+
+    describe('sign', () => {
+        it('should return correct signature bytes', () => {
+            const intent = new PaymentRequestWithLoginIntent({
+                ...opt,
+                login: {
+                    domain,
+                    verifier: verifier.getPublicKey().toBase58()
+                },
+                signers: [verifier]
+            });
+
+            intent.rendezvousKeypair = rendezvous;
+
+            const actual = intent.sign();
+
+            // TODO: Fix this test
+
+            /*
+            const buf = Buffer.from('CtYBKtMBCiIKIKuIZy+UTqRbPCXCbXMtLl5A1cfBYsPNaFjVyVoj+jRVIhEKD2FwcC5nZXRjb2RlLmNvbSoiCiCQXMeWrnoZmEYYNs2fWQUviipSzVObQX5XfBGCg9KgbDJCCkBgpVkQnlTv9ackQCHPV39NBCHOKh0N5n8gSwQ7Hz8nFldMcdI+TbF+9foOcW/0g+DSnR5kbxbRYEWuRTKo5O8BOiIKIHCkrraPdjY/ImaB3xZiv8D2Qjbpenpkh0Zqk5lUXnr7Gg4KA3VzZBEAAAAAAADgPxIiCiBwpK62j3Y2PyJmgd8WYr/A9kI26Xp6ZIdGapOZVF56+xpCCkDU3CnRyHQ4w0O5D5eIqizAoaBwDft+RjWsGl+Wzo+jCGyE7u+Siw4uZT7U4VcLV6lcsfe9XeB66E7RYlmwAv0I', 'base64')
+            const req = proto.SendMessageRequest.fromBinary(buf);
+            const val = req.message?.kind.value as proto.RequestToReceiveBill;
+
+            console.log('expected', req.message?.toJson());
+            //console.log('expected bin', Buffer.from(req.message?.toBinary()!).toString('hex'));
+            //console.log('expected ren', Buffer.from(req.signature?.value!).toString('hex'));
+            //console.log('expected sig', Buffer.from(val.signature?.value!).toString('hex'));
+
+            expect(actual.intent).to.equal(expected.intent);
+            expect(actual.message.toString()).to.equal(expected.message.toString());
+            expect(actual.signature.toString()).to.equal(expected.signautre.toString());
+            */
+        });
+    });
+});

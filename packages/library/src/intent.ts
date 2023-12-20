@@ -1,8 +1,9 @@
 import * as proto from '@code-wallet/rpc';
 import { IdempotencyKey } from './idempotency';
 import { ElementOptions } from './elements/options';
+import { Keypair } from './keys';
  
-export type IntentType = 'payment';
+export type IntentType = 'payment' | 'login';
  
 /**
  * Options for creating an intent.
@@ -22,6 +23,11 @@ export interface IntentOptions {
      * See https://code-wallet.github.io/code-sdk/docs/reference/idempotency.html for more information.
      */
     idempotencyKey?: string;
+
+    /**
+     * A list of signers for an intent. 
+     */
+    signers?: Keypair[];
 }
  
 /**
@@ -60,8 +66,9 @@ export interface Intent {
     toProto(): proto.Message;
  
     /**
-     * Sign this intent with the rendezvous private key, returning an intent
-     * that is ready to be sent to the Code Sequencer.
+     * Sign this intent with the signer keys (if needed), returning an intent
+     * that is ready to be sent to the Code Sequencer. The intent will be signed
+     * with the rendezvous keypair by default, so no need to pass it in.
      * 
      * @returns {SignedIntent} The signed intent.
      */
@@ -73,6 +80,11 @@ export interface Intent {
      * @returns {string} The client secret for this intent.
      */
     getClientSecret(): string;
+
+    /**
+     * Get the intent ID for this intent, which can be used to create linked browser elements or request status.
+     */
+    getIntentId(): string;
 }
  
 /**

@@ -5,8 +5,8 @@ import { PublicKey } from "./publickey";
  * Represents a cryptographic key pair containing a private and public key.
  */
 class Keypair {
-  privateKey: Uint8Array;
   publicKey: Uint8Array;
+  privateKey: Uint8Array;
 
   /**
    * Constructs a new Keypair instance.

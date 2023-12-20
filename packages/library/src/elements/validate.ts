@@ -7,8 +7,13 @@ import {
     ErrDestinationRequired,
     ErrInvalidCurrency,
     ErrInvalidMode,
+    ErrLoginRequired,
+    ErrLoginDomainRequired,
+    ErrLoginVerifierRequired,
+    ErrNotImplemented,
+    ErrInvalidValue,
 } from '../errors';
-import { PublicKey } from '../keys';
+import { Keypair, PublicKey } from '../keys';
 
 /**
  * Validates the properties of the given `ElementOptions` for intents.
@@ -59,6 +64,45 @@ function validatePaymentRequestOptions(intent: ElementOptions) {
 }
 
 /**
+ * Validates the properties of the given `ElementOptions` for login requests.
+ * 
+ * @param intent The options to validate.
+ * @throws {ErrLoginRequired} If the `login` property is undefined.
+ * @throws {ErrLoginDomainRequired} If the `login.domain` property is undefined.
+ * @throws {ErrLoginVerifierRequired} If the `login.verifier` property is undefined.
+ * @throws {ErrInvalidAddress} If the `login.verifier` property is not a valid base58 address.
+ */
+function validateLoginRequestOptions(intent: ElementOptions) {
+    if (intent.login === undefined) {
+        throw ErrLoginRequired();
+    }
+
+    if (intent.login.domain === undefined) {
+        throw ErrLoginDomainRequired();
+    }
+
+    if (intent.login.verifier === undefined) {
+        throw ErrLoginVerifierRequired();
+    }
+
+    // Validate that the verifier is a valid address.
+    PublicKey.fromBase58(intent.login.verifier);
+}
+
+/**
+ * Validates the properties of the given `ElementOptions` for signers.
+ */
+function validateSigners(intent: ElementOptions) {
+    if (!intent.signers) { return; }
+
+    for (const signer of intent.signers) {
+        if (!(signer instanceof Keypair)) {
+            throw ErrInvalidValue();
+        }
+    }
+}
+
+/**
  * Validates the properties of the given `ElementOptions` depending on its mode.
  *
  * @param intent The options to validate.
@@ -68,8 +112,18 @@ function validateElementOptions(intent: ElementOptions) {
     validateIntentOptions(intent);
 
     switch (intent.mode) {
+        case 'login':
+            throw ErrNotImplemented(); // TODO: implement login (soon)
+            break;
         case 'payment':
             validatePaymentRequestOptions(intent);
+
+            if (intent.login) {
+                validateLoginRequestOptions(intent);
+            }
+            if (intent.signers) {
+                validateSigners(intent);
+            }
             break;
         default:
             throw ErrInvalidMode();
