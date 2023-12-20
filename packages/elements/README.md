@@ -1,9 +1,9 @@
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
 
-[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/elements.svg?style=flat
-[npm-image]: https://img.shields.io/npm/v/@code-wallet/elements.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/@code-wallet/elements.svg
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/elements?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/elements?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/elements
 
 # @code-wallet/elements
 This package provides the code.elements object, which you
