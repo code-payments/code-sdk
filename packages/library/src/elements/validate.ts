@@ -96,7 +96,7 @@ function validateSigners(intent: ElementOptions) {
     if (!intent.signers) { return; }
 
     for (const signer of intent.signers) {
-        if (signer !instanceof Keypair) {
+        if (!(signer instanceof Keypair)) {
             throw ErrInvalidValue();
         }
     }
@@ -113,17 +113,16 @@ function validateElementOptions(intent: ElementOptions) {
 
     switch (intent.mode) {
         case 'login':
-            validateSigners(intent);
-            validateLoginRequestOptions(intent);
             throw ErrNotImplemented(); // TODO: implement login (soon)
             break;
         case 'payment':
             validatePaymentRequestOptions(intent);
 
-            // Payments can ask for login, so we need to validate that too.
             if (intent.login) {
-                validateSigners(intent);
                 validateLoginRequestOptions(intent);
+            }
+            if (intent.signers) {
+                validateSigners(intent);
             }
             break;
         default:

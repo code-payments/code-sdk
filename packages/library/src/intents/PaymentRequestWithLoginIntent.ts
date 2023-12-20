@@ -80,6 +80,10 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
             value: this.verifier.toBuffer(),
         });
 
+        req.rendezvousKey = new proto.Common.SolanaAccountId({
+            value: this.rendezvousKeypair.getPublicKey().toBuffer(),
+        });
+
         return new proto.Message({
             kind: {
                 case: 'requestToReceiveBill',
@@ -104,13 +108,20 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
             throw ErrUnexpectedError();
         }
 
-        // Add the signature to the request to receive bill message.
         req.signature = new proto.Common.Signature({
             value: this.signer.sign(req.toBinary()),
         });
 
-        // Sign the message envelope with the rendezvous keypair
-        return super.sign();
+        const sig = this.rendezvousKeypair.sign(msg.toBinary());
+        const intent = this.rendezvousKeypair.getPublicKey().toBase58();
+        const message = msg.toBinary();
+        const signature = sig;
+
+        return {
+            message,
+            intent,
+            signature,
+        }
     }
 
     /**
