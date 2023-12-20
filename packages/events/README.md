@@ -1,9 +1,9 @@
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
 
-[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/events.svg?style=flat
-[npm-image]: https://img.shields.io/npm/v/@code-wallet/events.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/@code-wallet/events.svg
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/events?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/events?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/events
 
 # @code-wallet/events
 This package is an internal utility designed for managing
