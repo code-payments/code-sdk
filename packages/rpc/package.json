@@ -4,7 +4,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/code-wallet/code-sdk.git"
+        "url": "https://github.com/code-payments/code-sdk.git"
     },
     "source": "src/index.ts",
     "main": "dist/cjs/index.js",
