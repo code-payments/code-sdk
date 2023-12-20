@@ -1,9 +1,9 @@
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
 
-[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/client.svg?style=flat
-[npm-image]: https://img.shields.io/npm/v/@code-wallet/client.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/@code-wallet/client.svg
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/client?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/client?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/client
 
 # @code-wallet/client
 This module provides a seamless way to create a payment
