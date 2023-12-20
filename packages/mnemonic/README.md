@@ -48,7 +48,19 @@ console.log("Public Key:", keypair.publicKey);
 console.log("Private Key:", keypair.privateKey);
 ```
 
-## Parsing a Path
+### Phrase to Keypair
+
+```typescript
+import { MnemonicPhrase } from '@code-wallet/mnemonic';
+
+const mnemonic = new MnemonicPhrase("install assume ketchup talk giant bone foster flight situate math hurt border deputy grab mesh hope update dream evolve caught erupt win danger thought");
+
+const keypair = mnemonic.toKeypair(); // Uses default Solana path unless specified
+console.log("Public Key:", keypair.publicKey);
+console.log("Private Key:", keypair.privateKey);
+```
+
+### Parsing a Path
 
 ```typescript
 import { Path } from '@code-wallet/mnemonic';
