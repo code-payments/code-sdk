@@ -99,7 +99,7 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
      */
     sign(): SignedIntent {
         if (!this.signer) {
-            throw ErrUnexpectedError();
+            throw ErrLoginVerifierRequired();
         }
 
         const msg = this.toProto();
