@@ -3,8 +3,11 @@ import { Buffer } from "buffer";
 import { 
     IntentOptions,
     PaymentRequestIntent,
+    PaymentRequestWithLoginIntent,
     PaymentRequestOptions,
-    WebhookParams
+    LoginRequestOptions,
+    WebhookParams,
+    Intent,
 } from "@code-wallet/library";
 import { Connection } from "./connection";
 
@@ -19,7 +22,11 @@ enum PaymentIntentState {
     Confirmed = 'confirmed',
 }
 
-type CreatePaymentIntentOptions = IntentOptions & PaymentRequestOptions & Partial<WebhookParams>;
+type CreatePaymentIntentOptions = PaymentRequestOptions & 
+    IntentOptions & 
+    Partial<WebhookParams> & 
+    Partial<LoginRequestOptions>;
+
 type GetStatusForIntentOptions = { intent: string };
 
 const pending = { status: PaymentIntentState.Pending };
@@ -39,7 +46,12 @@ const paymentIntents = {
     create: async (obj: CreatePaymentIntentOptions) => {
         obj.mode = 'payment';
 
-        const intent = new PaymentRequestIntent(obj);
+        let intent : Intent;
+        if (obj.login) {
+            intent = new PaymentRequestWithLoginIntent(obj);
+        } else {
+            intent = new PaymentRequestIntent(obj);
+        }
 
         const envelope = intent.sign();
         const body = {

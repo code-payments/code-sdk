@@ -112,7 +112,7 @@ class PaymentRequestIntent implements Intent {
      * 
      * @returns The protobuf representation of the payment request intent.
      */
-    toProto() {
+    toProto() : proto.Message {
         const destination = PublicKey.fromBase58(this.options.destination!);
         const { currency, amount } = this.options;
 
