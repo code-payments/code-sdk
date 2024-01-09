@@ -5,6 +5,13 @@
  */
 
 /**
+ * Determines if the current device is a custom debug device.
+ */
+function DebugMobile(): boolean {
+  return navigator.userAgent.includes("DebugMobile");
+}
+
+/**
  * Determines if the current device is an iPhone.
  * 
  * @returns A boolean indicating whether the device is an iPhone.
@@ -63,7 +70,7 @@ function Android(): boolean {
  * @returns A boolean indicating whether the device is a mobile device.
  */
 function isMobileDevice(): boolean {
-    return iPhone() || Android();
+    return iPhone() || Android() || DebugMobile();
 }
 
 export {
