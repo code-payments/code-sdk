@@ -13,7 +13,7 @@ import {
     ErrNotImplemented,
     ErrInvalidValue,
 } from '../errors';
-import { Keypair, PublicKey } from '../keys';
+import { PublicKey } from '../keys';
 
 /**
  * Validates the properties of the given `ElementOptions` for intents.
@@ -96,7 +96,7 @@ function validateSigners(intent: ElementOptions) {
     if (!intent.signers) { return; }
 
     for (const signer of intent.signers) {
-        if (!(signer instanceof Keypair)) {
+        if (!signer.sign && typeof signer.sign !== 'function') {
             throw ErrInvalidValue();
         }
     }

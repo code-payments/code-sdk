@@ -102,17 +102,17 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
             throw ErrLoginVerifierRequired();
         }
 
-        const msg = this.toProto();
-        const req = msg.kind.value as proto.RequestToReceiveBill;
-        if (!req) {
+        const envelope = this.toProto();
+        const msg = envelope.kind.value as proto.RequestToReceiveBill;
+        if (!msg) {
             throw ErrUnexpectedError();
         }
 
-        req.signature = new proto.Common.Signature({
-            value: this.signer.sign(req.toBinary()),
+        msg.signature = new proto.Common.Signature({
+            value: this.signer.sign(msg.toBinary()),
         });
 
-        const sig = this.rendezvousKeypair.sign(msg.toBinary());
+        const sig = this.rendezvousKeypair.sign(envelope.toBinary());
         const intent = this.rendezvousKeypair.getPublicKey().toBase58();
         const message = msg.toBinary();
         const signature = sig;
