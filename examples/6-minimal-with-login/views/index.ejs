@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code SDK - Example/4-minimal-with-webhook</title>
+  <title>Code SDK - Example/6-minimal-with-login</title>
 </head>
 
 <body>
@@ -13,14 +13,18 @@
   <script type="module">
     import code from 'https://js.getcode.com/v1';
 
+    const hostname = window.location.protocol + "//" + window.location.host;
+    console.log(hostname);
+
     const { button } = code.elements.create('button', {
       currency: 'usd',
       destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
       amount: 0.05,
-    });
 
-    button.on('success', () => {
-      alert('Thank you!');
+      confirmParams: {
+        success: { url: `${hostname}/success/{{INTENT_ID}}`, },
+        cancel: { url: `${hostname}/`, },
+      },
     });
 
     // Wait for the button to be clicked
