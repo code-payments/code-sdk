@@ -184,7 +184,6 @@ describe('PaymentRequestWithLoginIntent', () => {
 
             const res = intent.sign();
             const msg = proto.RequestToReceiveBill.fromBinary(res.message);
-            console.log(Buffer.from(res.message).toString('hex'))
 
             expect(msg.toJson()).to.deep.equal({
                 requestorAccount: {
