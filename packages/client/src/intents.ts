@@ -29,8 +29,10 @@ type CreatePaymentIntentOptions = PaymentRequestOptions &
 
 type GetStatusForIntentOptions = { intent: string };
 
-const pending = { status: PaymentIntentState.Pending };
-const confirmed = { status: PaymentIntentState.Confirmed };
+interface IntentStatus {
+    status: PaymentIntentState,
+    user: string | undefined,
+}
 
 /**
  * Collection of methods related to handling payment intents.
@@ -76,14 +78,15 @@ const paymentIntents = {
      * @returns An object representing the intent's status.
      * @throws Will throw an error if unable to retrieve the intent's status.
      */
-    getStatus: async (obj: GetStatusForIntentOptions) => {
+    getStatus: async (obj: GetStatusForIntentOptions) : Promise<IntentStatus> => {
         const res = await client.get('getStatus', { intent: obj.intent });
 
+        let status = PaymentIntentState.Pending;
         if (res.status === 'SUBMITTED') {
-            return confirmed;
+            status = PaymentIntentState.Confirmed;
         }
 
-        return pending;
+        return { status, user: res.user };
     }
 }
 
