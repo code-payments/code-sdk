@@ -69,6 +69,17 @@ export class GetStatusResponse extends Message<GetStatusResponse> {
    */
   intentSubmitted = false;
 
+  /**
+   * The user ID, if available, that submitted the payment. This will only be
+   * avalaible when the payment request included a verified identifier that the
+   * user can establish a relationship against. This ID is guaranteed to be a
+   * relationship account, which will be unique between the user's 12 words and
+   * the verified merchant identifier.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId user_id = 4;
+   */
+  userId?: SolanaAccountId;
+
   constructor(data?: PartialMessage<GetStatusResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -80,6 +91,7 @@ export class GetStatusResponse extends Message<GetStatusResponse> {
     { no: 1, name: "exists", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "code_scanned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 3, name: "intent_submitted", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 4, name: "user_id", kind: "message", T: SolanaAccountId },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetStatusResponse {

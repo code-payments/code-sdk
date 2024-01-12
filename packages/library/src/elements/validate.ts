@@ -113,7 +113,12 @@ function validateElementOptions(intent: ElementOptions) {
 
     switch (intent.mode) {
         case 'login':
-            throw ErrNotImplemented(); // TODO: implement login (soon)
+            validateLoginRequestOptions(intent);
+
+            if (intent.signers) {
+                validateSigners(intent);
+            }
+
             break;
         case 'payment':
             validatePaymentRequestOptions(intent);

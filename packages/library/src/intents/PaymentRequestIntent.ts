@@ -84,7 +84,7 @@ class PaymentRequestIntent implements Intent {
         const nonce = this.nonce.value;
 
         // Create a rendezvous payload and derive a keypair from it
-        this.rendezvousPayload = new CodePayload(kind, amount, nonce, this.options.currency);
+        this.rendezvousPayload = new CodePayload({kind, amount, nonce, currency: this.options.currency});
         this.rendezvousKeypair = generateRendezvousKeypair(this.rendezvousPayload);
     }
 

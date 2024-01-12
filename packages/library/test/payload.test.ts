@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { CodePayload, CodeKind, CurrencyCode, Kin } from '../src';
-import { ErrInvalidCurrency, ErrInvalidSize } from '../src/errors';
+import { ErrInvalidCurrency, ErrInvalidSize, ErrInvalidValue } from '../src/errors';
 
 describe('CodePayload', () => {
 
@@ -37,7 +37,7 @@ describe('CodePayload', () => {
     it('should create new payload from parameters', () => {
         const kind = CodeKind.Cash;
         const amount = BigInt(100);
-        const payload = new CodePayload(kind, amount, nonce);
+        const payload = new CodePayload({kind, amount, nonce});
         
         expect(payload.kind).to.equal(kind);
         expect(payload.amount).to.equal(amount);
@@ -52,7 +52,7 @@ describe('CodePayload', () => {
     it('should serialize and deserialize correctly for Cash and GiftCard', () => {
         const kind = CodeKind.Cash;
         const amount = BigInt(100);
-        const payload = new CodePayload(kind, amount, nonce);
+        const payload = new CodePayload({kind, amount, nonce});
         
         const serialized = payload.toBinary();
         const deserialized = CodePayload.fromData(serialized);
@@ -67,7 +67,7 @@ describe('CodePayload', () => {
         const amount = BigInt(100);
         const currency = 'usd';
 
-        const payload = new CodePayload(kind, amount, nonce, currency);
+        const payload = new CodePayload({kind, amount, nonce, currency});
 
         const serialized = payload.toBinary();
         const deserialized = CodePayload.fromData(serialized);
@@ -83,12 +83,12 @@ describe('CodePayload', () => {
         const amount = BigInt(100);
         const currency = 'INVALID' as CurrencyCode; // Invalid currency
 
-        expect(() => new CodePayload(kind, amount, nonce, currency)).to.throw(ErrInvalidCurrency().message);
+        expect(() => new CodePayload({kind, amount, nonce, currency})).to.throw(ErrInvalidCurrency().message);
     });
 
     it('should match sample data when encoding Kin (cash)', () => {
         const amount = kinAmount.toQuarks();
-        const payload = new CodePayload(CodeKind.Cash, amount, nonce);
+        const payload = new CodePayload({kind: CodeKind.Cash, amount, nonce});
 
         const encoded = payload.toBinary();
         expect(encoded.toString()).to.eql(sampleKin.toString());
@@ -96,7 +96,7 @@ describe('CodePayload', () => {
 
     it('should match sample data when encoding Kin (request)', () => {
         const amount = BigInt(kinAmount.toDecimal() * 100);
-        const payload = new CodePayload(CodeKind.RequestPayment, amount, nonce, 'kin');
+        const payload = new CodePayload({kind: CodeKind.RequestPayment, amount, nonce, currency: 'kin'});
 
         const encoded = payload.toBinary();
         expect(encoded.toString()).to.eql(sampleKinAsFiat.toString());
@@ -104,10 +104,69 @@ describe('CodePayload', () => {
 
     it('should match sample data when encoding Fiat', () => {
         const amount = BigInt(fiatAmount);
-        const payload = new CodePayload(CodeKind.RequestPayment, amount, nonce, 'usd');
+        const payload = new CodePayload({kind: CodeKind.RequestPayment, amount, nonce, currency: 'usd'});
 
         const encoded = payload.toBinary();
         expect(encoded.toString()).to.eql(sampleFiat.toString());
     });
 
+    it('should throw ErrInvalidCurrency for RequestPayment without currency', () => {
+        const kind = CodeKind.RequestPayment;
+        const amount = BigInt(100);
+
+        const payload = new CodePayload({ kind, amount, nonce });
+        expect(() => payload.validate()).to.throw(ErrInvalidCurrency().message);
+    });
+
+    it('should throw ErrInvalidValue for RequestPayment without amount', () => {
+        const kind = CodeKind.RequestPayment;
+        const currency = 'usd';
+
+        const payload = new CodePayload({ kind, nonce, currency });
+        expect(() => payload.validate()).to.throw(ErrInvalidValue().message);
+    });
+
+    it('should throw ErrInvalidValue for GiftCard without amount', () => {
+        const kind = CodeKind.GiftCard;
+
+        const payload = new CodePayload({ kind, nonce });
+        expect(() => payload.validate()).to.throw(ErrInvalidValue().message);
+    });
+
+    it('should throw ErrInvalidValue for Cash without amount', () => {
+        const kind = CodeKind.Cash;
+
+        const payload = new CodePayload({ kind, nonce });
+        expect(() => payload.validate()).to.throw(ErrInvalidValue().message);
+    });
+
+    it('should create new payload with RequestLogin kind', () => {
+        const kind = CodeKind.RequestLogin;
+        const payload = new CodePayload({ kind, nonce });
+        
+        expect(payload.kind).to.equal(kind);
+        expect(payload.nonce).to.eql(nonce);
+        expect(payload.amount).to.be.undefined;
+        expect(payload.currency).to.be.undefined;
+    });
+
+    it('should serialize and deserialize correctly for RequestLogin', () => {
+        const kind = CodeKind.RequestLogin;
+        const payload = new CodePayload({ kind, nonce });
+        
+        const serialized = payload.toBinary();
+        const deserialized = CodePayload.fromData(serialized);
+
+        expect(deserialized.kind).to.equal(kind);
+        expect(deserialized.nonce).to.eql(nonce);
+        expect(deserialized.amount).to.be.undefined;
+        expect(deserialized.currency).to.be.undefined;
+    });
+
+    it('should generate binary data of correct length for RequestLogin', () => {
+        const payload = new CodePayload({ kind: CodeKind.RequestLogin, nonce });
+        const binaryData = payload.toBinary();
+
+        expect(binaryData.length).to.equal(CodePayload.MAX_LENGTH);
+    });
 });

@@ -917,20 +917,6 @@ export class RequestToLogin extends Message$1<RequestToLogin> {
   domain?: Domain;
 
   /**
-   * Random nonce to include for signing in LoginAttempt
-   *
-   * @generated from field: code.common.v1.SolanaAccountId nonce = 2;
-   */
-  nonce?: SolanaAccountId;
-
-  /**
-   * Timestamp the request was created
-   *
-   * @generated from field: google.protobuf.Timestamp timestamp = 3;
-   */
-  timestamp?: Timestamp;
-
-  /**
    * Owner account owned by the third party used in domain verification.
    *
    * @generated from field: code.common.v1.SolanaAccountId verifier = 4;
@@ -961,8 +947,6 @@ export class RequestToLogin extends Message$1<RequestToLogin> {
   static readonly typeName = "code.messaging.v1.RequestToLogin";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "domain", kind: "message", T: Domain },
-    { no: 2, name: "nonce", kind: "message", T: SolanaAccountId },
-    { no: 3, name: "timestamp", kind: "message", T: Timestamp },
     { no: 4, name: "verifier", kind: "message", T: SolanaAccountId },
     { no: 5, name: "signature", kind: "message", T: Signature },
     { no: 6, name: "rendezvous_key", kind: "message", T: RendezvousKey },
@@ -1009,20 +993,6 @@ export class LoginAttempt extends Message$1<LoginAttempt> {
   domain?: Domain;
 
   /**
-   * Nonce value provided in the RequestToLogin message
-   *
-   * @generated from field: code.common.v1.SolanaAccountId nonce = 4;
-   */
-  nonce?: SolanaAccountId;
-
-  /**
-   * Timestamp the attempt was created
-   *
-   * @generated from field: google.protobuf.Timestamp timestamp = 5;
-   */
-  timestamp?: Timestamp;
-
-  /**
    * Signature of this message using the user_id private key, which
    * authenticates the user.
    *
@@ -1047,8 +1017,6 @@ export class LoginAttempt extends Message$1<LoginAttempt> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "user_id", kind: "message", T: SolanaAccountId },
     { no: 3, name: "domain", kind: "message", T: Domain },
-    { no: 4, name: "nonce", kind: "message", T: SolanaAccountId },
-    { no: 5, name: "timestamp", kind: "message", T: Timestamp },
     { no: 6, name: "signature", kind: "message", T: Signature },
     { no: 7, name: "rendezvous_key", kind: "message", T: RendezvousKey },
   ]);
@@ -1071,9 +1039,13 @@ export class LoginAttempt extends Message$1<LoginAttempt> {
 }
 
 /**
- * @generated from message code.messaging.v1.LoginRejected
+ * Login is rejected by the client
+ *
+ * This message type is only initiated by user clients
+ *
+ * @generated from message code.messaging.v1.ClientRejectedLogin
  */
-export class LoginRejected extends Message$1<LoginRejected> {
+export class ClientRejectedLogin extends Message$1<ClientRejectedLogin> {
   /**
    * Timestamp the login was rejected
    *
@@ -1081,31 +1053,31 @@ export class LoginRejected extends Message$1<LoginRejected> {
    */
   timestamp?: Timestamp;
 
-  constructor(data?: PartialMessage<LoginRejected>) {
+  constructor(data?: PartialMessage<ClientRejectedLogin>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "code.messaging.v1.LoginRejected";
+  static readonly typeName = "code.messaging.v1.ClientRejectedLogin";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 4, name: "timestamp", kind: "message", T: Timestamp },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginRejected {
-    return new LoginRejected().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClientRejectedLogin {
+    return new ClientRejectedLogin().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginRejected {
-    return new LoginRejected().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ClientRejectedLogin {
+    return new ClientRejectedLogin().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginRejected {
-    return new LoginRejected().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ClientRejectedLogin {
+    return new ClientRejectedLogin().fromJsonString(jsonString, options);
   }
 
-  static equals(a: LoginRejected | PlainMessage<LoginRejected> | undefined, b: LoginRejected | PlainMessage<LoginRejected> | undefined): boolean {
-    return proto3.util.equals(LoginRejected, a, b);
+  static equals(a: ClientRejectedLogin | PlainMessage<ClientRejectedLogin> | undefined, b: ClientRejectedLogin | PlainMessage<ClientRejectedLogin> | undefined): boolean {
+    return proto3.util.equals(ClientRejectedLogin, a, b);
   }
 }
 
@@ -1248,10 +1220,10 @@ export class Message extends Message$1<Message> {
     case: "loginAttempt";
   } | {
     /**
-     * @generated from field: code.messaging.v1.LoginRejected login_rejected = 12;
+     * @generated from field: code.messaging.v1.ClientRejectedLogin client_rejected_login = 12;
      */
-    value: LoginRejected;
-    case: "loginRejected";
+    value: ClientRejectedLogin;
+    case: "clientRejectedLogin";
   } | {
     /**
      * @generated from field: code.messaging.v1.AirdropReceived airdrop_received = 4;
@@ -1278,7 +1250,7 @@ export class Message extends Message$1<Message> {
     { no: 9, name: "webhook_called", kind: "message", T: WebhookCalled, oneof: "kind" },
     { no: 10, name: "request_to_login", kind: "message", T: RequestToLogin, oneof: "kind" },
     { no: 11, name: "login_attempt", kind: "message", T: LoginAttempt, oneof: "kind" },
-    { no: 12, name: "login_rejected", kind: "message", T: LoginRejected, oneof: "kind" },
+    { no: 12, name: "client_rejected_login", kind: "message", T: ClientRejectedLogin, oneof: "kind" },
     { no: 4, name: "airdrop_received", kind: "message", T: AirdropReceived, oneof: "kind" },
   ]);
 
