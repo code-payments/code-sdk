@@ -1,5 +1,5 @@
 import { CurrencyCode, currencyCodeToIndex, indexToCurrencyCode, isValidCurrency } from "./currency";
-import { ErrInvalidCurrency, ErrInvalidSize } from "./errors";
+import { ErrInvalidCurrency, ErrInvalidSize, ErrInvalidValue } from "./errors";
 
 /*
 Scan Code Payload Format
@@ -72,6 +72,14 @@ enum CodeKind {
     Cash = 0,
     GiftCard = 1,
     RequestPayment = 2,
+    RequestLogin = 3,
+}
+
+interface CodePayloadOptions {
+    kind: CodeKind;
+    nonce: Uint8Array;
+    amount?: bigint;
+    currency?: CurrencyCode;
 }
 
 /**
@@ -80,8 +88,8 @@ enum CodeKind {
  */
 class CodePayload {
     kind: CodeKind;
-    amount: bigint;
     nonce: Uint8Array;
+    amount?: bigint;
     currency?: CurrencyCode;
 
     static readonly MAX_LENGTH: number = 20;
@@ -89,21 +97,48 @@ class CodePayload {
     /**
      * Construct a new CodePayload.
      * 
-     * @param kind - The type of the code.
-     * @param amount - The amount associated with the code.
-     * @param nonce - A randomly-generated nonce.
-     * @param currency - (Optional) Currency associated with the RequestPayment type.
+     * @param opt - The options for constructing the payload.
      */
-    constructor(kind: CodeKind, amount: bigint, nonce: Uint8Array, currency?: CurrencyCode) {
-        this.kind = kind;
-        this.amount = amount;
-        this.nonce = nonce;
+    constructor(opt: CodePayloadOptions) {
+        this.kind = opt.kind;
+        this.amount = opt.amount;
+        this.nonce = opt.nonce;
         
-        // Validation for currency code
-        if (currency && !isValidCurrency(currency)) {
+        if (opt.currency && !isValidCurrency(opt.currency)) {
             throw ErrInvalidCurrency();
         }
-        this.currency = currency as CurrencyCode | undefined;
+        this.currency = opt.currency as CurrencyCode | undefined;
+    }
+
+    private isCash(): this is this & { amount: bigint } {
+        return this.kind === CodeKind.Cash && this.amount != null;
+    }
+
+    private isGiftCard(): this is this & { amount: bigint } {
+        return this.kind === CodeKind.GiftCard && this.amount != null;
+    }
+
+    private isRequestPayment(): this is this & { currency: string, amount: bigint } {
+        return this.kind === CodeKind.RequestPayment && this.currency != null && this.amount != null;
+    }
+
+    /**
+     * Validates the payload, throwing an error if invalid.
+     */
+    validate() {
+        if (this.kind === CodeKind.RequestPayment) {
+            if (!this.currency) {
+                throw ErrInvalidCurrency();
+            }
+        }
+
+        if (this.kind === CodeKind.Cash || 
+            this.kind === CodeKind.GiftCard ||
+            this.kind === CodeKind.RequestPayment) {
+            if (!this.amount) {
+                throw ErrInvalidValue();
+            }
+        }
     }
 
     /**
@@ -115,7 +150,9 @@ class CodePayload {
         const data = new Uint8Array(20);
         data[0] = this.kind;
 
-        if (this.kind === CodeKind.RequestPayment) {
+        this.validate();
+
+        if (this.isRequestPayment()) {
             // for Payment Request
             if (!this.currency) {
                 throw ErrInvalidCurrency();
@@ -126,7 +163,9 @@ class CodePayload {
             for (let i = 0; i < 7; i++) {
                 data[i + 2] = Number(this.amount >> BigInt(8 * i) & BigInt(0xFF));
             }
-        } else {
+        }  
+
+        if (this.isCash() || this.isGiftCard()) {
             // for Cash and Gift Card
             for (let i = 0; i < 8; i++) {
                 data[i + 1] = Number(this.amount >> BigInt(8 * i) & BigInt(0xFF));
@@ -149,24 +188,26 @@ class CodePayload {
             throw ErrInvalidSize();
         }
 
-        const type = data[0] as CodeKind;
-        let amount: bigint;
+        const kind = data[0] as CodeKind;
+        let amount: bigint | undefined;
         let nonce: Uint8Array;
         let currency: CurrencyCode | undefined;
 
-        if (type === CodeKind.RequestPayment) {
+        if (kind === CodeKind.RequestPayment) {
             // for Payment Request
             const currencyIndex = data[1];
             currency = indexToCurrencyCode(currencyIndex);
             amount = data.slice(2, 9).reduce((acc, val, i) => acc + (BigInt(val) << BigInt(8 * i)), BigInt(0));
-        } else {
+        } 
+        
+        if (kind === CodeKind.Cash || kind === CodeKind.GiftCard) {
             // for Cash and Gift Card
             amount = data.slice(1, 9).reduce((acc, val, i) => acc + (BigInt(val) << BigInt(8 * i)), BigInt(0));
         }
         
         nonce = data.slice(9);
 
-        return new CodePayload(type, amount, nonce, currency);
+        return new CodePayload({ kind, amount, currency, nonce });
     }
 }
 

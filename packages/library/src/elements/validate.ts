@@ -10,7 +10,6 @@ import {
     ErrLoginRequired,
     ErrLoginDomainRequired,
     ErrLoginVerifierRequired,
-    ErrNotImplemented,
     ErrInvalidValue,
 } from '../errors';
 import { PublicKey } from '../keys';
@@ -113,7 +112,12 @@ function validateElementOptions(intent: ElementOptions) {
 
     switch (intent.mode) {
         case 'login':
-            throw ErrNotImplemented(); // TODO: implement login (soon)
+            validateLoginRequestOptions(intent);
+
+            if (intent.signers) {
+                validateSigners(intent);
+            }
+
             break;
         case 'payment':
             validatePaymentRequestOptions(intent);
