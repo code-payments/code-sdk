@@ -2,6 +2,7 @@ import * as proto from '@code-wallet/rpc';
 import { IdempotencyKey } from './idempotency';
 import { ElementOptions } from './elements/options';
 import { Keypair } from './keys';
+import { CodePayload } from './payload';
  
 export type IntentType = 'payment' | 'login';
  
@@ -54,6 +55,9 @@ export interface WebhookParams {
 export interface Intent {
     options: ElementOptions;
     nonce: IdempotencyKey;
+
+    rendezvousPayload: CodePayload;
+    rendezvousKeypair: Keypair;
  
     /**
      * Validate the details of this intent, and throw an error if they're invalid.
