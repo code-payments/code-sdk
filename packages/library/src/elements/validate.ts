@@ -10,7 +10,6 @@ import {
     ErrLoginRequired,
     ErrLoginDomainRequired,
     ErrLoginVerifierRequired,
-    ErrNotImplemented,
     ErrInvalidValue,
 } from '../errors';
 import { PublicKey } from '../keys';
