@@ -147,6 +147,58 @@ export class SolanaAccountId extends Message<SolanaAccountId> {
 }
 
 /**
+ * InstructionAccount is an account public key used within the context of
+ * an instruction.
+ *
+ * @generated from message code.common.v1.InstructionAccount
+ */
+export class InstructionAccount extends Message<InstructionAccount> {
+  /**
+   * @generated from field: code.common.v1.SolanaAccountId account = 1;
+   */
+  account?: SolanaAccountId;
+
+  /**
+   * @generated from field: bool is_signer = 2;
+   */
+  isSigner = false;
+
+  /**
+   * @generated from field: bool is_writable = 3;
+   */
+  isWritable = false;
+
+  constructor(data?: PartialMessage<InstructionAccount>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.common.v1.InstructionAccount";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "account", kind: "message", T: SolanaAccountId },
+    { no: 2, name: "is_signer", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "is_writable", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InstructionAccount {
+    return new InstructionAccount().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InstructionAccount {
+    return new InstructionAccount().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InstructionAccount {
+    return new InstructionAccount().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: InstructionAccount | PlainMessage<InstructionAccount> | undefined, b: InstructionAccount | PlainMessage<InstructionAccount> | undefined): boolean {
+    return proto3.util.equals(InstructionAccount, a, b);
+  }
+}
+
+/**
  * Transaction is a raw binary Solana transaction
  *
  * @generated from message code.common.v1.Transaction
@@ -306,7 +358,9 @@ export class IntentId extends Message<IntentId> {
 }
 
 /**
- * UserId is a globally unique identifier for a user
+ * UserId is a globally unique identifier for a user within Code
+ *
+ * Note: Users outside Code are modelled as relationship accounts
  *
  * @generated from message code.common.v1.UserId
  */

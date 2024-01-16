@@ -1,3 +1,4 @@
+import { Keypair, PublicKey } from '@code-wallet/library';
 import { elements } from './types';
 import { initConfig, Options } from './config';
 
@@ -7,5 +8,5 @@ const opt: Options = {
 
 initConfig(opt);
 
-export default { elements }
+export default { elements, Keypair, PublicKey }
 export * from './types';

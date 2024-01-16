@@ -1,5 +1,5 @@
 import { CurrencyCode } from '../currency';
-import { ConfirmParams, IntentOptions, WebhookParams } from '../intent';
+import { ConfirmParams, IntentOptions, IntentSigners, WebhookParams } from '../intent';
 
 /**
  * Represents the possible types of elements.
@@ -65,6 +65,7 @@ interface AppearanceOptions {
  * Combines various partial options from intents, appearance, locale, etc.
  */
 type ElementOptions = Partial<IntentOptions> & 
+    Partial<IntentSigners> &
     Partial<PaymentRequestOptions> & 
     Partial<LoginRequestOptions> &
     Partial<LocaleOptions> & 
@@ -79,6 +80,7 @@ export type {
     ElementOptions,
 
     IntentOptions,
+    IntentSigners,
     LocaleOptions,
     AppearanceOptions,
     PaymentRequestOptions,

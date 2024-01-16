@@ -1,3 +1,3 @@
-export { default as PaymentRequestButton } from './PaymentRequestButton.vue'
-export { default as PaymentRequestModalDesktop } from './PaymentRequestModalDesktop.vue'
-export { default as PaymentRequestModalMobile } from './PaymentRequestModalMobile.vue'
+export { default as IntentRequestButton } from './IntentRequestButton.vue'
+export { default as IntentRequestModalDesktop } from './IntentRequestModalDesktop.vue'
+export { default as IntentRequestModalMobile } from './IntentRequestModalMobile.vue'

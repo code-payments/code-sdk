@@ -69,17 +69,6 @@ export class GetStatusResponse extends Message<GetStatusResponse> {
    */
   intentSubmitted = false;
 
-  /**
-   * The user ID, if available, that submitted the payment. This will only be
-   * avalaible when the payment request included a verified identifier that the
-   * user can establish a relationship against. This ID is guaranteed to be a
-   * relationship account, which will be unique between the user's 12 words and
-   * the verified merchant identifier.
-   *
-   * @generated from field: code.common.v1.SolanaAccountId user_id = 4;
-   */
-  userId?: SolanaAccountId;
-
   constructor(data?: PartialMessage<GetStatusResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -91,7 +80,6 @@ export class GetStatusResponse extends Message<GetStatusResponse> {
     { no: 1, name: "exists", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "code_scanned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 3, name: "intent_submitted", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 4, name: "user_id", kind: "message", T: SolanaAccountId },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetStatusResponse {
@@ -208,11 +196,11 @@ export enum RegisterWebhookResponse_Result {
   ALREADY_REGISTERED = 1,
 
   /**
-   * A payment request does not exist for the provided intent ID
+   * A request does not exist for the provided intent ID
    *
-   * @generated from enum value: PAYMENT_REQUEST_NOT_FOUND = 2;
+   * @generated from enum value: REQUEST_NOT_FOUND = 2;
    */
-  PAYMENT_REQUEST_NOT_FOUND = 2,
+  REQUEST_NOT_FOUND = 2,
 
   /**
    * A user has already submitted a payment
@@ -232,7 +220,7 @@ export enum RegisterWebhookResponse_Result {
 proto3.util.setEnumType(RegisterWebhookResponse_Result, "code.micropayment.v1.RegisterWebhookResponse.Result", [
   { no: 0, name: "OK" },
   { no: 1, name: "ALREADY_REGISTERED" },
-  { no: 2, name: "PAYMENT_REQUEST_NOT_FOUND" },
+  { no: 2, name: "REQUEST_NOT_FOUND" },
   { no: 3, name: "INTENT_EXISTS" },
   { no: 4, name: "INVALID_URL" },
 ]);

@@ -970,75 +970,6 @@ export class RequestToLogin extends Message$1<RequestToLogin> {
 }
 
 /**
- * Attempt to login
- *
- * This message type is only initiated by user clients
- *
- * @generated from message code.messaging.v1.LoginAttempt
- */
-export class LoginAttempt extends Message$1<LoginAttempt> {
-  /**
-   * Derived owner account from a user's 12 words, which is uniquely used with
-   * the third party as identified by the domain.
-   *
-   * @generated from field: code.common.v1.SolanaAccountId user_id = 1;
-   */
-  userId?: SolanaAccountId;
-
-  /**
-   * Domain value provided in the RequestToLogin message
-   *
-   * @generated from field: code.common.v1.Domain domain = 3;
-   */
-  domain?: Domain;
-
-  /**
-   * Signature of this message using the user_id private key, which
-   * authenticates the user.
-   *
-   * @generated from field: code.common.v1.Signature signature = 6;
-   */
-  signature?: Signature;
-
-  /**
-   * Rendezvous key to avoid replay attacks
-   *
-   * @generated from field: code.messaging.v1.RendezvousKey rendezvous_key = 7;
-   */
-  rendezvousKey?: RendezvousKey;
-
-  constructor(data?: PartialMessage<LoginAttempt>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "code.messaging.v1.LoginAttempt";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "user_id", kind: "message", T: SolanaAccountId },
-    { no: 3, name: "domain", kind: "message", T: Domain },
-    { no: 6, name: "signature", kind: "message", T: Signature },
-    { no: 7, name: "rendezvous_key", kind: "message", T: RendezvousKey },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginAttempt {
-    return new LoginAttempt().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginAttempt {
-    return new LoginAttempt().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginAttempt {
-    return new LoginAttempt().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: LoginAttempt | PlainMessage<LoginAttempt> | undefined, b: LoginAttempt | PlainMessage<LoginAttempt> | undefined): boolean {
-    return proto3.util.equals(LoginAttempt, a, b);
-  }
-}
-
-/**
  * Login is rejected by the client
  *
  * This message type is only initiated by user clients
@@ -1214,12 +1145,6 @@ export class Message extends Message$1<Message> {
     case: "requestToLogin";
   } | {
     /**
-     * @generated from field: code.messaging.v1.LoginAttempt login_attempt = 11;
-     */
-    value: LoginAttempt;
-    case: "loginAttempt";
-  } | {
-    /**
      * @generated from field: code.messaging.v1.ClientRejectedLogin client_rejected_login = 12;
      */
     value: ClientRejectedLogin;
@@ -1249,7 +1174,6 @@ export class Message extends Message$1<Message> {
     { no: 8, name: "intent_submitted", kind: "message", T: IntentSubmitted, oneof: "kind" },
     { no: 9, name: "webhook_called", kind: "message", T: WebhookCalled, oneof: "kind" },
     { no: 10, name: "request_to_login", kind: "message", T: RequestToLogin, oneof: "kind" },
-    { no: 11, name: "login_attempt", kind: "message", T: LoginAttempt, oneof: "kind" },
     { no: 12, name: "client_rejected_login", kind: "message", T: ClientRejectedLogin, oneof: "kind" },
     { no: 4, name: "airdrop_received", kind: "message", T: AirdropReceived, oneof: "kind" },
   ]);

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { Ref, inject, nextTick, ref } from 'vue';
 import { 
-  PaymentRequestButton,
-  PaymentRequestModalDesktop,
-  PaymentRequestModalMobile,
+  IntentRequestButton,
+  IntentRequestModalDesktop,
+  IntentRequestModalMobile,
 } from '../elements';
 import {
-  PreloadPaymentRequestModalDesktop,
-  PreloadPaymentRequestModalMobile,
+  PreloadIntentRequestModalDesktop,
+  PreloadIntentRequestModalMobile,
 } from '../preload';
 
 import { isMobileDevice } from '../../types';
-import { ElementEventEmitter, ElementOptions, PaymentRequestIntent } from '@code-wallet/library';
+import { ElementEventEmitter, ElementOptions, LoginRequestIntent, PaymentRequestIntent } from '@code-wallet/library';
 import { getURLParam } from '../../types/url';
 import { EventChannel, InternalEvents } from '@code-wallet/events';
 import * as code from "@code-wallet/client";
@@ -31,7 +31,16 @@ const userProvidedSuccessUrl = options?.confirmParams?.success?.url !== undefine
 const userProvidedCancelUrl = options?.confirmParams?.cancel?.url !== undefined;
 
 function canMount() {
-  return options && options.amount && options.currency && options.destination;
+  if (options) {
+    if (options.mode === 'payment') {
+      return options.amount && options.currency && options.destination;
+    }
+    if (options.mode === 'login') {
+      return options.login && options.login.domain;
+    }
+  }
+
+  return false;
 }
 
 function onChannelCreated(val: EventChannel<InternalEvents>) {
@@ -59,7 +68,12 @@ async function onInvoke() {
   }
 
   // Get the intent id from the receiving app or iframe
-  intent.value = new PaymentRequestIntent(options).getIntentId();
+  if (options.mode === 'payment') {
+    intent.value = new PaymentRequestIntent(options).getIntentId();
+  } else {
+    intent.value = new LoginRequestIntent(options).getIntentId();
+  }
+
   const variables = {
     INTENT_ID: intent.value,
     // ...
@@ -154,12 +168,12 @@ document.addEventListener("visibilitychange", async () => {
 
 <template>
   <template v-if="canMount()">
-    <PaymentRequestButton 
+    <IntentRequestButton 
       @invoke="onInvoke" />
     
     <Teleport to="body">
       <div v-if="open">
-        <PaymentRequestModalMobile
+        <IntentRequestModalMobile
           v-if="mobile"
           @channel-created="onChannelCreated"
           @intent-submitted="onSuccess"
@@ -169,7 +183,7 @@ document.addEventListener("visibilitychange", async () => {
           @stream-closed="onStreamClosed"
         />
 
-        <PaymentRequestModalDesktop
+        <IntentRequestModalDesktop
           v-else
           @channel-created="onChannelCreated"
           @intent-submitted="onSuccess"
@@ -180,8 +194,8 @@ document.addEventListener("visibilitychange", async () => {
         />
       </div>
       <div v-else>
-        <PreloadPaymentRequestModalMobile v-if="mobile" />
-        <PreloadPaymentRequestModalDesktop v-else />
+        <PreloadIntentRequestModalMobile v-if="mobile" />
+        <PreloadIntentRequestModalDesktop v-else />
       </div>
     </Teleport>
   </template>

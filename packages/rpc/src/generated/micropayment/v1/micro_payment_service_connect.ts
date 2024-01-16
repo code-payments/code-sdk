@@ -7,13 +7,15 @@ import { CodifyRequest, CodifyResponse, GetPathMetadataRequest, GetPathMetadataR
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
+ * todo: Migrate this to a generic "request" service
+ *
  * @generated from service code.micropayment.v1.MicroPayment
  */
 export const MicroPayment = {
   typeName: "code.micropayment.v1.MicroPayment",
   methods: {
     /**
-     * GetStatus gets basic micro payment status
+     * GetStatus gets basic request status
      *
      * @generated from rpc code.micropayment.v1.MicroPayment.GetStatus
      */
@@ -24,7 +26,7 @@ export const MicroPayment = {
       kind: MethodKind.Unary,
     },
     /**
-     * RegisterWebhook registers a webhook for a micro payment
+     * RegisterWebhook registers a webhook for a request
      *
      * todo: Once Kik codes can encode the entire payment request details, we can
      *       remove the messaging service component and have a Create RPC that

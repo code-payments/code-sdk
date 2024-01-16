@@ -20,11 +20,17 @@ app.get('/success/:id', async (req, res) => {
   // Get the payment intent id from the URL
   const intent = req.params.id;
 
-  // Get the status of the payment intent and the user's public key
-  const status = await code.paymentIntents.getStatus({ intent });
+  try {
+    // Get the status of the payment intent
+    const status = await code.getStatus({ intent });
+    const user   = await code.getUserId({ intent, verifier });
 
-  // Render the success page with the intent id and status
-  res.render('success', { intent, status });
+    // Render the success page with the intent id and status
+    res.render('success', { intent, status, user });
+  } catch (e) {
+    console.log('error', e);
+    res.render('error', { error: e.message });
+  }
 });
 
 // This is a JSON file that Code will look for when verifying your domain. It
@@ -63,6 +69,7 @@ app.post('/create-intent', async (req, res) => {
   // intent id on its end.
   res.send({ clientSecret });
 });
+
 
 app.listen(port, () => {
   console.log(`🚀 Minimal example listening on port ${port}`)

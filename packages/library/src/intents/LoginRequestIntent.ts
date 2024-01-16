@@ -35,6 +35,7 @@ class LoginRequestIntent implements Intent {
     constructor(opt: ElementOptions) {
         this.options = {
             ...opt,
+            mode: 'login',
         };
 
         this.validate();

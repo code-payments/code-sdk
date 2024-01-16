@@ -17,10 +17,13 @@ export interface InternalButtonEvents {
 
 export interface InternalCardEvents {
     requestToGrabBill: {};
+    requestToLogin: {};
     requestToReceiveBill: {};
     codeScanned: {};
     clientRejectedPayment: {};
+    clientRejectedLogin: {};
     intentSubmitted: {};
+    webhookCalled: {};
     airdropReceived: {};
 }
 

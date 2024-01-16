@@ -1,7 +1,7 @@
 import { App as VueApp, createApp, reactive } from 'vue';
 import { 
     ButtonFlow,
-    PaymentRequestModalDesktop,
+    IntentRequestModalDesktop,
 } from '../components';
 import { ErrUnknownElementType } from './errors';
 import { 
@@ -49,7 +49,8 @@ abstract class AbstractElement implements CodeElement {
         opt.mode = opt.mode ?? defaultMode;
         opt.locale = opt.locale ?? defaultLocale;
 
-        this.intent = reactive(opt);
+        // A bit of an evil cast here...
+        this.intent = reactive(opt) as ElementOptions;
         this.listeners = [];
         this.app = app;
 
@@ -181,7 +182,7 @@ class CodeCard extends AbstractElement {
      * @param options - Partial element options.
      */
     constructor(options: Partial<ElementOptions>) {
-        super(options, createApp(PaymentRequestModalDesktop));
+        super(options, createApp(IntentRequestModalDesktop));
     }
 }
 
@@ -195,7 +196,7 @@ const elements = {
      * @param options - The options for the element.
      * @returns An object containing the newly created element.
      */
-    create: (type: ElementType, options: ElementOptions): { button?: CodeElement, card?: CodeElement } => {
+    create: (type: ElementType, options: Omit<ElementOptions, 'signers'>): { button?: CodeElement, card?: CodeElement } => {
         switch (type) {
             case 'button':
                 return { button: new CodeButton(options) };

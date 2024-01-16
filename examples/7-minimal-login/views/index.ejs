@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code SDK - Example/7-minimal-login</title>
+</head>
+
+<body>
+  <div id="button-container"></div>
+
+  <script type="module">
+    import code from 'https://js.getcode.com/v1';
+
+    const verifier = '<%= verifier %>'; // value provided by server.js
+    const domain = '<%= domain %>';     // value provided by server.js
+
+    const hostname = window.location.protocol + "//" + window.location.host;
+    const { button } = code.elements.create('button', {
+      mode: 'login',
+
+      login: {
+        verifier, 
+        domain,
+      },
+
+      confirmParams: {
+        success: { url: `${hostname}/success/{{INTENT_ID}}`, },
+        cancel: { url: `${hostname}/`, },
+      },
+    });
+
+    // Wait for the button to be clicked
+    button.on('invoke', async () => {
+
+      // Get a payment intent clientSecret value from server.js
+      const res = await fetch('/create-intent', { method: 'POST' });
+      const { clientSecret } = await res.json();
+
+      // Update the button with the new client secret so that our server
+      // can be notified once the payment is complete.
+      button.update({ clientSecret });
+    })
+
+    button.mount('#button-container');
+  </script>
+</body>
+
+</html>

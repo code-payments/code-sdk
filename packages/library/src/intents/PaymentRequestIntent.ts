@@ -39,6 +39,7 @@ class PaymentRequestIntent implements Intent {
             // Normalize currency to lowercase 
             // (just in case the end user is not using TypeScript)
             currency: opt.currency && opt.currency.toLowerCase() as CurrencyCode,
+            mode: 'payment',
         };
 
         this.validate();

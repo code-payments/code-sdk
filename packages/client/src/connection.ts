@@ -4,6 +4,11 @@ import {
     ErrUnexpectedServerError 
 } from "./errors";
 
+export interface ConnectionOptions {
+    endpoint?: string,
+    fetch?: Function,
+}
+
 /**
  * Represents a connection to an endpoint with methods to perform HTTP requests.
  */
@@ -82,13 +87,13 @@ class Connection {
             throw ErrUnexpectedHttpStatus(req.status, msg);
         }
 
-        const json =  await req.json();
+        const json = await req.json();
         if (json.error) {
             throw ErrUnexpectedServerError(json.error);
         }
 
         if (json.success) {
-            return true;
+            return json;
         }
 
         console.error(json);

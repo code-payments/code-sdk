@@ -24,11 +24,13 @@ export interface IntentOptions {
      * See https://code-wallet.github.io/code-sdk/docs/reference/idempotency.html for more information.
      */
     idempotencyKey?: string;
+}
 
+export interface IntentSigners {
     /**
      * A list of signers for an intent. 
      */
-    signers?: Keypair[];
+    signers: Keypair[];
 }
  
 /**
@@ -50,7 +52,7 @@ export interface WebhookParams {
 }
  
 /**
- * An object representing a payment or setup intent from Stripe.
+ * An interface for an intent that can be created and signed.
  */
 export interface Intent {
     options: ElementOptions;

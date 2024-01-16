@@ -1,2 +1,2 @@
-export { default as PreloadPaymentRequestModalDesktop } from './PreloadPaymentRequestModalDesktop.vue'
-export { default as PreloadPaymentRequestModalMobile } from './PreloadPaymentRequestModalMobile.vue'
+export { default as PreloadIntentRequestModalDesktop } from './PreloadIntentRequestModalDesktop.vue'
+export { default as PreloadIntentRequestModalMobile } from './PreloadIntentRequestModalMobile.vue'

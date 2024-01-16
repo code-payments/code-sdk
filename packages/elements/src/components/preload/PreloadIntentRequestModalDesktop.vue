@@ -5,7 +5,8 @@
 
     const config = useConfig();
     const options = inject<ElementOptions>('options');
-    const url = `${config.codeSdk()}/payment-request-modal-desktop/#/preload/p=${encode(options)}`;
+    const mode = options?.mode ?? 'payment';
+    const url = `${config.codeSdk()}/${mode}-request-modal-desktop/#/preload/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
     function getStyle() : { [key:string]: string } {
