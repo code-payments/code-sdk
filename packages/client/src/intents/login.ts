@@ -6,16 +6,15 @@ import {
     LoginRequestIntent,
 } from "@code-wallet/library";
 
-import { useConnection } from "../utils/useConnection";
+import { useClient } from "../utils/useClient";
 import { createIntent } from "../utils/createIntent";
 import { 
     GetStatusForIntentRequest, 
     GetStatusForIntentOptions,
-    IntentStatus
 } from "../requests/getStatus";
 
-import { GetUserIdOptions, GetUserIdRequest, ThirdPartyUserId } from "../requests/getUserId";
-import { ConnectionOptions } from "../connection";
+import { GetUserIdOptions, GetUserIdRequest  } from "../requests/getUserId";
+import { ClientOptions } from "../client";
 
 /**
  * Options for creating a login intent.
@@ -45,11 +44,11 @@ const loginIntents = {
      * @returns An object containing the client secret and intent ID.
      * @throws Will throw an error if unable to create the intent.
      **/
-    create: async (opt: CreateLoginIntentOptions & ConnectionOptions) => {
-        const connection = useConnection(opt);
+    create: async (opt: CreateLoginIntentOptions & ClientOptions) => {
+        const client = useClient(opt);
         const intent = new LoginRequestIntent(opt);
 
-        return await createIntent(intent, connection);
+        return await createIntent(intent, client);
     },
     
     /**
@@ -59,11 +58,11 @@ const loginIntents = {
      * @returns An object representing the intent's status.
      * @throws Will throw an error if unable to retrieve the intent's status.
      */
-    getStatus: async (opt: GetStatusForIntentOptions & ConnectionOptions) : Promise<IntentStatus> => {
-        const connection = useConnection(opt);
+    getStatus: async (opt: GetStatusForIntentOptions & ClientOptions) => {
+        const client = useClient(opt);
 
         const req = new GetStatusForIntentRequest(opt);
-        return await req.send(connection);
+        return await req.send(client);
     },
 
     /**
@@ -73,11 +72,11 @@ const loginIntents = {
      * @returns An object containing the user ID if the verifier is valid and the intent is confirmed.
      * @throws Will throw an error if unable to retrieve the user ID for the specified intent.
      */
-    getUserId: async (opt: GetUserIdOptions & ConnectionOptions) : Promise<ThirdPartyUserId> => {
-        const connection = useConnection(opt);
+    getUserId: async (opt: GetUserIdOptions & ClientOptions) => {
+        const client = useClient(opt);
 
         const req = new GetUserIdRequest(opt);
-        return await req.send(connection);
+        return await req.send(client);
     }
 }
 

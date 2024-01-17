@@ -9,13 +9,13 @@ import {
     Intent,
 } from "@code-wallet/library";
 
-import { useConnection } from "../utils/useConnection";
+import { useClient } from "../utils/useClient";
 import { createIntent } from "../utils/createIntent";
 import { 
     GetStatusForIntentRequest, 
     GetStatusForIntentOptions
 } from "../requests/getStatus";
-import { ConnectionOptions } from "../connection";
+import { ClientOptions } from "../client";
 
 /**
  * Options for creating a payment intent.
@@ -32,7 +32,7 @@ type CreatePaymentIntentOptions = PaymentRequestOptions &
     Partial<IntentSigners> &
     Partial<WebhookParams> & 
     Partial<LoginRequestOptions> & 
-    Partial<ConnectionOptions>;
+    Partial<ClientOptions>;
 
 /**
  * Collection of methods related to handling payment intents.
@@ -46,8 +46,8 @@ const paymentIntents = {
      * @returns An object containing the client secret and intent ID.
      * @throws Will throw an error if unable to create the intent.
      */
-    create: async (opt: CreatePaymentIntentOptions & ConnectionOptions) => {
-        const connection = useConnection(opt);
+    create: async (opt: CreatePaymentIntentOptions & ClientOptions) => {
+        const connection = useClient(opt);
 
         let intent : Intent;
         if (opt.login) {
@@ -66,8 +66,8 @@ const paymentIntents = {
      * @returns An object representing the intent's status.
      * @throws Will throw an error if unable to retrieve the intent's status.
      */
-    getStatus: async (opt: GetStatusForIntentOptions & ConnectionOptions) => {
-        const connection = useConnection(opt);
+    getStatus: async (opt: GetStatusForIntentOptions & ClientOptions) => {
+        const connection = useClient(opt);
 
         const req = new GetStatusForIntentRequest(opt);
         return await req.send(connection);

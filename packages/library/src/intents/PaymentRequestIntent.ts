@@ -1,31 +1,25 @@
 import * as proto from '@code-wallet/rpc';
 import { CurrencyCode } from '../currency';
-import { IdempotencyKey } from '../idempotency';
-import { Keypair, PublicKey } from '../keys';
+import { PublicKey } from '../keys';
 import { CodePayload, CodeKind } from '../payload';
-import { Intent, SignedIntent } from '../intent';
+import { SignedIntent } from '../intent';
 import { 
     ErrAmountRequired, 
     ErrCurrencyRequired, 
     ErrDestinationRequired, 
     ErrUnexpectedError
 } from '../errors';
-import { generateRendezvousKeypair } from '../rendezvous';
 import { validateElementOptions } from '../elements/validate';
 import { ElementOptions  } from '../elements/options';
 import { Kin } from '../kin';
+import { AbstractIntent } from './AbstractIntent';
+
 
 /**
  * Represents a payment request and provides methods to construct, validate, and sign the request.
  */
-class PaymentRequestIntent implements Intent {
-    options: ElementOptions;
-    nonce: IdempotencyKey;
-
-    convertedAmount: number;
-
-    rendezvousPayload: CodePayload;
-    rendezvousKeypair: Keypair;
+class PaymentRequestIntent extends AbstractIntent {
+    convertedAmount: number | undefined;
 
     /**
      * Constructs a new PaymentRequestIntent instance.
@@ -33,26 +27,17 @@ class PaymentRequestIntent implements Intent {
      * @param opt - The payment request options.
      */
     constructor(opt: ElementOptions) {
-        this.options = {
+        super({
             ...opt,
 
             // Normalize currency to lowercase 
             // (just in case the end user is not using TypeScript)
             currency: opt.currency && opt.currency.toLowerCase() as CurrencyCode,
             mode: 'payment',
-        };
+        });
+    }
 
-        this.validate();
-
-        // Create an 11 byte buffer from idempotencyKey if provided, otherwise generate a random nonce
-        if (this.options.idempotencyKey) {
-            this.nonce = IdempotencyKey.fromSeed(this.options.idempotencyKey);
-        } else if (this.options.clientSecret) {
-            this.nonce = IdempotencyKey.fromClientSecret(this.options.clientSecret);
-        } else {
-            this.nonce = IdempotencyKey.generate();
-        }
-
+    init(): void {
         // We need to be very careful with floating point numbers. Ideally, we
         // would use a whole number and remainder as two bigints, or even a
         // string, but that is UX hostile and our goal is to keep it as simple
@@ -73,20 +58,23 @@ class PaymentRequestIntent implements Intent {
         // We're going to use the toFixed() method to round to 2 decimal places
         // for the amount. This method handles the IEEE-754 issue for us.
 
-        // Normalize amount to 2 decimal places
-        this.options.amount = parseFloat(this.options.amount!.toFixed(2));
+        if (this.options.amount !== undefined) {
+            // Normalize amount to 2 decimal places
+            this.options.amount = parseFloat(this.options.amount!.toFixed(2));
 
-        // Multiply into encoding units
-        this.convertedAmount = parseInt((this.options.amount! * 100).toFixed());
+            // Multiply into encoding units
+            this.convertedAmount = parseInt((this.options.amount! * 100).toFixed());
+        }
+    }
 
+    toPayload(): CodePayload {
         // See payload encoding for CodeKind.RequestPayment
         const kind = CodeKind.RequestPayment;
-        const amount = BigInt(this.convertedAmount);
+        const amount = BigInt(this.convertedAmount!);
         const nonce = this.nonce.value;
 
         // Create a rendezvous payload and derive a keypair from it
-        this.rendezvousPayload = new CodePayload({kind, amount, nonce, currency: this.options.currency});
-        this.rendezvousKeypair = generateRendezvousKeypair(this.rendezvousPayload);
+        return new CodePayload({kind, amount, nonce, currency: this.options.currency});
     }
 
     /**
@@ -106,6 +94,10 @@ class PaymentRequestIntent implements Intent {
         if (!this.options.currency) {
             throw ErrCurrencyRequired();
         } 
+
+        if (!this.convertedAmount) {
+            throw ErrUnexpectedError();
+        }
     }
 
     /**
@@ -175,24 +167,6 @@ class PaymentRequestIntent implements Intent {
             intent,
             signature,
         }
-    }
-
-    /**
-     * Retrieves the client secret.
-     * 
-     * @returns The client secret as a string.
-     */
-    getClientSecret(): string {
-        return this.nonce.toString();
-    }
-
-    /**
-     * Retrieves the intent ID.
-     * 
-     * @returns The intent ID as a Base58 encoded string.
-     */
-    getIntentId(): string {
-        return this.rendezvousKeypair.getPublicKey().toBase58();
     }
 }
 

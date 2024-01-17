@@ -1,7 +1,7 @@
 import * as proto from "@code-wallet/rpc";
 import { PublicKey, } from "@code-wallet/library";
 import { CodeRequest } from "../request";
-import { Connection } from "../connection";
+import { Client } from "../client";
 
 /**
  * Enumeration representing the possible states of a Payment Intent.
@@ -13,6 +13,9 @@ export enum IntentState {
 
 export interface IntentStatus {
     status: IntentState,
+    exists: boolean,
+    intentSubmitted: boolean,
+    codeScanned: boolean,
 }
 
 export type GetStatusForIntentOptions = {
@@ -58,15 +61,22 @@ class GetStatusForIntentRequest implements CodeRequest<IntentStatus> {
         return undefined;
     }
 
-    async send(client: Connection) : Promise<IntentStatus> {
-        const res = await client.get('getStatus', { intent: this.intentId });
-
+    async send(client: Client) : Promise<IntentStatus> {
+        const res = await client.send(proto.MicroPayment, 'getStatus', this.toProto());
+        
         let status = IntentState.Pending;
-        if (res.status === 'SUBMITTED') {
+        if (res.intentSubmitted) {
             status = IntentState.Confirmed;
         }
 
-        return { status };
+        const { exists, codeScanned, intentSubmitted } = res;
+
+        return { 
+            status,
+            exists,
+            codeScanned,
+            intentSubmitted,
+        };
     }
 }
 

@@ -1,5 +1,5 @@
 import * as proto from '@code-wallet/rpc';
-import { Connection } from './connection';
+import { Client } from './client';
  
 /**
  * An interface for making a request to the Code Sequencer. Most requests
@@ -28,6 +28,6 @@ export interface CodeRequest<T> {
      * 
      * @param client - The connection to the Code Sequencer.
      */
-    send(client: Connection): Promise<T>;
+    send(client: Client): Promise<T>;
 }
  

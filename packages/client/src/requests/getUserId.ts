@@ -1,13 +1,8 @@
 import * as proto from "@code-wallet/rpc";
 import { Keypair, PublicKey, } from "@code-wallet/library";
 import { CodeRequest, } from "../request";
-import { Connection } from "../connection";
+import { Client } from "../client";
 import { ErrSignerRequired } from "../errors";
-import bs58 from "bs58";
-
-export interface ThirdPartyUserId {
-    userId: string,
-}
 
 export type GetUserIdOptions = {
     intent: string,
@@ -20,7 +15,7 @@ export type GetUserIdOptions = {
  * 
  * @throws Will throw an error if the intent ID is not provided.
  */
-class GetUserIdRequest implements CodeRequest<ThirdPartyUserId> {
+class GetUserIdRequest implements CodeRequest<proto.LoginToThirdPartyAppResponse> {
     readonly intentId : string;
     readonly signer : Keypair;
 
@@ -69,20 +64,8 @@ class GetUserIdRequest implements CodeRequest<ThirdPartyUserId> {
         }
     }
 
-    async send(client: Connection) {
-        const { message, signature } = this.sign();
-
-        const body = {
-            intent: this.intentId,
-            message: Buffer.from(message).toString('base64url'),
-            signature: bs58.encode(signature),
-        };
-
-        const res = await client.post('getUserId', body);
-
-        return {
-            userId: res.userId as string,
-        };
+    async send(client: Client) {
+        return await client.send(proto.Identity, 'loginToThirdPartyApp', this.toProto());
     }
 }
 

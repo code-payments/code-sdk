@@ -70,6 +70,11 @@ export interface Intent {
      * Serialize this intent into a minimal message for sending to the Code Sequencer.
      */
     toProto(): proto.Message;
+
+    /**
+     * Serialize this intent into a request to be sent to the Code Sequencer.
+     */
+    getSendMessageRequestProto() : Promise<proto.SendMessageRequest>;
  
     /**
      * Sign this intent with the signer keys (if needed), returning an intent

@@ -29,7 +29,7 @@ app.get('/success/:id', async (req, res) => {
     res.render('success', { intent, status, user });
   } catch (e) {
     console.log('error', e);
-    res.render('error', { error: e.message });
+    res.json({ error: e.message });
   }
 });
 

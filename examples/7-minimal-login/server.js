@@ -2,10 +2,12 @@ import * as code from "@code-wallet/client";
 import { Keypair } from "@code-wallet/library";
 import express from "express";
 
-const port = process.env.PORT || 3000;
-const hostname = process.env.HOSTNAME || 'example.com';
+const port = process.env.PORT || 3080;
+//const hostname = process.env.HOSTNAME || 'example.com';
+const hostname = 'example-getcode.com'
 const app = express();
-const verifier = Keypair.generate();
+//const verifier = Keypair.generate();
+const verifier = Keypair.fromRawPrivateKey(new Uint8Array([248,27,29,109,65,195,249,240,138,217,224,147,90,44,146,26,239,197,191,98,122,105,200,112,115,154,227,99,254,38,36,216]));
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -29,7 +31,7 @@ app.get('/success/:id', async (req, res) => {
     res.render('success', { intent, status, user });
   } catch (e) {
     console.log('error', e);
-    res.render('error', { error: e.message });
+    res.json({ error: e.message });
   }
 });
 
