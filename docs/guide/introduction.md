@@ -16,7 +16,7 @@ The Code SDK is currently in early access, the maximum payment amount is $1 USD.
 
 ##  What is Code?
 
-[Code](https://getcode.com) is the mobile wallet app that users make payments with. The experience is both simple and elegant, where users get all the benefits of self custodial crypto (open, global, secure), without any of the complexity (managing private keys, gas fees, and slow or failed transactions). Code is built on the [Solana](https://solana.com/) blockchain, and uses the [Code Sequencer](https://code-wallet.github.io/code-sdk/docs/reference/sequencer.html) to deliver a payments experience that is instant, global, and private. 
+[Code](https://getcode.com) is the mobile wallet app that users make payments with. The experience is both simple and elegant, where users get all the benefits of self custodial crypto (open, global, secure), without any of the complexity (managing private keys, gas fees, and slow or failed transactions). Code is built on the [Solana](https://solana.com/) blockchain, and uses the [Code Sequencer](../reference/sequencer) to deliver a payments experience that is instant, global, and private. 
 
 ::: info Don’t have the Code Wallet app yet?
 [Download It Now](https://www.getcode.com/#Download) and get your first $1 free
