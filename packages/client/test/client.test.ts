@@ -29,7 +29,7 @@ describe('High level client', () => {
 
     it('test high level getStatus api message', async () => {
         const res = await client.getStatus({
-            intentId: '9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz',
+            intent: '9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz',
         });
 
         expect(res).to.not.be.undefined;
@@ -38,7 +38,7 @@ describe('High level client', () => {
         expect(res.intentSubmitted).to.be.true;
     });
 
-    it('test high level create intent api message', async () => {
+    it('test high level create payment intent api message', async () => {
         const res = await client.paymentIntents.create({
             mode: 'payment',
             amount: 100,
@@ -50,4 +50,5 @@ describe('High level client', () => {
         expect(res.clientSecret).to.not.be.undefined;
         expect(res.id).to.not.be.undefined;
     });
+
 });

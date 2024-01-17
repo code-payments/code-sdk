@@ -52,11 +52,10 @@ abstract class AbstractIntent implements Intent {
      * Constructs a SendMessageRequest message to be sent to the Code Sequencer.
      */
     async getSendMessageRequestProto() {
-        const message = this.toProto();
-        const { signature } = this.sign();
+        const { signature, envelope } = this.sign();
 
         return new proto.SendMessageRequest({
-            message,
+            message: envelope,
             rendezvousKey: {
                 value: this.rendezvousKeypair.getPublicKey().value,
             },

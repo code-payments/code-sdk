@@ -19,7 +19,7 @@ export interface IntentStatus {
 }
 
 export type GetStatusForIntentOptions = {
-    intentId: string,
+    intent: string,
 };
 
 /**
@@ -35,8 +35,7 @@ class GetStatusForIntentRequest implements CodeRequest<IntentStatus> {
     readonly intentId : string;
 
     constructor(opts: GetStatusForIntentOptions) {
-        this.intentId = opts.intentId;
-
+        this.intentId = opts.intent;
         this.validate();
     }
 

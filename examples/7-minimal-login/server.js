@@ -13,7 +13,7 @@ const verifier = Keypair.fromRawPrivateKey(new Uint8Array([248,27,29,109,65,195,
 app.set('view engine', 'ejs');
 
 // index page (with the login button)
-app.get('/', function(req, res) {
+app.get('/', async function(req, res) {
   res.render('index', { domain: hostname, verifier: verifier.getPublicKey().toBase58() });
 });
 
@@ -56,7 +56,9 @@ app.post('/create-intent', async (req, res) => {
       domain: hostname,
     },
 
-    signers: [ verifier ]
+    signers: [ verifier ],
+
+    //idempotencyKey: 'hello'
   });
 
   console.log('Created intent', id);

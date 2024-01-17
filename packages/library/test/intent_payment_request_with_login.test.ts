@@ -183,7 +183,7 @@ describe('PaymentRequestWithLoginIntent', () => {
             intent.rendezvousKeypair = rendezvous;
 
             const res = intent.sign();
-            const msg = proto.RequestToReceiveBill.fromBinary(res.message);
+            const msg = proto.RequestToReceiveBill.fromBinary(res.signedBytes);
 
             expect(msg.toJson()).to.deep.equal({
                 requestorAccount: {
@@ -221,7 +221,7 @@ describe('PaymentRequestWithLoginIntent', () => {
             intent.rendezvousKeypair = rendezvous;
 
             const res = intent.sign();
-            const msg = proto.RequestToReceiveBill.fromBinary(res.message);
+            const msg = proto.RequestToReceiveBill.fromBinary(res.signedBytes);
             const actual = msg.toBinary();
 
             const expected = new Uint8Array([

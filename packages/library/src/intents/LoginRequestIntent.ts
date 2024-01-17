@@ -122,11 +122,12 @@ class LoginRequestIntent extends AbstractIntent {
 
         const sig = this.rendezvousKeypair.sign(envelope.toBinary());
         const intent = this.rendezvousKeypair.getPublicKey().toBase58();
-        const message = msg.toBinary();
+        const signedBytes = msg.toBinary();
         const signature = sig;
 
         return {
-            message,
+            envelope,
+            signedBytes,
             intent,
             signature,
         }

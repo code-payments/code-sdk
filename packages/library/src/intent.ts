@@ -106,7 +106,10 @@ export interface SignedIntent {
     intent: string;
  
     /** A serialized message that was signed. */
-    message: Uint8Array;
+    envelope: proto.Message;
+
+    /** The signed message as a Uint8Array. */
+    signedBytes: Uint8Array;
  
     /** A signature generated with the rendezvous private key. */
     signature: Uint8Array;
