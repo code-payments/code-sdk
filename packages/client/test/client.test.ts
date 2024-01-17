@@ -1,7 +1,7 @@
 import * as proto from "@code-wallet/rpc";
 import * as client from "../src/";
 
-import { Client } from "../src/client";
+import { Client } from "../src/";
 import { PublicKey } from "@code-wallet/library";
 import { expect } from 'chai';
 
@@ -15,7 +15,7 @@ describe('Low level client', () => {
             }
         })
 
-        const api = new Client('http://localhost:3000');
+        const api = new Client('https://cash.getcode.com/v1');
         const res = await api.send(proto.MicroPayment, 'getStatus', msg);
 
         expect(res).to.not.be.undefined;
@@ -30,7 +30,6 @@ describe('High level client', () => {
     it('test high level getStatus api message', async () => {
         const res = await client.getStatus({
             intentId: '9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz',
-            endpoint: 'http://localhost:3000',
         });
 
         expect(res).to.not.be.undefined;
@@ -45,8 +44,6 @@ describe('High level client', () => {
             amount: 100,
             currency: 'usd',
             destination: '9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz',
-
-            endpoint: 'http://localhost:3000',
         });
 
         expect(res).to.not.be.undefined;

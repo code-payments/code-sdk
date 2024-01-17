@@ -41,7 +41,7 @@ class Client {
     }
 
     private getSender <T extends proto.MethodInfo>(_: T) {
-        const url = `${this.endpoint}/v1/api/`;
+        const url = `${this.endpoint}/api/`;
 
         return (payload: any): Promise<proto.Common.Response> => {
             return new Promise(async (resolve, reject) => {

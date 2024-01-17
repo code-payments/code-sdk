@@ -1,9 +1,9 @@
 import { Client, ClientOptions } from "../client";
 
-const defaultEndpoint = 'https://api.getcode.com/v1';
+const defaultEndpoint = 'https://cash.getcode.com/v1';
 let client: Client | undefined;
 
-export function useClient(opt: ClientOptions) : Client {
+export function useClient(opt: ClientOptions = {}) : Client {
     const endpoint = opt.endpoint ?? defaultEndpoint;
 
     if (!client) {
