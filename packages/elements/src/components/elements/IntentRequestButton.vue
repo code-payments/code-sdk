@@ -6,6 +6,7 @@
 
     const config = useConfig();
     const options = inject<ElementOptions>('options');
+    const mode = options?.mode ?? 'payment';
 
     const emit = defineEmits<{
         resize: [{ width: number, height: number }];
@@ -13,7 +14,10 @@
     }>();
 
     const channel = new EventChannel<InternalElementEvents & InternalButtonEvents>();
-    const url = `${config.codeSdk()}/payment-request-button/#/${channel.id}/p=${encode(options)}`;
+    const url = `${config.codeSdk()}/${mode}-request-button/#/${channel.id}/p=${encode(options)}`;
+
+    console.log('url', url);
+
     const el = ref<HTMLIFrameElement | null>(null);
     const frameWidth = ref(0);
     const frameHeight = ref(0);

@@ -161,7 +161,7 @@ describe('LoginRequestIntent', () => {
             intent.rendezvousKeypair = rendezvous;
 
             const res = intent.sign();
-            const msg = proto.RequestToLogin.fromBinary(res.message);
+            const msg = proto.RequestToLogin.fromBinary(res.signedBytes);
 
             expect(msg.toJson()).to.deep.equal({
                 domain: {
@@ -192,7 +192,7 @@ describe('LoginRequestIntent', () => {
             intent.rendezvousKeypair = rendezvous;
 
             const res = intent.sign();
-            const msg = proto.RequestToLogin.fromBinary(res.message);
+            const msg = proto.RequestToLogin.fromBinary(res.signedBytes);
             const actual = msg.toBinary();
 
             const expected = new Uint8Array([

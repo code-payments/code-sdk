@@ -6,7 +6,7 @@ export type Emitter<T> = <K extends keyof T>(event: K, args?: T[K]) => void;
 /**
  * A type defining an event handler.
  */
-export type Handler<T> = <K extends keyof T>(event: K, callback: (args: T[K]) => void) => void;
+export type Handler<T> = <K extends keyof T>(event: K | K[], callback: (args: T[K]) => void) => void;
 
 /**
  * A class that manages communication channels between frames or windows through postMessage.
@@ -80,16 +80,26 @@ class EventChannel<T> {
     /**
      * Registers an event listener.
      */
-    on: Handler<T> = (event, fn) => {
-        window.addEventListener('message', (e) => {
-            //console.log('catch', event);
-            if (e.data.type === 'event' && e.data.payload.event === event && e.data.id === this.connectionId) {
-                fn(e.data.payload.args);
-            }
-        });
+    on: Handler<T> = (eventOrEvents, fn) => {
+        const addListener = (event: keyof T) => {
+            // Ensure the event is treated as a string for indexing purposes
+            const eventStr: string = event as unknown as string;
+            window.addEventListener('message', (e) => {
+                if (e.data.type === 'event' && e.data.payload.event === eventStr && e.data.id === this.connectionId) {
+                    fn(e.data.payload.args);
+                }
+            });
 
-        const eventStr: string = event as string;
-        this.listeners[eventStr] = [...(this.listeners[eventStr] || []), fn];
+            this.listeners[eventStr] = [...(this.listeners[eventStr] || []), fn];
+        };
+
+        if (Array.isArray(eventOrEvents)) {
+            // If it's an array of events, register the listener for each event
+            eventOrEvents.forEach(event => addListener(event));
+        } else {
+            // If it's a single event, register the listener
+            addListener(eventOrEvents);
+        }
     };
 
     /**

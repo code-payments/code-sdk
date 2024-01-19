@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AirdropRequest, AirdropResponse, CanWithdrawToAccountRequest, CanWithdrawToAccountResponse, GetIntentMetadataRequest, GetIntentMetadataResponse, GetLimitsRequest, GetLimitsResponse, GetPaymentHistoryRequest, GetPaymentHistoryResponse, GetPrioritizedIntentsForPrivacyUpgradeRequest, GetPrioritizedIntentsForPrivacyUpgradeResponse, GetPrivacyUpgradeStatusRequest, GetPrivacyUpgradeStatusResponse, SubmitIntentRequest, SubmitIntentResponse } from "./transaction_service_pb";
+import { AirdropRequest, AirdropResponse, CanWithdrawToAccountRequest, CanWithdrawToAccountResponse, GetIntentMetadataRequest, GetIntentMetadataResponse, GetLimitsRequest, GetLimitsResponse, GetPaymentHistoryRequest, GetPaymentHistoryResponse, GetPrioritizedIntentsForPrivacyUpgradeRequest, GetPrioritizedIntentsForPrivacyUpgradeResponse, GetPrivacyUpgradeStatusRequest, GetPrivacyUpgradeStatusResponse, SubmitIntentRequest, SubmitIntentResponse, SwapRequest, SwapResponse } from "./transaction_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -138,6 +138,27 @@ export const Transaction = {
       I: AirdropRequest,
       O: AirdropResponse,
       kind: MethodKind.Unary,
+    },
+    /**
+     * Swap performs an on-chain swap. The high-level flow mirrors SubmitIntent
+     * closely. However, due to the time-sensitive nature and unreliability of
+     * swaps, they do not fit within the broader intent system. This results in
+     * a few key differences:
+     *  * Transactions are submitted on a best-effort basis outside of the Code
+     *    Sequencer within the RPC handler
+     *  * Balance changes are applied after the transaction has finalized
+     *  * Transactions use recent blockhashes over a nonce
+     *
+     * Note: Currently limited to swapping USDC to Kin.
+     * Note: Kin is deposited into the primary account.
+     *
+     * @generated from rpc code.transaction.v2.Transaction.Swap
+     */
+    swap: {
+      name: "Swap",
+      I: SwapRequest,
+      O: SwapResponse,
+      kind: MethodKind.BiDiStreaming,
     },
   }
 } as const;

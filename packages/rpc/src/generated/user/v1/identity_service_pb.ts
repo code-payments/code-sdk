@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
-import { DataContainerId, PhoneNumber, Signature, SolanaAccountId, UserId } from "../../common/v1/model_pb";
+import { DataContainerId, IntentId, PhoneNumber, Signature, SolanaAccountId, UserId } from "../../common/v1/model_pb";
 import { PhoneLinkingToken } from "../../phone/v1/phone_verification_service_pb";
 import { AirdropType } from "../../transaction/v2/transaction_service_pb";
 
@@ -487,7 +487,288 @@ proto3.util.setEnumType(GetUserResponse_Result, "code.user.v1.GetUserResponse.Re
 ]);
 
 /**
- * User is the highest order of a form of identity.
+ * @generated from message code.user.v1.LoginToThirdPartyAppRequest
+ */
+export class LoginToThirdPartyAppRequest extends Message<LoginToThirdPartyAppRequest> {
+  /**
+   * The intent ID identifying the instance of the login flow.
+   *
+   * @generated from field: code.common.v1.IntentId intent_id = 1;
+   */
+  intentId?: IntentId;
+
+  /**
+   * The relationship authority account logging in.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId user_id = 2;
+   */
+  userId?: SolanaAccountId;
+
+  /**
+   * Signature of this message using the user private key, authenticates the
+   * user.
+   *
+   * @generated from field: code.common.v1.Signature signature = 3;
+   */
+  signature?: Signature;
+
+  constructor(data?: PartialMessage<LoginToThirdPartyAppRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.LoginToThirdPartyAppRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "intent_id", kind: "message", T: IntentId },
+    { no: 2, name: "user_id", kind: "message", T: SolanaAccountId },
+    { no: 3, name: "signature", kind: "message", T: Signature },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginToThirdPartyAppRequest {
+    return new LoginToThirdPartyAppRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginToThirdPartyAppRequest {
+    return new LoginToThirdPartyAppRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginToThirdPartyAppRequest {
+    return new LoginToThirdPartyAppRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: LoginToThirdPartyAppRequest | PlainMessage<LoginToThirdPartyAppRequest> | undefined, b: LoginToThirdPartyAppRequest | PlainMessage<LoginToThirdPartyAppRequest> | undefined): boolean {
+    return proto3.util.equals(LoginToThirdPartyAppRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message code.user.v1.LoginToThirdPartyAppResponse
+ */
+export class LoginToThirdPartyAppResponse extends Message<LoginToThirdPartyAppResponse> {
+  /**
+   * @generated from field: code.user.v1.LoginToThirdPartyAppResponse.Result result = 1;
+   */
+  result = LoginToThirdPartyAppResponse_Result.OK;
+
+  constructor(data?: PartialMessage<LoginToThirdPartyAppResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.LoginToThirdPartyAppResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(LoginToThirdPartyAppResponse_Result) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginToThirdPartyAppResponse {
+    return new LoginToThirdPartyAppResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginToThirdPartyAppResponse {
+    return new LoginToThirdPartyAppResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginToThirdPartyAppResponse {
+    return new LoginToThirdPartyAppResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: LoginToThirdPartyAppResponse | PlainMessage<LoginToThirdPartyAppResponse> | undefined, b: LoginToThirdPartyAppResponse | PlainMessage<LoginToThirdPartyAppResponse> | undefined): boolean {
+    return proto3.util.equals(LoginToThirdPartyAppResponse, a, b);
+  }
+}
+
+/**
+ * @generated from enum code.user.v1.LoginToThirdPartyAppResponse.Result
+ */
+export enum LoginToThirdPartyAppResponse_Result {
+  /**
+   * @generated from enum value: OK = 0;
+   */
+  OK = 0,
+
+  /**
+   * There is no request for the provided intent ID.
+   *
+   * @generated from enum value: REQUEST_NOT_FOUND = 1;
+   */
+  REQUEST_NOT_FOUND = 1,
+
+  /**
+   * The request requires a payment. Call SubmitIntent instead.
+   *
+   * @generated from enum value: PAYMENT_REQUIRED = 2;
+   */
+  PAYMENT_REQUIRED = 2,
+
+  /**
+   * The request exists, but doesn't support login.
+   *
+   * @generated from enum value: LOGIN_NOT_SUPPORTED = 3;
+   */
+  LOGIN_NOT_SUPPORTED = 3,
+
+  /**
+   * A login already exists
+   *
+   * @generated from enum value: LOGIN_EXISTS = 4;
+   */
+  LOGIN_EXISTS = 4,
+
+  /**
+   * The provided account is not valid for login. It must be a relationship
+   * account with the correct identifier specified in the original request.
+   *
+   * @generated from enum value: INVALID_ACCOUNT = 5;
+   */
+  INVALID_ACCOUNT = 5,
+}
+// Retrieve enum metadata with: proto3.getEnumType(LoginToThirdPartyAppResponse_Result)
+proto3.util.setEnumType(LoginToThirdPartyAppResponse_Result, "code.user.v1.LoginToThirdPartyAppResponse.Result", [
+  { no: 0, name: "OK" },
+  { no: 1, name: "REQUEST_NOT_FOUND" },
+  { no: 2, name: "PAYMENT_REQUIRED" },
+  { no: 3, name: "LOGIN_NOT_SUPPORTED" },
+  { no: 4, name: "LOGIN_EXISTS" },
+  { no: 5, name: "INVALID_ACCOUNT" },
+]);
+
+/**
+ * @generated from message code.user.v1.GetLoginForThirdPartyAppRequest
+ */
+export class GetLoginForThirdPartyAppRequest extends Message<GetLoginForThirdPartyAppRequest> {
+  /**
+   * The intent ID identifying the instance of the login flow.
+   *
+   * @generated from field: code.common.v1.IntentId intent_id = 1;
+   */
+  intentId?: IntentId;
+
+  /**
+   * Owner account owned by the third party used in domain verification.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId verifier = 2;
+   */
+  verifier?: SolanaAccountId;
+
+  /**
+   * Signature of this message using the verifier private key, which in addition
+   * to domain verification, authenticates the third party.
+   *
+   * @generated from field: code.common.v1.Signature signature = 3;
+   */
+  signature?: Signature;
+
+  constructor(data?: PartialMessage<GetLoginForThirdPartyAppRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.GetLoginForThirdPartyAppRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "intent_id", kind: "message", T: IntentId },
+    { no: 2, name: "verifier", kind: "message", T: SolanaAccountId },
+    { no: 3, name: "signature", kind: "message", T: Signature },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLoginForThirdPartyAppRequest {
+    return new GetLoginForThirdPartyAppRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLoginForThirdPartyAppRequest {
+    return new GetLoginForThirdPartyAppRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLoginForThirdPartyAppRequest {
+    return new GetLoginForThirdPartyAppRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetLoginForThirdPartyAppRequest | PlainMessage<GetLoginForThirdPartyAppRequest> | undefined, b: GetLoginForThirdPartyAppRequest | PlainMessage<GetLoginForThirdPartyAppRequest> | undefined): boolean {
+    return proto3.util.equals(GetLoginForThirdPartyAppRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message code.user.v1.GetLoginForThirdPartyAppResponse
+ */
+export class GetLoginForThirdPartyAppResponse extends Message<GetLoginForThirdPartyAppResponse> {
+  /**
+   * @generated from field: code.user.v1.GetLoginForThirdPartyAppResponse.Result result = 1;
+   */
+  result = GetLoginForThirdPartyAppResponse_Result.OK;
+
+  /**
+   * The relationship authority account that logged in.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId user_id = 2;
+   */
+  userId?: SolanaAccountId;
+
+  constructor(data?: PartialMessage<GetLoginForThirdPartyAppResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.GetLoginForThirdPartyAppResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(GetLoginForThirdPartyAppResponse_Result) },
+    { no: 2, name: "user_id", kind: "message", T: SolanaAccountId },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLoginForThirdPartyAppResponse {
+    return new GetLoginForThirdPartyAppResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLoginForThirdPartyAppResponse {
+    return new GetLoginForThirdPartyAppResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLoginForThirdPartyAppResponse {
+    return new GetLoginForThirdPartyAppResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetLoginForThirdPartyAppResponse | PlainMessage<GetLoginForThirdPartyAppResponse> | undefined, b: GetLoginForThirdPartyAppResponse | PlainMessage<GetLoginForThirdPartyAppResponse> | undefined): boolean {
+    return proto3.util.equals(GetLoginForThirdPartyAppResponse, a, b);
+  }
+}
+
+/**
+ * @generated from enum code.user.v1.GetLoginForThirdPartyAppResponse.Result
+ */
+export enum GetLoginForThirdPartyAppResponse_Result {
+  /**
+   * @generated from enum value: OK = 0;
+   */
+  OK = 0,
+
+  /**
+   * There is no request for the provided intent ID.
+   *
+   * @generated from enum value: REQUEST_NOT_FOUND = 1;
+   */
+  REQUEST_NOT_FOUND = 1,
+
+  /**
+   * The request exists, but doesn't support login.
+   *
+   * @generated from enum value: LOGIN_NOT_SUPPORTED = 2;
+   */
+  LOGIN_NOT_SUPPORTED = 2,
+}
+// Retrieve enum metadata with: proto3.getEnumType(GetLoginForThirdPartyAppResponse_Result)
+proto3.util.setEnumType(GetLoginForThirdPartyAppResponse_Result, "code.user.v1.GetLoginForThirdPartyAppResponse.Result", [
+  { no: 0, name: "OK" },
+  { no: 1, name: "REQUEST_NOT_FOUND" },
+  { no: 2, name: "LOGIN_NOT_SUPPORTED" },
+]);
+
+/**
+ * User is the highest order of a form of identity within Code.
+ *
+ * Note: Users outside Code are modelled as relationship accounts
  *
  * @generated from message code.user.v1.User
  */

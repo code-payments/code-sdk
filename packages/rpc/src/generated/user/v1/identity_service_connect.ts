@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, UnlinkAccountRequest, UnlinkAccountResponse } from "./identity_service_pb";
+import { GetLoginForThirdPartyAppRequest, GetLoginForThirdPartyAppResponse, GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, LoginToThirdPartyAppRequest, LoginToThirdPartyAppResponse, UnlinkAccountRequest, UnlinkAccountResponse } from "./identity_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -64,6 +64,31 @@ export const Identity = {
       name: "GetUser",
       I: GetUserRequest,
       O: GetUserResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * LoginToThirdPartyApp logs a user into a third party app for a given intent
+     * ID. If the original request requires payment, then SubmitIntent must be called.
+     *
+     * @generated from rpc code.user.v1.Identity.LoginToThirdPartyApp
+     */
+    loginToThirdPartyApp: {
+      name: "LoginToThirdPartyApp",
+      I: LoginToThirdPartyAppRequest,
+      O: LoginToThirdPartyAppResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * GetLoginForThirdPartyApp gets a login for a third party app from an existing
+     * request. This endpoint supports all paths where login is possible (login on payment,
+     * raw login, etc.).
+     *
+     * @generated from rpc code.user.v1.Identity.GetLoginForThirdPartyApp
+     */
+    getLoginForThirdPartyApp: {
+      name: "GetLoginForThirdPartyApp",
+      I: GetLoginForThirdPartyAppRequest,
+      O: GetLoginForThirdPartyAppResponse,
       kind: MethodKind.Unary,
     },
   }

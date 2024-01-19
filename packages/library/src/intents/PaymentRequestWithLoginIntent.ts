@@ -26,8 +26,6 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
     constructor(opt: ElementOptions) {
         super(opt);
 
-        this.validate();
-
         const { signers } = opt;
         const { domain, verifier } = opt.login!;
 
@@ -114,32 +112,15 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
 
         const sig = this.rendezvousKeypair.sign(envelope.toBinary());
         const intent = this.rendezvousKeypair.getPublicKey().toBase58();
-        const message = msg.toBinary();
+        const signedBytes = msg.toBinary();
         const signature = sig;
 
         return {
-            message,
+            envelope,
+            signedBytes,
             intent,
             signature,
         }
-    }
-
-    /**
-     * Retrieves the client secret.
-     * 
-     * @returns The client secret as a string.
-     */
-    getClientSecret(): string {
-        return this.nonce.toString();
-    }
-
-    /**
-     * Retrieves the intent ID.
-     * 
-     * @returns The intent ID as a Base58 encoded string.
-     */
-    getIntentId(): string {
-        return this.rendezvousKeypair.getPublicKey().toBase58();
     }
 }
 

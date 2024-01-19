@@ -1,31 +1,24 @@
 import * as proto from '@code-wallet/rpc';
-import { IdempotencyKey } from '../idempotency';
 import { Keypair, PublicKey } from '../keys';
 import { CodePayload, CodeKind } from '../payload';
-import { Intent, SignedIntent } from '../intent';
+import { SignedIntent } from '../intent';
 import { 
     ErrLoginDomainRequired, 
     ErrLoginRequired, 
     ErrLoginVerifierRequired, 
     ErrUnexpectedError
 } from '../errors';
-import { generateRendezvousKeypair } from '../rendezvous';
 import { validateElementOptions } from '../elements/validate';
 import { ElementOptions  } from '../elements/options';
+import { AbstractIntent } from './AbstractIntent';
 
 /**
  * Represents a login request and provides methods to construct, validate, and sign the request.
  */
-class LoginRequestIntent implements Intent {
+class LoginRequestIntent extends AbstractIntent {
     domain: string;
     verifier: PublicKey;
     signer?: Keypair;
-
-    options: ElementOptions;
-    nonce: IdempotencyKey;
-
-    rendezvousPayload: CodePayload;
-    rendezvousKeypair: Keypair;
 
     /**
      * Constructs a new PaymentRequestIntent instance.
@@ -33,11 +26,10 @@ class LoginRequestIntent implements Intent {
      * @param opt - The payment request options.
      */
     constructor(opt: ElementOptions) {
-        this.options = {
+        super({
             ...opt,
-        };
-
-        this.validate();
+            mode: 'login',
+        });
 
         const { signers } = opt;
         const { domain, verifier } = opt.login!;
@@ -48,23 +40,19 @@ class LoginRequestIntent implements Intent {
         if (signers) {
             this.signer = signers.find((k) => k.getPublicKey().toBase58() === verifier)
         }
+    }
 
-        // Create an 11 byte buffer from idempotencyKey if provided, otherwise generate a random nonce
-        if (this.options.idempotencyKey) {
-            this.nonce = IdempotencyKey.fromSeed(this.options.idempotencyKey);
-        } else if (this.options.clientSecret) {
-            this.nonce = IdempotencyKey.fromClientSecret(this.options.clientSecret);
-        } else {
-            this.nonce = IdempotencyKey.generate();
-        }
+    init(): void {
+        // noop
+    }
 
+    toPayload(): CodePayload {
         // See payload encoding for CodeKind.RequestPayment
         const kind = CodeKind.RequestLogin;
         const nonce = this.nonce.value;
 
         // Create a rendezvous payload and derive a keypair from it
-        this.rendezvousPayload = new CodePayload({ kind, nonce, });
-        this.rendezvousKeypair = generateRendezvousKeypair(this.rendezvousPayload);
+        return new CodePayload({ kind, nonce, });
     }
 
     /**
@@ -134,32 +122,15 @@ class LoginRequestIntent implements Intent {
 
         const sig = this.rendezvousKeypair.sign(envelope.toBinary());
         const intent = this.rendezvousKeypair.getPublicKey().toBase58();
-        const message = msg.toBinary();
+        const signedBytes = msg.toBinary();
         const signature = sig;
 
         return {
-            message,
+            envelope,
+            signedBytes,
             intent,
             signature,
         }
-    }
-
-    /**
-     * Retrieves the client secret.
-     * 
-     * @returns The client secret as a string.
-     */
-    getClientSecret(): string {
-        return this.nonce.toString();
-    }
-
-    /**
-     * Retrieves the intent ID.
-     * 
-     * @returns The intent ID as a Base58 encoded string.
-     */
-    getIntentId(): string {
-        return this.rendezvousKeypair.getPublicKey().toBase58();
     }
 }
 

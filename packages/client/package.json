@@ -1,6 +1,6 @@
 {
     "name": "@code-wallet/client",
-    "version": "1.1.2",
+    "version": "2.0.6",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -14,15 +14,17 @@
         "./dist/"
     ],
     "scripts": {
-        "test": "echo \"no tests yet\"",
-        "build": "tsc && tsc -p tsconfig.cjs.json"
+        "test": "TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\", \"target\": \"es2019\" }' ts-mocha --require esm './test/**/*.test.ts'",
+        "clean": "rm -rf dist",
+        "build": "npm run clean && tsc && tsc -p tsconfig.cjs.json"
     },
     "browserslist": [
         "supports bigint and not dead",
         "maintained node versions"
     ],
     "dependencies": {
-        "@code-wallet/library": "^1.1.1",
+        "@code-wallet/library": "^1.3.2",
+        "@code-wallet/rpc": "^1.3.1",
         "bs58": "^5.0.0",
         "buffer": "6.0.3"
     },

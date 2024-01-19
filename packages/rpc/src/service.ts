@@ -9,7 +9,7 @@ import { AsyncQueue } from './queue';
 /**
  * Describes the structure of the service type, detailing its methods.
  */
-interface ServiceType<S extends {
+export interface ServiceType<S extends {
   [localName: string]: MethodInfo<AnyMessage, AnyMessage> 
 }> {
   readonly typeName: string;
@@ -19,12 +19,12 @@ interface ServiceType<S extends {
 /**
  * Type representing a request for a given service and method.
  */
-type Request<S extends ServiceType<any>, K extends keyof S['methods']> = InstanceType<S['methods'][K]['I']>;
+export type Request<S extends ServiceType<any>, K extends keyof S['methods']> = InstanceType<S['methods'][K]['I']>;
 
 /**
  * Type representing a response for a given service and method.
  */
-type Response<S extends ServiceType<any>, K extends keyof S['methods']> = InstanceType<S['methods'][K]['O']>;
+export type Response<S extends ServiceType<any>, K extends keyof S['methods']> = InstanceType<S['methods'][K]['O']>;
 
 /**
  * Configuration options for the RpcStream.

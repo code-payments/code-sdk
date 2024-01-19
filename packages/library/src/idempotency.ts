@@ -50,7 +50,7 @@ class IdempotencyKey {
      * @returns {IdempotencyKey} An IdempotencyKey object representing the generated key.
      */
     static generate() : IdempotencyKey {
-        const seed = Keypair.generate().privateKey.subarray(0, IdempotencyKey.MAX_LENGTH);
+        const seed = Keypair.generate().getPrivateValue().subarray(0, IdempotencyKey.MAX_LENGTH);
         return new IdempotencyKey(seed);
     }
 

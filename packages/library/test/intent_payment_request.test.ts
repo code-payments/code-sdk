@@ -203,7 +203,7 @@ describe('PaymentRequestIntent', () => {
             }
 
             expect(actual.intent).to.equal(expected.intent);
-            expect(actual.message.toString()).to.equal(expected.message.toString());
+            expect(actual.signedBytes.toString()).to.equal(expected.message.toString());
             expect(actual.signature.toString()).to.equal(expected.signautre.toString());
 
         });

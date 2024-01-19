@@ -6,6 +6,7 @@
 
     const config = useConfig();
     const options = inject<ElementOptions>('options');
+    const mode = options?.mode ?? 'payment';
 
     const emit = defineEmits([
         'codeScanned',
@@ -18,7 +19,7 @@
     ]);
 
     const channel = new EventChannel<InternalEvents>();
-    const url = `${config.codeSdk()}/payment-request-modal-mobile/#/${channel.id}/p=${encode(options)}`;
+    const url = `${config.codeSdk()}/${mode}-request-modal-mobile/#/${channel.id}/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
     channel.on('codeScanned' , () => {

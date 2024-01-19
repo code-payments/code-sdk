@@ -10,7 +10,7 @@ const BASE_58_ALPHABET = /^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrst
  * Represents a public key and provides utility methods for its manipulation and conversion.
  */
 class PublicKey {
-    publicKey: Uint8Array;
+    readonly value: Uint8Array;
 
     /**
      * Constructs a new PublicKey instance.
@@ -21,7 +21,7 @@ class PublicKey {
         if (publicKey.length !== ED25519_PUBLIC_KEY_LENGTH) {
             throw ErrInvalidAddress();
         }
-        this.publicKey = publicKey;
+        this.value = publicKey;
     }
 
     /**
@@ -50,7 +50,7 @@ class PublicKey {
      * @returns The public key as a Buffer.
      */
     toBuffer() {
-        return Buffer.from([...this.publicKey]);
+        return Buffer.from([...this.value]);
     }
 
     /**
@@ -59,7 +59,7 @@ class PublicKey {
      * @returns The Base58 encoded public key string.
      */
     toBase58() {
-        return bs58.encode(this.publicKey);
+        return bs58.encode(this.value);
     }
 
     /**
@@ -79,7 +79,7 @@ class PublicKey {
      * @returns `true` if the signature is valid, otherwise `false`.
      */
     verify(message: ArrayBuffer | SharedArrayBuffer, signature: Uint8Array) {
-        return ed25519.verify(signature, new Uint8Array(message), this.publicKey);
+        return ed25519.verify(signature, new Uint8Array(message), this.value);
     }
 }
 

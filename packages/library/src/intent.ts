@@ -24,11 +24,13 @@ export interface IntentOptions {
      * See https://code-wallet.github.io/code-sdk/docs/reference/idempotency.html for more information.
      */
     idempotencyKey?: string;
+}
 
+export interface IntentSigners {
     /**
      * A list of signers for an intent. 
      */
-    signers?: Keypair[];
+    signers: Keypair[];
 }
  
 /**
@@ -50,7 +52,7 @@ export interface WebhookParams {
 }
  
 /**
- * An object representing a payment or setup intent from Stripe.
+ * An interface for an intent that can be created and signed.
  */
 export interface Intent {
     options: ElementOptions;
@@ -68,6 +70,11 @@ export interface Intent {
      * Serialize this intent into a minimal message for sending to the Code Sequencer.
      */
     toProto(): proto.Message;
+
+    /**
+     * Serialize this intent into a request to be sent to the Code Sequencer.
+     */
+    getSendMessageRequestProto() : Promise<proto.SendMessageRequest>;
  
     /**
      * Sign this intent with the signer keys (if needed), returning an intent
@@ -99,7 +106,10 @@ export interface SignedIntent {
     intent: string;
  
     /** A serialized message that was signed. */
-    message: Uint8Array;
+    envelope: proto.Message;
+
+    /** The signed message as a Uint8Array. */
+    signedBytes: Uint8Array;
  
     /** A signature generated with the rendezvous private key. */
     signature: Uint8Array;

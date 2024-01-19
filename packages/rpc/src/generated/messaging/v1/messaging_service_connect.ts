@@ -59,9 +59,10 @@ export const Messaging = {
      *      required hack because we don't have the infrastructure in place to allow multiple listens
      *      on the same stream, and the recipient needs real-time status updates.
      *   5. The user logging in receives the message (any status messages are ignored), verifies it,
-     *      then uses SendMessage to send a login attempt.
-     *   6. The third party receives sees the login attempt message, verifies it, then accepts/denies
-     *      the login attempt. The stream is closed.
+     *      then submits a login attempt.
+     *   6. The third party observes status message (eg. IntentSubmitted, ClientRejectedLogin,
+     *      WebhookCalled) for login state.
+     *   7. The third party closes the stream once the login hits a terminal state, or times out.
      *
      * @generated from rpc code.messaging.v1.Messaging.OpenMessageStream
      */

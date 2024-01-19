@@ -5,8 +5,8 @@ import { PublicKey } from "./publickey";
  * Represents a cryptographic key pair containing a private and public key.
  */
 class Keypair {
-  publicKey: Uint8Array;
-  privateKey: Uint8Array;
+  private publicKey: Uint8Array;
+  private privateKey: Uint8Array;
 
   /**
    * Constructs a new Keypair instance.
@@ -118,6 +118,28 @@ class Keypair {
    */
   verify(message: ArrayBuffer | SharedArrayBuffer, signature: Uint8Array): boolean {
     return ed25519.verify(signature, new Uint8Array(message), this.publicKey);
+  }
+
+  /**
+   * Returns a string representation of the Keypair.
+   */
+  toString(): string {
+    return `Keypair(publicKey=${this.getPublicKey().toBase58()})`;
+  }
+
+  /**
+   * Encodes the Keypair into a base64 encoded string.
+   */
+  encode(): string {
+    return Buffer.from(this.getSecretKey()).toString('base64');
+  }
+
+  /**
+   * Decodes a base64 encoded string into a Keypair.
+   */
+  static decode(encoded: string): Keypair {
+    const raw = Buffer.from(encoded, 'base64');
+    return Keypair.fromRawPrivateKey(raw);
   }
 }
 
