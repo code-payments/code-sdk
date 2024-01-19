@@ -3,11 +3,9 @@ import { Keypair } from "@code-wallet/library";
 import express from "express";
 
 const port = process.env.PORT || 3080;
-//const hostname = process.env.HOSTNAME || 'example.com';
-const hostname = 'example-getcode.com'
+const hostname = process.env.HOSTNAME || 'example.com';
 const app = express();
-//const verifier = Keypair.generate();
-const verifier = Keypair.fromRawPrivateKey(new Uint8Array([248,27,29,109,65,195,249,240,138,217,224,147,90,44,146,26,239,197,191,98,122,105,200,112,115,154,227,99,254,38,36,216]));
+const verifier = Keypair.generate();
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -57,8 +55,6 @@ app.post('/create-intent', async (req, res) => {
     },
 
     signers: [ verifier ],
-
-    //idempotencyKey: 'hello'
   });
 
   console.log('Created intent', id);

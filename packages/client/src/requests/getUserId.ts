@@ -9,13 +9,17 @@ export type GetUserIdOptions = {
     verifier: Keypair,
 };
 
+export type GetUserIdResponse = {
+    userId: string | undefined,
+};
+
 /**
  * GetUserId is a request to retrieve the user ID associated with a third party 
  * app after a login intent has been confirmed.
  * 
  * @throws Will throw an error if the intent ID is not provided.
  */
-class GetUserIdRequest implements CodeRequest<proto.LoginToThirdPartyAppResponse> {
+class GetUserIdRequest implements CodeRequest<GetUserIdResponse> {
     readonly intentId : string;
     readonly signer : Keypair;
 
@@ -59,13 +63,25 @@ class GetUserIdRequest implements CodeRequest<proto.LoginToThirdPartyAppResponse
         });
 
         return {
-            message: msg.toBinary(),
+            envelope: msg,
+            signedBytes: msg.toBinary(),
             signature: sig,
         }
     }
 
     async send(client: Client) {
-        return await client.send(proto.Identity, 'loginToThirdPartyApp', this.toProto());
+        const { envelope } = this.sign();
+        const res = await client.send(proto.Identity, 'getLoginForThirdPartyApp', envelope);
+
+        let userId : string | undefined;
+        if (res.userId) {
+            const user = new PublicKey(res.userId.value);
+            userId = user.toBase58();
+        }
+
+        return {
+            userId,
+        };
     }
 }
 

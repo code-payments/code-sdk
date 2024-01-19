@@ -21,7 +21,11 @@ export interface CodeRequest<T> {
      * 
      * @returns A signature for this request
      */
-    sign(): { message: Uint8Array, signature: Uint8Array } | undefined;
+    sign(): { 
+        envelope: proto.AnyMessage;
+        signedBytes: Uint8Array;
+        signature: Uint8Array;
+    } | undefined;
 
     /**
      * Submit this request to the Code Sequencer.
