@@ -16,6 +16,7 @@ import {
     GetStatusForIntentOptions
 } from "../requests/getStatus";
 import { ClientOptions } from "../client";
+import { RegisterWebhookForIntentRequest } from "../requests/registerWebhook";
 
 /**
  * Options for creating a payment intent.
@@ -47,7 +48,7 @@ const paymentIntents = {
      * @throws Will throw an error if unable to create the intent.
      */
     create: async (opt: CreatePaymentIntentOptions & ClientOptions) => {
-        const connection = useClient(opt);
+        const client = useClient(opt);
 
         let intent : Intent;
         if (opt.login) {
@@ -56,7 +57,20 @@ const paymentIntents = {
             intent = new PaymentRequestIntent(opt);
         }
 
-        return await createIntent(intent, connection);
+        const res = await createIntent(intent, client);
+
+        if (opt.webhook) {
+            const req = new RegisterWebhookForIntentRequest({
+                intent: res.id,
+                url: opt.webhook.url,
+            });
+            const whRes = await req.send(client);
+            if (!whRes.success) {
+                throw new Error(`Unable to register webhook: ${whRes.message}`);
+            }
+        }
+
+        return res;
     },
 
     /**

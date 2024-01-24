@@ -11,6 +11,7 @@
     const emit = defineEmits([
         'codeScanned',
         'clientRejectedPayment',
+        'clientRejectedLogin',
         'intentSubmitted',
         'channelCreated',
         'error',
@@ -24,17 +25,10 @@
 
     console.log('url', url);
 
-    channel.on('codeScanned' , () => {
-        emit('codeScanned');
-    });
-
-    channel.on('clientRejectedPayment' , () => {
-        emit('clientRejectedPayment');
-    });
-
-    channel.on('intentSubmitted' , () => {
-        emit('intentSubmitted');
-    });
+    channel.on('codeScanned' , () => { emit('codeScanned'); });
+    channel.on('clientRejectedPayment' , () => { emit('clientRejectedPayment'); });
+    channel.on('clientRejectedLogin' , () => { emit('clientRejectedLogin'); });
+    channel.on('intentSubmitted' , () => { emit('intentSubmitted'); });
 
     // Error states
     channel.on('error' , (err) => {
