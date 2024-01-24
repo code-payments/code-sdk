@@ -51,4 +51,15 @@ describe('High level client', () => {
         expect(res.id).to.not.be.undefined;
     });
 
+    it('test high level register webhook api message', async () => {
+        const res = await client.webhook.register({
+            intent: 'DXzWn2E6Z96xDY8z5L4ef7dymvFMghUZvzeAaMw2miGX',
+            url: 'https://example.com',
+        });
+
+        expect(res).to.not.be.undefined;
+        expect(res.success).to.be.false;
+        expect(res.message).to.be.equal('request_not_found');
+    });
+
 });

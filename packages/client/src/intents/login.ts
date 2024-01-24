@@ -15,6 +15,7 @@ import {
 
 import { GetUserIdOptions, GetUserIdRequest  } from "../requests/getUserId";
 import { ClientOptions } from "../client";
+import { RegisterWebhookForIntentRequest } from "../requests/registerWebhook";
 
 /**
  * Options for creating a login intent.
@@ -33,7 +34,7 @@ type CreateLoginIntentOptions = LoginRequestOptions &
     Partial<WebhookParams>;
 
 /**
- * Collection of methods related to handling payment intents.
+ * Collection of methods related to handling login intents.
  */
 const loginIntents = {
 
@@ -48,7 +49,20 @@ const loginIntents = {
         const client = useClient(opt);
         const intent = new LoginRequestIntent(opt);
 
-        return await createIntent(intent, client);
+        const res = await createIntent(intent, client);
+
+        if (opt.webhook) {
+            const req = new RegisterWebhookForIntentRequest({
+                intent: res.id,
+                url: opt.webhook.url,
+            });
+            const whRes = await req.send(client);
+            if (!whRes.success) {
+                throw new Error(`Unable to register webhook: ${whRes.message}`);
+            }
+        }
+
+        return res;
     },
     
     /**
