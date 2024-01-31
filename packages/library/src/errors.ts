@@ -10,8 +10,14 @@ const ErrInvalidValue = () => new Error("invalid value");
 const ErrInvalidMode = () => new Error(`invalid mode`);
 const ErrInvalidAddress = () => new Error("invalid address");
 const ErrLoginRequired = () => new Error("login is required");
-const ErrLoginDomainRequired = () => new Error("login domain is required");
 const ErrLoginVerifierRequired = () => new Error("login verifier is required");
+const ErrLoginDomainRequired = () => new Error("login domain is required");
+const ErrInvalidLoginDomain = () => new Error("invalid login domain");
+const ErrLoginSubdomainsNotSupported = () => new Error("login subdomains are not supported");
+const ErrLoginIPNotSupported = () => new Error("login IP addresses are not supported");
+const ErrLoginLocalhostNotSupported = () => new Error("login localhost is not supported");
+const ErrLoginPortsNotSupported = () => new Error("login ports are not supported");
+const ErrLoginExpectedDomainName = () => new Error("login expected domain name but received a path");
 
 export {
     ErrNotImplemented,
@@ -26,6 +32,12 @@ export {
     ErrInvalidMode,
     ErrInvalidAddress,
     ErrLoginRequired,
-    ErrLoginDomainRequired,
     ErrLoginVerifierRequired,
+    ErrLoginDomainRequired,
+    ErrInvalidLoginDomain,
+    ErrLoginSubdomainsNotSupported,
+    ErrLoginIPNotSupported,
+    ErrLoginLocalhostNotSupported,
+    ErrLoginPortsNotSupported,
+    ErrLoginExpectedDomainName,
 };

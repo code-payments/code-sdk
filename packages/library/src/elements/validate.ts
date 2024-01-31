@@ -11,6 +11,12 @@ import {
     ErrLoginDomainRequired,
     ErrLoginVerifierRequired,
     ErrInvalidValue,
+    ErrLoginSubdomainsNotSupported,
+    ErrLoginIPNotSupported,
+    ErrLoginLocalhostNotSupported,
+    ErrLoginPortsNotSupported,
+    ErrInvalidLoginDomain,
+    ErrLoginExpectedDomainName,
 } from '../errors';
 import { PublicKey } from '../keys';
 
@@ -82,6 +88,53 @@ function validateLoginRequestOptions(intent: ElementOptions) {
 
     if (intent.login.verifier === undefined) {
         throw ErrLoginVerifierRequired();
+    }
+
+    let url: URL | undefined;
+    try {
+        // We expect the domain name to not be a fully qualified URL. Put another
+        // way, we expect the domain name to not have a protocol, port, or path.
+        url = new URL(intent.login.domain);
+    } catch (e) {
+        // noop
+    }
+
+    // If the domain is a valid URL, then we want to throw an error.
+    if (url) {
+        throw ErrLoginExpectedDomainName();
+    }
+
+    try {
+        // At this point we know that the domain is not a valid URL, lets try
+        // to make it one and see if it throws an error.
+        url = new URL(`http://${intent.login.domain}`);
+    } catch (e) {
+        throw ErrInvalidLoginDomain();
+    }
+
+    // Check that the domain is not an IP address.
+    if (url.hostname.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/)) {
+        throw ErrLoginIPNotSupported();
+    }
+
+    // Check that there is no subdomain.
+    if (url.hostname.split('.').length > 2) {
+        throw ErrLoginSubdomainsNotSupported();
+    }
+
+    // Check that the domain is not localhost.
+    if (url.hostname === 'localhost') {
+        throw ErrLoginLocalhostNotSupported();
+    }
+
+    // Check that there is no port value.
+    if (url.port) {
+        throw ErrLoginPortsNotSupported();
+    }
+
+    // Check that there is no path.
+    if (url.pathname !== '/' || intent.login.domain.includes('/')) {
+        throw ErrLoginExpectedDomainName();
     }
 
     // Validate that the verifier is a valid address.
