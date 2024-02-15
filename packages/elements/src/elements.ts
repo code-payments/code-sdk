@@ -1,9 +1,5 @@
 import { App as VueApp, createApp, reactive } from 'vue';
-import { 
-    ButtonFlow,
-    IntentRequestModalDesktop,
-} from '../components';
-import { ErrUnknownElementType } from './errors';
+
 import { 
     ElementEventEmitter, 
     ElementEvents, 
@@ -12,6 +8,12 @@ import {
     IntentType, 
     validateElementOptions
 } from '@code-wallet/library';
+
+import { ErrUnknownElementType } from './errors';
+import { 
+    ButtonFlow,
+    IntentRequestModalDesktop,
+} from './components';
 
 const defaultMode = 'payment';
 const defaultLocale = 'en';

@@ -1,16 +1,21 @@
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
 
-[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/elements?style=flat
-[npm-image]: https://img.shields.io/npm/v/@code-wallet/elements?style=flat
-[npm-url]: https://www.npmjs.com/package/@code-wallet/elements
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/web?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/web?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/web
 
-# @code-wallet/elements
-This package provides the code.elements object, which you
-can utilize to embed a [Code Payments](https://codepayments.org) button
-seamlessly into your website or application. This client-side package has a
-hassle-free integration process, enabling users to complete payments using the
-Code app and allowing server-side verification.
+# @code-wallet/web
+This client side package wraps the `elements` and `library` packages including
+dependencies for use in the browser. This package is intended to be accessed
+directly through `https://js.getcode.com/v1/` otherwise, please use the
+`@code-wallet/elements` package directly.
+
+This package provides the code.elements object, which you can utilize to embed a
+[Code Payments](https://codepayments.org) button seamlessly into your website or
+application. This client-side package has a hassle-free integration process,
+enabling users to complete payments using the Code app and allowing server-side
+verification.
 
 Learn more about Code at https://getcode.com. See the
 [docs](https://code-wallet.github.io/code-sdk/docs) for more information.
@@ -20,7 +25,7 @@ Use the minimal JavaScript snippet below to create and embed a Code payment
 button in your website or application:
 
 ```js
-import code from '@code-wallet/elements';
+import code from 'https://js.getcode.com/v1/';
 
 const { button } = code.elements.create('button', {
   currency: 'usd',

@@ -1,5 +1,5 @@
-import { Keypair, PublicKey } from '@code-wallet/library';
-import { elements } from './types';
+import * as errors from './errors';
+import { elements } from './elements';
 import { initConfig, Options } from './config';
 
 const opt: Options = { 
@@ -8,5 +8,5 @@ const opt: Options = {
 
 initConfig(opt);
 
-export default { elements, Keypair, PublicKey }
-export * from './types';
+export default { elements, errors }
+export { elements, errors }

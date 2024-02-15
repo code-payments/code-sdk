@@ -4,8 +4,8 @@ import { Keypair } from '../src';
 describe('Keypair', () => {
     it('generate new keypair', () => {
         const keypair = Keypair.generate();
-        expect(keypair.privateKey).to.have.length(32);
-        expect(keypair.publicKey).to.have.length(32);
+        expect(keypair.getPrivateValue()).to.have.length(32);
+        expect(keypair.getPublicValue()).to.have.length(32);
     });
 
     it('create keypair from secret key', () => {

@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { addHashToFilename } from "./utils/add-hash-to-filename";
 import dts from 'vite-plugin-dts';
 import vue from '@vitejs/plugin-vue';
 import * as path from 'path';
@@ -24,6 +25,18 @@ export default defineConfig({
       cleanVueFileName: true,
       insertTypesEntry: true,
     }),
+    {
+      name: 'post-build',
+      apply: 'build',
+      async writeBundle() {
+        const filePath1 = path.resolve(__dirname, 'dist/web.js');
+        await Promise.all([
+          addHashToFilename(filePath1),
+        ]).catch(err => {
+          //console.error('Error:', err);
+        });
+      }
+    }
   ],
 
   resolve: {
@@ -46,6 +59,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'code',
       formats: ['es', 'cjs', 'umd', 'iife'],
+      fileName: 'web',
     },
     rollupOptions: {
       input: {
@@ -53,16 +67,9 @@ export default defineConfig({
       },
       output: {
         exports: 'named',
-        globals: {
-          vue: 'Vue',
-        },
       },
-      external: ['vue'],
     },
     sourcemap: false,
     minify: true,
-  },
-  server: {
-    port: 8760,
   },
 });

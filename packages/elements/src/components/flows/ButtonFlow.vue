@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import { Ref, inject, nextTick, ref } from 'vue';
 import { 
+  ElementEventEmitter, 
+  ElementOptions, 
+  LoginRequestIntent, 
+  PaymentRequestIntent
+} from '@code-wallet/library';
+import { EventChannel, InternalEvents } from '@code-wallet/events';
+import * as code from "@code-wallet/client";
+
+import { 
   IntentRequestButton,
   IntentRequestModalDesktop,
   IntentRequestModalMobile,
 } from '../elements';
+
 import {
   PreloadIntentRequestModalDesktop,
   PreloadIntentRequestModalMobile,
 } from '../preload';
 
-import { isMobileDevice } from '../../types';
-import { ElementEventEmitter, ElementOptions, LoginRequestIntent, PaymentRequestIntent } from '@code-wallet/library';
-import { getURLParam } from '../../types/url';
-import { EventChannel, InternalEvents } from '@code-wallet/events';
-import * as code from "@code-wallet/client";
+import { isMobileDevice } from '../../utils/user-agent';
+import { getURLParam } from '../../utils/url';
 
 const fadeDuration = 500; // Animation duration in milliseconds (we use this to delay emitting events)
 const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
