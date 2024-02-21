@@ -41,8 +41,8 @@ If you're interested in contributing to the Code SDK, please see the
 [contributing](#contributing) section below. 
 
 Our Code mobile apps and services all use [gRPC](https://grpc.io/) to
-communicate. If you're planning to do sdk contributions, you'll likely want to
-run the code-sdk
+communicate. If you're planning on making SDK contributions, you'll likely want
+to run the code-sdk
 [proxy](https://github.com/code-payments/code-sdk/blob/main/packages/proxy/example/index.ts)
 server locally. Running the proxy locally is highly recommended as you'll see
 the interactions between the SDK elements and the Code services. This is
@@ -52,7 +52,7 @@ support bidi streams over HTTP/1 and are [not binary
 stable](https://github.com/protocolbuffers/protobuf-go/blob/v1.28.1/proto/encode.go#L216-L219).
 
 The following command will start a local server that proxies gRPC requests over
-WebSocket and HTTP/1 envelopes to the Code services. 
+WebSockets or HTTP POSTs using HTTP/1 gRPC envelopes. 
     
 ```bash
 cd packages/proxy
