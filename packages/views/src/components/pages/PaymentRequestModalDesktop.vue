@@ -30,7 +30,6 @@ function getFormattedAmount(req: PaymentRequest) {
       </h2>
 
       <div class="m-auto relative">
-
         <div class="absolute top-[10vh] right-0 max-w-[21vh] mv-right-start"
           :class="{ 'mv-right-end': state.isShowingDownloadQr }">
 
