@@ -1,6 +1,6 @@
 {
   "name": "@code-wallet/views",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "repository": {
       "type": "git",
@@ -8,9 +8,9 @@
   },
   "type": "module",
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/views.cjs",
+  "module": "dist/views.js",
+  "types": "dist/views.d.ts",
   "files": [
       "./dist/"
   ],
