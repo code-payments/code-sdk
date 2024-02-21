@@ -35,13 +35,17 @@ You can build the packages locally using npm or yarn.
 npm run build --workspaces
 ```
 
-## Contributor Quick Start
+## Contributors
 
-First, you'll likely want to run your own [proxy](https://github.com/code-payments/code-sdk/blob/main/packages/proxy/example/index.ts) server. We need a proxy as a
-workaround for the browser's lack of support for GRPC traffic. Running your own
-proxy is highly recommended as you'll see the interactions between the SDK
-elements and the Code services. This is especially useful when you're developing
-new elements or views.
+If you're interested in contributing to the Code SDK, please see the
+[contributing](#contributing) section below. 
+
+You'll likely want to run your own
+[proxy](https://github.com/code-payments/code-sdk/blob/main/packages/proxy/example/index.ts)
+server. We need a proxy as a workaround for the browser's lack of support for
+GRPC traffic. Running your own proxy is highly recommended as you'll see the
+interactions between the SDK elements and the Code services. This is especially
+useful when you're developing new elements or views.
 
 The following command will start a local server that proxies GRPC requests over
 WebSocket and HTTP/1 envelopes to the Code services. 
