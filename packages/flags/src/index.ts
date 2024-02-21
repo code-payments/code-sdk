@@ -1,13 +1,13 @@
 import { currencyCodeToRegion } from '@code-wallet/library';
-import * as flags from './flags';
 
-function flagForCurrency(currency: any) {
+async function flagForCurrency(currency: any) {
   const region = currencyCodeToRegion(currency);
   if (!region) {
     return;
   }
-  // @ts-ignore
-  const flag = flags[region.substring(0, 2).toLowerCase()];
+  
+  // dynamic import based on region
+  const flag = (await import(`./wrappers/${region}.ts`)).default;
   if (flag) {
     return flag;
   }

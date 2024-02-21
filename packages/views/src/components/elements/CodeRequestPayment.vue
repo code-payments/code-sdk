@@ -12,6 +12,7 @@ const props = defineProps<{
   currency?: string,
 }>();
 
+const flag = ref<string | undefined>();
 const size = { width: 200, height: 200 };
 const scale = 30;
 const logo = {
@@ -24,9 +25,13 @@ const logo = {
 
 const kikcode : Ref<KikCodeDescription | undefined> = ref();
 
-watchEffect(() => {
+watchEffect(async () => {
   if (!props.payload) return;
   kikcode.value = KikCode.generateDescription(size, props.payload);
+
+  if (props.currency) {
+    flag.value = await flagForCurrency(props.currency);
+  }
 });
 </script>
 
@@ -50,7 +55,7 @@ watchEffect(() => {
             top: `${ scale * 1.17 }vh`,
             fontSize: `${ scale * 0.06 }vh`,
           }">
-          <img v-if="flagForCurrency(currency)" :src="flagForCurrency(currency)"
+          <img v-if="flag" :src="flag"
           class="rounded-full inline-block -mt-1" 
           :style="{
             width: `${ scale * 0.06 }vh`,

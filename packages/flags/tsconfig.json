@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "sourceMap": false,
         "declaration": true,
         "declarationMap": true,
         "esModuleInterop": true,
@@ -15,12 +16,12 @@
         "strict": true,
         "target": "ES2020",
         "module": "ESNext",
-        "outDir": "dist/esm",
+        "outDir": "dist",
     },
     "include": [
-        "src",
+        "src/**/*",
     ],
     "exclude": [
-        "node_modules"
-    ],
+        "node_modules", "dist", "vite.config.ts"
+    ]
 }
