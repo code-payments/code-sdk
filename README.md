@@ -35,6 +35,46 @@ You can build the packages locally using npm or yarn.
 npm run build --workspaces
 ```
 
+## Contributor Quick Start
+
+First, you'll likely want to run your own [proxy](https://github.com/code-payments/code-sdk/blob/main/packages/proxy/example/index.ts) server. We need a proxy as a
+workaround for the browser's lack of support for GRPC traffic. Running your own
+proxy is highly recommended as you'll see the interactions between the SDK
+elements and the Code services. This is especially useful when you're developing
+new elements or views.
+
+The following command will start a local server that proxies GRPC requests over
+WebSocket and HTTP/1 envelopes to the Code services. 
+    
+```bash
+cd packages/proxy
+npm run dev
+```
+
+Next, start the elements and views packages. These are the main packages that
+you will be working with. The elements package contains the SDK elements flows
+and the views package contains the iframes that are actually embedded into the
+website. 
+
+Each of these packages will start a local server that you can use to
+test the SDK elements and views.
+
+```bash
+cd packages/elements
+npm run dev
+```
+
+```bash
+cd packages/views
+npm run dev
+```
+
+You can now visit `http://localhost:8760/` to see the elements and views in
+action.
+
+Note: Both the elements and views packages assume the proxy is on
+`localhost:3000`. If you're running the proxy on a different port, you'll need
+to update each package.
 
 ## Getting Help
 
