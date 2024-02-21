@@ -1,6 +1,6 @@
 {
     "name": "@code-wallet/flags",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -11,7 +11,7 @@
     "source": "src/index.ts",
     "main": "dist/flags.cjs",
     "module": "dist/flags.js",
-    "types": "dist/flags.d.ts",
+    "types": "dist/index.d.ts",
 
     "files": [
         "./dist/"
@@ -19,7 +19,8 @@
     "scripts": {
         "test": "echo \"no tests yet\"",
         "clean": "rm -rf ./dist",
-        "build": "npm run clean && vite build -c vite.config.ts"
+        "build": "npm run clean && vite build -c vite.config.ts && npm run build:types",
+        "build:types": "tsc --emitDeclarationOnly"
     },
     "browserslist": [
         "supports bigint and not dead",
