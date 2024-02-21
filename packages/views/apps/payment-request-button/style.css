@@ -1,0 +1,47 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  @font-face {
+    font-family: "Avenir Next LT Pro Regular";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url(/fonts/avenir/AvenirNextLTPro-Regular.otf) format("opentype");
+  }
+  @font-face {
+    font-family: "Avenir Next LT Pro Medium";
+    font-style: normal;
+    font-weight: 600;
+    font-display: block;
+    src: url(/fonts/avenir/AvenirNextLTPro-Medium.otf) format("opentype");
+  }
+  @font-face {
+    font-family: "Avenir Next LT Pro Bold";
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url(/fonts/avenir/AvenirNextLTPro-Demi.otf) format("opentype");
+  }
+}
+
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #555;
+
+  font-family: 'Avenir Next LT Pro Regular', sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
