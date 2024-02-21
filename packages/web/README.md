@@ -1,9 +1,9 @@
 [![npm][npm-image]][npm-url]
 [![npm-downloads][npm-downloads-image]][npm-url]
 
-[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/web?style=flat
-[npm-image]: https://img.shields.io/npm/v/@code-wallet/web?style=flat
-[npm-url]: https://www.npmjs.com/package/@code-wallet/web
+[npm-downloads-image]: https://img.shields.io/npm/dt/@code-wallet/web.js?style=flat
+[npm-image]: https://img.shields.io/npm/v/@code-wallet/web.js?style=flat
+[npm-url]: https://www.npmjs.com/package/@code-wallet/web.js
 
 # @code-wallet/web
 This client side package wraps the `elements` and `library` packages including
