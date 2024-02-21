@@ -3,7 +3,11 @@
     "workspaces": [
         "packages/*"
     ],
-    "scripts": {},
+    "scripts": {
+        "dev:proxy": "cd packages/proxy && npm run dev",
+        "dev:views": "cd packages/views && npm run dev",
+        "dev:elements": "cd packages/elements && npm run dev"
+    },
     "engines": {
         "node": ">=18.0.0"
     },
