@@ -17,47 +17,29 @@ const props = defineProps({
 
     <template #default="{ state, channel, request }">
 
-      <div class="delay-show-1 pb-10">
-        <div class="pb-5 text-white text-[28px] text-center leading-tight
-          tracking-tighter font-medium">Use Code App to Login to {{ request.intent.options.login!.domain }}
-        </div>
+      <div class="text-white text-[26px] px-16 text-center leading-tight
+        tracking-tighter font-medium">Use the Code Wallet app to login</div>
 
-        <button v-if="!state.isLoading" type="button" @click="openInApp(channel, request.toPayload())" 
-        class="mt-6 block rounded-md bg-white py-4 text-base
-        font-semibold text-[#0f0c1f] text-center shadow-sm
-        w-full">Open Code</button>
+      <button v-if="!state.isLoading" type="button" @click="openInApp(channel, request.toPayload())" 
+      class="mt-6 block rounded-md bg-white py-4 text-base
+      font-semibold text-[#0f0c1f] text-center shadow-sm
+      w-full">Open in Code</button>
 
-        <button v-else type="button" 
-        class="mt-6 block rounded-md bg-white py-4 text-base
-        font-semibold text-[#0f0c1f] text-center shadow-sm
-        w-full whitespace-nowrap">
-          <span class="absolute left-1/2 -translate-x-1/2 pt-1">
-            <CodeSpinner v-if="state.isLoading"/>
-          </span>
-          &nbsp;
-        </button>
-      </div>
+      <button v-else type="button" 
+      class="mt-6 block rounded-md bg-white py-4 text-base
+      font-semibold text-[#0f0c1f] text-center shadow-sm
+      w-full whitespace-nowrap">
+        <span class="absolute left-1/2 -translate-x-1/2 pt-1">
+          <CodeSpinner v-if="state.isLoading"/>
+        </span>
+        &nbsp;
+      </button>
 
-      <div class="delay-show-2 border-b border-[#565C86]"></div>
-
-      <div class="delay-show-3 mt-10">
-        <div class="pb-10 text-white text-[28px] text-center
-        leading-tight tracking-tighter font-medium">
-        Don’t have the <br> Code Wallet app yet?</div>
-
-        <div class="flex content-center text-white">
-          <div class="grow h-14 grid content-center pl-3 text-lg leading-6">
-            Download it and create an account.<br>
-            Get your first $1 for free.
-          </div>
-        </div>
-
-        <button type="button" @click="openInAppStore(channel)"
+      <button type="button" @click="openInAppStore(channel)"
         class="mt-6 block rounded-md bg-transparent border
         border-white py-4 text-base font-semibold text-[#0f0c1f]
-        text-center text-white shadow-sm w-full">
-        Download Code Now</button>
-      </div>
+        text-center text-white shadow-sm w-full">Download Code
+        Now</button>
 
     </template>
   </CodeMobileModal>  

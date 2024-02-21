@@ -54,7 +54,7 @@ onMounted(() => {
     <div v-if="qrShow" class="text-center">
         <div
             class="text-white text-[1.4vh] text-center leading-tight font-medium font-avenir-next-bold">
-            Scan this QR code with your phone’s camera to download the Code Wallet app
+            Scan to Download
         </div>
 
         <div class="mt-5 flex items-center justify-center">

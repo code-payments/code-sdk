@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
-import { XMarkIcon } from '@heroicons/vue/24/outline';
+import { XMarkIcon } from '@heroicons/vue/20/solid';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { EventChannel, InternalEvents } from "@code-wallet/events";
 import { openInApp, setHasCodeApp, sleep, CodeRequest, hasCodeApp, CodeRequestFromPayload, LoginRequest } from "../../utils";
@@ -138,7 +138,7 @@ function onClose () {
 
         <TransitionChild as="template" enter="duration-[0ms]" enter-from="opacity-0" enter-to="opacity-100"
           leave="duration-[800ms]" leave-from="opacity-100" leave-to="opacity-0">
-          <div class="fixed inset-0 bg-opacity-80 transition-opacity backdrop-blur-sm bg-black" />
+          <div class="fixed inset-0 transition-opacity backdrop-blur-sm bg-[#0f0c1f]" />
         </TransitionChild>
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -146,8 +146,8 @@ function onClose () {
           <TransitionChild as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[800ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
-              class="absolute right-10 top-10 flex h-14 w-14 items-center justify-center rounded-full bg-black z-100">
-              <XMarkIcon class="h-7 w-7 text-white" aria-hidden="true" />
+              class="absolute right-2 top-2 flex h-14 w-14 items-center justify-center rounded-full z-100">
+              <XMarkIcon class="h-9 w-9 text-white" aria-hidden="true" />
             </button>
           </TransitionChild>
 

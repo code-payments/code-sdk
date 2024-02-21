@@ -11,6 +11,7 @@
     const emit = defineEmits([
         'codeScanned',
         'clientRejectedPayment',
+        'clientRejectedLogin',
         'intentSubmitted',
         'channelCreated',
         'error',
@@ -22,17 +23,10 @@
     const url = `${config.codeSdk()}/${mode}-request-modal-mobile/#/${channel.id}/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
-    channel.on('codeScanned' , () => {
-        emit('codeScanned');
-    });
-
-    channel.on('clientRejectedPayment' , () => {
-        emit('clientRejectedPayment');
-    });
-
-    channel.on('intentSubmitted' , () => {
-        emit('intentSubmitted');
-    });
+    channel.on('codeScanned' , () => { emit('codeScanned'); });
+    channel.on('clientRejectedPayment' , () => { emit('clientRejectedPayment'); });
+    channel.on('clientRejectedLogin' , () => { emit('clientRejectedLogin'); });
+    channel.on('intentSubmitted' , () => { emit('intentSubmitted'); });
 
     channel.on('navigate' , (event) => {
         if (!event.url) { return; }

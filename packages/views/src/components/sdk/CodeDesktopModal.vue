@@ -124,34 +124,34 @@ function onClose() {
       <Dialog as="div" class="relative z-10" @close="onClose" :initialFocus="elFocusOn">
 
         <TransitionChild as="template" 
-          enter="duration-[0ms]" 
+          enter="duration-[100ms]" 
           enter-from="opacity-0" 
           enter-to="opacity-100"
-          leave="duration-[800ms]" 
+          leave="duration-[400ms]" 
           leave-from="opacity-100" 
           leave-to="opacity-0">
-          <div class="fixed inset-0 bg-opacity-80 transition-opacity backdrop-blur-sm bg-black" />
+          <div class="fixed inset-0 transition-opacity backdrop-blur-sm bg-[#0f0c1f]" />
         </TransitionChild>
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
 
-          <TransitionChild as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
-            leave="duration-[800ms]" leave-from="opacity-100" leave-to="opacity-0">
+          <TransitionChild as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
+            leave="duration-[100ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
-              class="absolute right-10 top-10 flex h-14 w-14 items-center justify-center rounded-full bg-black z-100">
-              <XMarkIcon class="h-7 w-7 text-white" aria-hidden="true" />
+              class="absolute right-2 top-2 flex h-14 w-14 items-center justify-center rounded-full z-100">
+              <XMarkIcon class="h-9 w-9 text-white" aria-hidden="true" />
             </button>
           </TransitionChild>
 
           <div class="grid h-screen place-items-center">
-            <TransitionChild as="template" enter="duration-[800ms]"
+            <TransitionChild as="template" enter="duration-[100ms]"
               enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enter-to="opacity-100 translate-y-0 sm:scale-100" leave="duration-[800ms]"
+              enter-to="opacity-100 translate-y-0 sm:scale-100" leave="duration-[100ms]"
               leave-from="opacity-100 translate-y-0 sm:scale-100"
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
 
-              <div class="text-center py-[100px]">
+              <div class="text-center">
 
                 <DialogPanel class="relative transform  transition-all w-full max-w-4xl p-6 mx-auto">
 

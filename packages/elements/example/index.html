@@ -9,12 +9,14 @@
 
 <body>
 
-  <div style="padding: 10%; background-color: black;">
-    <span id="button-container1"></span>
+  <div style="padding: 10%; background-color: lightgray;">
+    <span id="button-pay2"></span>
+    <span id="button-login2"></span>
   </div>
 
-  <div style="padding: 10%; background-color: lightgray;">
-    <span id="button-container2"></span>
+  <div style="padding: 10%; background-color: black;">
+    <span id="button-pay1"></span>
+    <span id="button-login1"></span>
   </div>
 
   <script type="module">
@@ -22,8 +24,7 @@
 
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    function mount(id, appearance) {
-
+    function mount_payment(id, appearance) {
       const options = {
         currency: 'usd',
         destination: 'E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR',
@@ -45,8 +46,34 @@
       button.mount(id);
     }
 
-    mount('#button-container1', 'light');
-    mount('#button-container2', 'dark');
+    function mount_login(id, appearance) {
+      const options = {
+        appearance,
+        mode: 'login',
+        login: {
+          domain: 'example-getcode.com',
+          verifier: '5TSdPcPLe9CovF5ZK8gfv1kmSpHc9GuWkaDUK2sqC33X'
+        },
+        confirmParams: {
+          success: {
+            url: '/success/{{INTENT_ID}}',
+          }
+        }
+      }
+
+      const { button } = code.elements.create('button', options);
+
+      button.on('error', (e) => { console.log('sdk-error', e); });
+      button.on('cancel', (e) => { console.log('sdk-cancel', e); });
+      button.on('success', (e) => { console.log('sdk-success', e); alert('thank you'); return true; });
+
+      button.mount(id);
+    }
+
+    mount_payment('#button-pay1', 'light');
+    mount_payment('#button-pay2', 'dark');
+    mount_login('#button-login1', 'light');
+    mount_login('#button-login2', 'dark');
   </script>
 </body>
 
