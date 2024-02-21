@@ -40,14 +40,18 @@ npm run build --workspaces
 If you're interested in contributing to the Code SDK, please see the
 [contributing](#contributing) section below. 
 
-You'll likely want to run your own
+Our Code mobile apps and services all use [gRPC](https://grpc.io/) to
+communicate. If you're planning to do sdk contributions, you'll likely want to
+run the code-sdk
 [proxy](https://github.com/code-payments/code-sdk/blob/main/packages/proxy/example/index.ts)
-server. We need a proxy as a workaround for the browser's lack of support for
-GRPC traffic. Running your own proxy is highly recommended as you'll see the
-interactions between the SDK elements and the Code services. This is especially
-useful when you're developing new elements or views.
+server locally. Running the proxy locally is highly recommended as you'll see
+the interactions between the SDK elements and the Code services. This is
+especially useful when you're developing new elements or views. Note that we use
+a custom gRPC envelope protocol as the existing gRPC-web libraries do not
+support bidi streams over HTTP/1 and are [not binary
+stable](https://github.com/protocolbuffers/protobuf-go/blob/v1.28.1/proto/encode.go#L216-L219).
 
-The following command will start a local server that proxies GRPC requests over
+The following command will start a local server that proxies gRPC requests over
 WebSocket and HTTP/1 envelopes to the Code services. 
     
 ```bash
