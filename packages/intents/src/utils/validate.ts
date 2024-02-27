@@ -118,7 +118,7 @@ function validateLoginRequestOptions(intent: ElementOptions) {
     }
 
     // TODO: Add support for domain verification once tests are updated.
-    const verifyDomain = false;
+    const verifyDomain = true;
     if (verifyDomain) {
         // Check that there is no subdomain.
         if (url.hostname.split('.').length > 2) {

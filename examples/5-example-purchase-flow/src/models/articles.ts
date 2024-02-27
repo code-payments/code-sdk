@@ -1,4 +1,4 @@
-import { CurrencyCode } from '@code-wallet/library';
+import { CurrencyCode } from '@code-wallet/currency';
 
 const defaultCurrency: CurrencyCode = 'usd';
 const defaultPrice = 0.25;

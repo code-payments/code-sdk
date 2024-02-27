@@ -1,5 +1,5 @@
 import { jwtVerify } from 'jose';
-import { PublicKey } from '@code-wallet/library';
+import { PublicKey } from '@code-wallet/keys';
 import { createPublicKey } from 'crypto';
 
 export async function verifyToken(token: string, publicKey: string) {

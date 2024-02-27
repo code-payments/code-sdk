@@ -6,7 +6,10 @@
 [npm-url]: https://www.npmjs.com/package/@code-wallet/keys
 
 # @code-wallet/keys
-Manage ED25519 cryptographic keys, including public keys and key pairs, crucial for the security and verification mechanisms of the platform. This package is part of the Code SDK, a collection of packages that provide a comprehensive set of tools for developers to integrate Code into their websites and applications. 
+Manage ED25519 cryptographic keys, including public keys and key pairs, crucial
+for the security and verification mechanisms of the platform. This package is
+part of the Code SDK, a collection of packages that provide a comprehensive set
+of tools for developers to integrate Code into their websites and applications. 
 
 If you're looking for key phrases, check out the `@code-wallet/mnemonic` package.
 

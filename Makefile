@@ -1,5 +1,5 @@
-.PHONY: clear-cache
-clear-cache:
+.PHONY: clean-cache
+clean-cache:
 	@rm -rf ./node_modules
 	@rm -rf ./packages/views/node_modules/client
 	@rm -rf ./packages/views/node_modules/currency

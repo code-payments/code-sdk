@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { jwtVerify, importJWK } from 'jose';
-import { PublicKey } from "@code-wallet/library";
+import { PublicKey } from "@code-wallet/keys";
 import * as code from "@code-wallet/client";
 
 const port = 3030;
