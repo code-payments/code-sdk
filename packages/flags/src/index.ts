@@ -1,4 +1,4 @@
-import { currencyCodeToRegion } from '@code-wallet/library';
+import { currencyCodeToRegion } from '@code-wallet/currency';
 
 async function flagForCurrency(currency: any) {
   const region = currencyCodeToRegion(currency);

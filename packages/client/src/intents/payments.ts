@@ -7,7 +7,7 @@ import {
     LoginRequestOptions,
     WebhookParams,
     Intent,
-} from "@code-wallet/library";
+} from "@code-wallet/intents";
 
 import { useClient } from "../utils/useClient";
 import { createIntent } from "../utils/createIntent";
@@ -52,7 +52,7 @@ const paymentIntents = {
 
         let intent : Intent;
         if (opt.login) {
-            intent = new PaymentRequestWithLoginIntent(opt);
+            intent = new PaymentRequestWithLoginIntent(opt as CreatePaymentIntentOptions & LoginRequestOptions);
         } else {
             intent = new PaymentRequestIntent(opt);
         }

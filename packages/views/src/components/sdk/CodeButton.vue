@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
-  import { decode } from "@code-wallet/library";
+  import { decode } from "@code-wallet/intents";
   import { EventChannel, InternalButtonEvents, InternalElementEvents } from '@code-wallet/events';
 
   const props = defineProps({

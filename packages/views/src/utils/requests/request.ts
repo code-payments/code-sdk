@@ -1,6 +1,7 @@
 import { useConfig } from '../../config';
 import { EventChannel, InternalCardEvents, InternalEvents } from "@code-wallet/events";
-import { decode, encode, PublicKey, Intent } from "@code-wallet/library";
+import { decode, encode, Intent } from "@code-wallet/intents";
+import { PublicKey } from "@code-wallet/keys"
 import * as Kik from '@code-wallet/kikcode';
 import * as proto from '@code-wallet/rpc';
 

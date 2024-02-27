@@ -1,5 +1,5 @@
 import { Client } from "../client";
-import { Intent, } from "@code-wallet/library";
+import { Intent, } from "@code-wallet/intents";
 import * as proto from "@code-wallet/rpc";
 import { ErrUnexpectedError } from "../errors";
 

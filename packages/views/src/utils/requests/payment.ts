@@ -1,5 +1,5 @@
 import { AbstractRequest } from '../';
-import { PaymentRequestIntent,} from "@code-wallet/library";
+import { ElementOptions, PaymentRequestIntent, PaymentRequestOptions,} from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
 
 class PaymentRequest extends AbstractRequest {
@@ -30,7 +30,7 @@ class PaymentRequest extends AbstractRequest {
     } = {}) {
 
         const body = AbstractRequest.bodyFromPayload(val, opt);
-        const intent = new PaymentRequestIntent(body);
+        const intent = new PaymentRequestIntent(body as ElementOptions & PaymentRequestOptions);
         const req = new PaymentRequest(intent);
 
         return req;

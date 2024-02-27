@@ -4,7 +4,7 @@ import {
     LoginRequestOptions,
     WebhookParams,
     LoginRequestIntent,
-} from "@code-wallet/library";
+} from "@code-wallet/intents";
 
 import { useClient } from "../utils/useClient";
 import { createIntent } from "../utils/createIntent";

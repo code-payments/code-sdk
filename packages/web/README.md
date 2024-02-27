@@ -6,10 +6,10 @@
 [npm-url]: https://www.npmjs.com/package/@code-wallet/web.js
 
 # @code-wallet/web
-This client side package wraps the `elements` and `library` packages including
-dependencies for use in the browser. This package is intended to be accessed
-directly through `https://js.getcode.com/v1/` otherwise, please use the
-`@code-wallet/elements` package directly.
+This client side package wraps the `elements` package including dependencies for
+use in the browser. This package is intended to be accessed directly through
+`https://js.getcode.com/v1/` otherwise, please use the `@code-wallet/elements`
+package directly.
 
 This package provides the code.elements object, which you can utilize to embed a
 [Code Payments](https://codepayments.org) button seamlessly into your website or

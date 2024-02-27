@@ -4,8 +4,10 @@ import {
   ElementEventEmitter, 
   ElementOptions, 
   LoginRequestIntent, 
-  PaymentRequestIntent
-} from '@code-wallet/library';
+  LoginRequestOptions, 
+  PaymentRequestIntent,
+PaymentRequestOptions
+} from '@code-wallet/intents';
 import { EventChannel, InternalEvents } from '@code-wallet/events';
 import * as code from "@code-wallet/client";
 
@@ -76,9 +78,9 @@ async function onInvoke() {
 
   // Get the intent id from the receiving app or iframe
   if (options.mode === 'payment') {
-    intent.value = new PaymentRequestIntent(options).getIntentId();
+    intent.value = new PaymentRequestIntent(options as ElementOptions & PaymentRequestOptions).getIntentId();
   } else {
-    intent.value = new LoginRequestIntent(options).getIntentId();
+    intent.value = new LoginRequestIntent(options as ElementOptions & LoginRequestOptions).getIntentId();
   }
 
   const variables = {

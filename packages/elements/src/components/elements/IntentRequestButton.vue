@@ -2,7 +2,7 @@
     import { inject, onMounted, ref } from 'vue';
     import { useConfig } from '../../config';
     import { EventChannel, InternalButtonEvents, InternalElementEvents } from '@code-wallet/events';
-    import { ElementOptions, encode } from '@code-wallet/library';
+    import { ElementOptions, encode } from '@code-wallet/intents';
 
     const config = useConfig();
     const options = inject<ElementOptions>('options');

@@ -1,5 +1,5 @@
 import { AbstractRequest } from '../';
-import { LoginRequestIntent } from "@code-wallet/library";
+import { LoginRequestIntent } from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
 
 class LoginRequest extends AbstractRequest {

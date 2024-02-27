@@ -1,6 +1,6 @@
 {
     "name": "@code-wallet/client",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -23,7 +23,8 @@
         "maintained node versions"
     ],
     "dependencies": {
-        "@code-wallet/library": "^1.3.2",
+        "@code-wallet/keys": "^1.0.0",
+        "@code-wallet/intents": "^1.0.0",
         "@code-wallet/rpc": "^1.3.1",
         "bs58": "^5.0.0",
         "buffer": "6.0.3"

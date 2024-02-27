@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ElementOptions, encode } from '@code-wallet/library';
+    import { ElementOptions, encode } from '@code-wallet/intents';
     import { useConfig } from '../../config';
     import { inject, ref } from 'vue';
 

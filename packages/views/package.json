@@ -1,6 +1,6 @@
 {
   "name": "@code-wallet/views",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "repository": {
       "type": "git",
@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@code-wallet/events": "^1.4.0",
-    "@code-wallet/library": "^1.3.4",
+    "@code-wallet/keys": "^1.0.0",
+    "@code-wallet/intents": "^1.0.0",
     "@code-wallet/rpc": "^1.3.1",
     "@code-wallet/flags": "^1.0.0",
     "@code-wallet/kikcode": "^1.0.0",
