@@ -6,7 +6,7 @@
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Duration, Message as Message$1, proto3, Timestamp } from "@bufbuild/protobuf";
 import { Domain, IntentId, Signature, SolanaAccountId } from "../../common/v1/model_pb";
-import { AirdropType, ExchangeData, ExchangeDataWithoutRate, Metadata } from "../../transaction/v2/transaction_service_pb";
+import { AdditionalFeePayment, AirdropType, ExchangeData, ExchangeDataWithoutRate, Metadata } from "../../transaction/v2/transaction_service_pb";
 
 /**
  * @generated from message code.messaging.v1.OpenMessageStreamRequest
@@ -688,6 +688,14 @@ export class RequestToReceiveBill extends Message$1<RequestToReceiveBill> {
    */
   rendezvousKey?: RendezvousKey;
 
+  /**
+   * Additional fee payments splitting the requested amount. This is in addition
+   * to the hard-coded Code $0.01 USD fee.
+   *
+   * @generated from field: repeated code.transaction.v2.AdditionalFeePayment additional_fees = 8;
+   */
+  additionalFees: AdditionalFeePayment[] = [];
+
   constructor(data?: PartialMessage<RequestToReceiveBill>) {
     super();
     proto3.util.initPartial(data, this);
@@ -703,6 +711,7 @@ export class RequestToReceiveBill extends Message$1<RequestToReceiveBill> {
     { no: 5, name: "verifier", kind: "message", T: SolanaAccountId },
     { no: 6, name: "signature", kind: "message", T: Signature },
     { no: 7, name: "rendezvous_key", kind: "message", T: RendezvousKey },
+    { no: 8, name: "additional_fees", kind: "message", T: AdditionalFeePayment, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RequestToReceiveBill {
@@ -821,6 +830,9 @@ export class IntentSubmitted extends Message$1<IntentSubmitted> {
   intentId?: IntentId;
 
   /**
+   * Metadata is available for intents where it can be safely propagated publicly.
+   * Anything else requires an additional authenticated RPC call (eg. login).
+   *
    * @generated from field: code.transaction.v2.Metadata metadata = 2;
    */
   metadata?: Metadata;

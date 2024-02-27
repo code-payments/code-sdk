@@ -1,7 +1,7 @@
 import * as proto from '@code-wallet/rpc';
+import { Keypair } from '@code-wallet/keys';
 import { IdempotencyKey } from './idempotency';
 import { ElementOptions } from './elements/options';
-import { Keypair } from './keys';
 import { CodePayload } from './payload';
  
 export type IntentType = 'payment' | 'login';

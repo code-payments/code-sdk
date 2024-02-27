@@ -1,6 +1,6 @@
 import bs58 from 'bs58';
 import { sha256 } from '@noble/hashes/sha256';
-import { Keypair } from './keys';
+import { Keypair } from '@code-wallet/keys';
 import { ErrInvalidSize } from './errors';
 
 /**

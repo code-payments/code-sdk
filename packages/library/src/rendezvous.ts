@@ -1,5 +1,5 @@
 import { sha256 } from '@noble/hashes/sha256';
-import { Keypair } from './keys';
+import { Keypair } from '@code-wallet/keys';
 import { CodePayload } from './payload';
 
 /**

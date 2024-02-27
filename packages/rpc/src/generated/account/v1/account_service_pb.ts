@@ -240,6 +240,136 @@ proto3.util.setEnumType(GetTokenAccountInfosResponse_Result, "code.account.v1.Ge
 ]);
 
 /**
+ * @generated from message code.account.v1.LinkAdditionalAccountsRequest
+ */
+export class LinkAdditionalAccountsRequest extends Message<LinkAdditionalAccountsRequest> {
+  /**
+   * The owner account to link to
+   *
+   * @generated from field: code.common.v1.SolanaAccountId owner = 1;
+   */
+  owner?: SolanaAccountId;
+
+  /**
+   * The authority account derived off the user's 12 words, which contains
+   * the USDC ATA (and potentially others in the future) that will be used
+   * in swaps.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId swap_authority = 2;
+   */
+  swapAuthority?: SolanaAccountId;
+
+  /**
+   * Signature values for each account provided in this request. Each signature
+   * must be generated without this array set. The expected ordering of signatures:
+   *  1. owner
+   *  2. swap_authority
+   *
+   * @generated from field: repeated code.common.v1.Signature signatures = 3;
+   */
+  signatures: Signature[] = [];
+
+  constructor(data?: PartialMessage<LinkAdditionalAccountsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.account.v1.LinkAdditionalAccountsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "owner", kind: "message", T: SolanaAccountId },
+    { no: 2, name: "swap_authority", kind: "message", T: SolanaAccountId },
+    { no: 3, name: "signatures", kind: "message", T: Signature, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LinkAdditionalAccountsRequest {
+    return new LinkAdditionalAccountsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LinkAdditionalAccountsRequest {
+    return new LinkAdditionalAccountsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LinkAdditionalAccountsRequest {
+    return new LinkAdditionalAccountsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: LinkAdditionalAccountsRequest | PlainMessage<LinkAdditionalAccountsRequest> | undefined, b: LinkAdditionalAccountsRequest | PlainMessage<LinkAdditionalAccountsRequest> | undefined): boolean {
+    return proto3.util.equals(LinkAdditionalAccountsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message code.account.v1.LinkAdditionalAccountsResponse
+ */
+export class LinkAdditionalAccountsResponse extends Message<LinkAdditionalAccountsResponse> {
+  /**
+   * @generated from field: code.account.v1.LinkAdditionalAccountsResponse.Result result = 1;
+   */
+  result = LinkAdditionalAccountsResponse_Result.OK;
+
+  constructor(data?: PartialMessage<LinkAdditionalAccountsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.account.v1.LinkAdditionalAccountsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(LinkAdditionalAccountsResponse_Result) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LinkAdditionalAccountsResponse {
+    return new LinkAdditionalAccountsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LinkAdditionalAccountsResponse {
+    return new LinkAdditionalAccountsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LinkAdditionalAccountsResponse {
+    return new LinkAdditionalAccountsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: LinkAdditionalAccountsResponse | PlainMessage<LinkAdditionalAccountsResponse> | undefined, b: LinkAdditionalAccountsResponse | PlainMessage<LinkAdditionalAccountsResponse> | undefined): boolean {
+    return proto3.util.equals(LinkAdditionalAccountsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from enum code.account.v1.LinkAdditionalAccountsResponse.Result
+ */
+export enum LinkAdditionalAccountsResponse_Result {
+  /**
+   * Supports idempotency, and will be returned as long as the request exactly
+   * matches a previous execution.
+   *
+   * @generated from enum value: OK = 0;
+   */
+  OK = 0,
+
+  /**
+   * The action has been denied (eg. owner account not phone verified)
+   *
+   * @generated from enum value: DENIED = 1;
+   */
+  DENIED = 1,
+
+  /**
+   * An account being linked is not valid
+   *
+   * @generated from enum value: INVALID_ACCOUNT = 2;
+   */
+  INVALID_ACCOUNT = 2,
+}
+// Retrieve enum metadata with: proto3.getEnumType(LinkAdditionalAccountsResponse_Result)
+proto3.util.setEnumType(LinkAdditionalAccountsResponse_Result, "code.account.v1.LinkAdditionalAccountsResponse.Result", [
+  { no: 0, name: "OK" },
+  { no: 1, name: "DENIED" },
+  { no: 2, name: "INVALID_ACCOUNT" },
+]);
+
+/**
  * @generated from message code.account.v1.TokenAccountInfo
  */
 export class TokenAccountInfo extends Message<TokenAccountInfo> {
@@ -353,20 +483,6 @@ export class TokenAccountInfo extends Message<TokenAccountInfo> {
   mint?: SolanaAccountId;
 
   /**
-   * The number of decimals configured for the mint
-   *
-   * @generated from field: uint32 mint_decimals = 14;
-   */
-  mintDecimals = 0;
-
-  /**
-   * User-friendly display name for the mint
-   *
-   * @generated from field: string mint_display_name = 15;
-   */
-  mintDisplayName = "";
-
-  /**
    * The relationship with a third party that this account has established with.
    * This only applies to relevant account types (eg. RELATIONSHIP).
    *
@@ -395,8 +511,6 @@ export class TokenAccountInfo extends Message<TokenAccountInfo> {
     { no: 11, name: "claim_state", kind: "enum", T: proto3.getEnumType(TokenAccountInfo_ClaimState) },
     { no: 12, name: "original_exchange_data", kind: "message", T: ExchangeData },
     { no: 13, name: "mint", kind: "message", T: SolanaAccountId },
-    { no: 14, name: "mint_decimals", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
-    { no: 15, name: "mint_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 16, name: "relationship", kind: "message", T: Relationship },
   ]);
 

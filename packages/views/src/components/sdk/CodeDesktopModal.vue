@@ -138,7 +138,7 @@ function onClose() {
           <TransitionChild as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[100ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
-              class="absolute right-2 top-2 flex h-14 w-14 items-center justify-center rounded-full z-100">
+              class="absolute right-4 top-4 flex h-14 w-14 items-center justify-center rounded-full z-100">
               <XMarkIcon class="h-9 w-9 text-white" aria-hidden="true" />
             </button>
           </TransitionChild>

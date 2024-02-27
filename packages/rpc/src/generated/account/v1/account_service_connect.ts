@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetTokenAccountInfosRequest, GetTokenAccountInfosResponse, IsCodeAccountRequest, IsCodeAccountResponse } from "./account_service_pb";
+import { GetTokenAccountInfosRequest, GetTokenAccountInfosResponse, IsCodeAccountRequest, IsCodeAccountResponse, LinkAdditionalAccountsRequest, LinkAdditionalAccountsResponse } from "./account_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -35,6 +35,20 @@ export const Account = {
       name: "GetTokenAccountInfos",
       I: GetTokenAccountInfosRequest,
       O: GetTokenAccountInfosResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * LinkAdditionalAccounts allows a client to declare additional accounts to
+     * be tracked and used within Code. The accounts declared in this RPC are not
+     * managed by Code (ie. not a Timelock account), created externally and cannot
+     * be linked automatically (ie. authority derived off user 12 words).
+     *
+     * @generated from rpc code.account.v1.Account.LinkAdditionalAccounts
+     */
+    linkAdditionalAccounts: {
+      name: "LinkAdditionalAccounts",
+      I: LinkAdditionalAccountsRequest,
+      O: LinkAdditionalAccountsResponse,
       kind: MethodKind.Unary,
     },
   }

@@ -1,6 +1,6 @@
 import * as proto from '@code-wallet/rpc';
+import { PublicKey } from '@code-wallet/keys';
 import { CurrencyCode } from '../currency';
-import { PublicKey } from '../keys';
 import { CodePayload, CodeKind } from '../payload';
 import { SignedIntent } from '../intent';
 import { 
@@ -10,7 +10,7 @@ import {
     ErrUnexpectedError
 } from '../errors';
 import { validateElementOptions } from '../elements/validate';
-import { ElementOptions  } from '../elements/options';
+import { ElementOptions, PaymentRequestOptions  } from '../elements/options';
 import { Kin } from '../kin';
 import { AbstractIntent } from './AbstractIntent';
 
@@ -26,7 +26,7 @@ class PaymentRequestIntent extends AbstractIntent {
      * 
      * @param opt - The payment request options.
      */
-    constructor(opt: ElementOptions) {
+    constructor(opt: PaymentRequestOptions & ElementOptions) {
         super({
             ...opt,
 

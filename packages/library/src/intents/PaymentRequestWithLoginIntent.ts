@@ -1,5 +1,5 @@
 import * as proto from '@code-wallet/rpc';
-import { Keypair, PublicKey } from '../keys';
+import { Keypair, PublicKey } from '@code-wallet/keys';
 import { SignedIntent } from '../intent';
 import { 
     ErrLoginDomainRequired, 
@@ -7,7 +7,11 @@ import {
     ErrLoginVerifierRequired, 
     ErrUnexpectedError
 } from '../errors';
-import { ElementOptions  } from '../elements/options';
+import { 
+    ElementOptions, 
+    LoginRequestOptions, 
+    PaymentRequestOptions 
+} from '../elements/options';
 import { PaymentRequestIntent } from './PaymentRequestIntent';
 
 /**
@@ -23,7 +27,7 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
      * 
      * @param opt - The payment request options.
      */
-    constructor(opt: ElementOptions) {
+    constructor(opt: PaymentRequestOptions & LoginRequestOptions & ElementOptions) {
         super(opt);
 
         const { signers } = opt;
@@ -81,6 +85,17 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
         req.rendezvousKey = new proto.Common.SolanaAccountId({
             value: this.rendezvousKeypair.getPublicKey().toBuffer(),
         });
+
+        if (this.options.fees) {
+            req.additionalFees = this.options.fees.map((f) => {
+                return new proto.AdditionalFeePayment({
+                    destination: new proto.Common.SolanaAccountId({
+                        value: PublicKey.fromBase58(f.destination).toBuffer(),
+                    }),
+                    feeBps: f.basisPoints,
+                });
+            });
+        }
 
         return new proto.Message({
             kind: {

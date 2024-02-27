@@ -1,7 +1,7 @@
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 import { ed25519 } from '@noble/curves/ed25519';
-import { ErrInvalidAddress } from "../errors";
+import { ErrInvalidAddress } from "./errors";
 
 const ED25519_PUBLIC_KEY_LENGTH = 32; // Length of ED25519 public key in bytes
 const BASE_58_ALPHABET = /^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$/;

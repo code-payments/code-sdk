@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64, Timestamp } from "@bufbuild/protobuf";
-import { AccountType, Blockhash, DeviceToken, Hash, InstructionAccount, IntentId, Relationship, Signature, SolanaAccountId, Transaction } from "../../common/v1/model_pb";
+import { AccountType, Blockhash, DeviceToken, Hash, InstructionAccount, IntentId, Relationship, Signature, SolanaAccountId, Transaction, UUID } from "../../common/v1/model_pb";
 
 /**
  * @generated from enum code.transaction.v2.AirdropType
@@ -932,11 +932,11 @@ export class GetLimitsResponse extends Message<GetLimitsResponse> {
   result = GetLimitsResponse_Result.OK;
 
   /**
-   * Remaining send limits keyed by currency
+   * Send limits keyed by currency
    *
-   * @generated from field: map<string, code.transaction.v2.RemainingSendLimit> remaining_send_limits_by_currency = 2;
+   * @generated from field: map<string, code.transaction.v2.SendLimit> send_limits_by_currency = 2;
    */
-  remainingSendLimitsByCurrency: { [key: string]: RemainingSendLimit } = {};
+  sendLimitsByCurrency: { [key: string]: SendLimit } = {};
 
   /**
    * Deposit limits
@@ -952,6 +952,13 @@ export class GetLimitsResponse extends Message<GetLimitsResponse> {
    */
   microPaymentLimitsByCurrency: { [key: string]: MicroPaymentLimit } = {};
 
+  /**
+   * Buy module limits keyed by currency
+   *
+   * @generated from field: map<string, code.transaction.v2.BuyModuleLimit> buy_module_limits_by_currency = 5;
+   */
+  buyModuleLimitsByCurrency: { [key: string]: BuyModuleLimit } = {};
+
   constructor(data?: PartialMessage<GetLimitsResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -961,9 +968,10 @@ export class GetLimitsResponse extends Message<GetLimitsResponse> {
   static readonly typeName = "code.transaction.v2.GetLimitsResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(GetLimitsResponse_Result) },
-    { no: 2, name: "remaining_send_limits_by_currency", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: RemainingSendLimit} },
+    { no: 2, name: "send_limits_by_currency", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: SendLimit} },
     { no: 3, name: "deposit_limit", kind: "message", T: DepositLimit },
     { no: 4, name: "micro_payment_limits_by_currency", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: MicroPaymentLimit} },
+    { no: 5, name: "buy_module_limits_by_currency", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: BuyModuleLimit} },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLimitsResponse {
@@ -1598,10 +1606,10 @@ export class SwapResponse extends Message<SwapResponse> {
    */
   response: {
     /**
-     * @generated from field: code.transaction.v2.SwapResponse.ServerParameters server_paramenters = 1;
+     * @generated from field: code.transaction.v2.SwapResponse.ServerParameters server_parameters = 1;
      */
     value: SwapResponse_ServerParameters;
-    case: "serverParamenters";
+    case: "serverParameters";
   } | {
     /**
      * @generated from field: code.transaction.v2.SwapResponse.Success success = 2;
@@ -1624,7 +1632,7 @@ export class SwapResponse extends Message<SwapResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "code.transaction.v2.SwapResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "server_paramenters", kind: "message", T: SwapResponse_ServerParameters, oneof: "response" },
+    { no: 1, name: "server_parameters", kind: "message", T: SwapResponse_ServerParameters, oneof: "response" },
     { no: 2, name: "success", kind: "message", T: SwapResponse_Success, oneof: "response" },
     { no: 3, name: "error", kind: "message", T: SwapResponse_Error, oneof: "response" },
   ]);
@@ -1668,9 +1676,9 @@ export class SwapResponse_ServerParameters extends Message<SwapResponse_ServerPa
    * Compute unit limit provided to the ComputeBudget::SetComputeUnitLimit
    * instruction. If the value is 0, then the instruction can be omitted.
    *
-   * @generated from field: uint64 compute_unit_limit = 3;
+   * @generated from field: uint32 compute_unit_limit = 3;
    */
-  computeUnitLimit = protoInt64.zero;
+  computeUnitLimit = 0;
 
   /**
    * Compute unit price provided in the ComputeBudget::SetComputeUnitPrice
@@ -1736,7 +1744,7 @@ export class SwapResponse_ServerParameters extends Message<SwapResponse_ServerPa
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "payer", kind: "message", T: SolanaAccountId },
     { no: 2, name: "recent_blockhash", kind: "message", T: Blockhash },
-    { no: 3, name: "compute_unit_limit", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "compute_unit_limit", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
     { no: 4, name: "compute_unit_price", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 5, name: "swap_program", kind: "message", T: SolanaAccountId },
     { no: 6, name: "swap_ixn_accounts", kind: "message", T: InstructionAccount, repeated: true },
@@ -1886,11 +1894,11 @@ export enum SwapResponse_Error_Code {
   SIGNATURE_ERROR = 2,
 
   /**
-   * An amount to swap to/from is invalid
+   * The swap failed server-side validation
    *
-   * @generated from enum value: INVALID_SWAP_AMOUNT = 3;
+   * @generated from enum value: INVALID_SWAP = 3;
    */
-  INVALID_SWAP_AMOUNT = 3,
+  INVALID_SWAP = 3,
 
   /**
    * The submitted swap transaction failed. Attempt the swap again.
@@ -1903,8 +1911,150 @@ export enum SwapResponse_Error_Code {
 proto3.util.setEnumType(SwapResponse_Error_Code, "code.transaction.v2.SwapResponse.Error.Code", [
   { no: 0, name: "DENIED" },
   { no: 2, name: "SIGNATURE_ERROR" },
-  { no: 3, name: "INVALID_SWAP_AMOUNT" },
+  { no: 3, name: "INVALID_SWAP" },
   { no: 4, name: "SWAP_FAILED" },
+]);
+
+/**
+ * @generated from message code.transaction.v2.DeclareFiatOnrampPurchaseAttemptRequest
+ */
+export class DeclareFiatOnrampPurchaseAttemptRequest extends Message<DeclareFiatOnrampPurchaseAttemptRequest> {
+  /**
+   * The owner account invoking the buy module
+   *
+   * @generated from field: code.common.v1.SolanaAccountId owner = 1;
+   */
+  owner?: SolanaAccountId;
+
+  /**
+   * The amount being purchased
+   *
+   * @generated from field: code.transaction.v2.ExchangeDataWithoutRate purchase_amount = 2;
+   */
+  purchaseAmount?: ExchangeDataWithoutRate;
+
+  /**
+   * A nonce value unique to the purchase. If it's included in a memo for the
+   * transaction for the deposit to the owner, then purchase_amount will be used
+   * for display values. Otherwise, the amount will be inferred from the transaction.
+   *
+   * @generated from field: code.common.v1.UUID nonce = 3;
+   */
+  nonce?: UUID;
+
+  /**
+   * The signature is of serialize(DeclareFiatOnrampPurchaseAttemptRequest) without
+   * this field set using the private key of the owner account. This provides an
+   * authentication mechanism to the RPC.
+   *
+   * @generated from field: code.common.v1.Signature signature = 4;
+   */
+  signature?: Signature;
+
+  constructor(data?: PartialMessage<DeclareFiatOnrampPurchaseAttemptRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.transaction.v2.DeclareFiatOnrampPurchaseAttemptRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "owner", kind: "message", T: SolanaAccountId },
+    { no: 2, name: "purchase_amount", kind: "message", T: ExchangeDataWithoutRate },
+    { no: 3, name: "nonce", kind: "message", T: UUID },
+    { no: 4, name: "signature", kind: "message", T: Signature },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeclareFiatOnrampPurchaseAttemptRequest {
+    return new DeclareFiatOnrampPurchaseAttemptRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeclareFiatOnrampPurchaseAttemptRequest {
+    return new DeclareFiatOnrampPurchaseAttemptRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeclareFiatOnrampPurchaseAttemptRequest {
+    return new DeclareFiatOnrampPurchaseAttemptRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeclareFiatOnrampPurchaseAttemptRequest | PlainMessage<DeclareFiatOnrampPurchaseAttemptRequest> | undefined, b: DeclareFiatOnrampPurchaseAttemptRequest | PlainMessage<DeclareFiatOnrampPurchaseAttemptRequest> | undefined): boolean {
+    return proto3.util.equals(DeclareFiatOnrampPurchaseAttemptRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message code.transaction.v2.DeclareFiatOnrampPurchaseAttemptResponse
+ */
+export class DeclareFiatOnrampPurchaseAttemptResponse extends Message<DeclareFiatOnrampPurchaseAttemptResponse> {
+  /**
+   * @generated from field: code.transaction.v2.DeclareFiatOnrampPurchaseAttemptResponse.Result result = 1;
+   */
+  result = DeclareFiatOnrampPurchaseAttemptResponse_Result.OK;
+
+  constructor(data?: PartialMessage<DeclareFiatOnrampPurchaseAttemptResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.transaction.v2.DeclareFiatOnrampPurchaseAttemptResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(DeclareFiatOnrampPurchaseAttemptResponse_Result) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeclareFiatOnrampPurchaseAttemptResponse {
+    return new DeclareFiatOnrampPurchaseAttemptResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeclareFiatOnrampPurchaseAttemptResponse {
+    return new DeclareFiatOnrampPurchaseAttemptResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeclareFiatOnrampPurchaseAttemptResponse {
+    return new DeclareFiatOnrampPurchaseAttemptResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeclareFiatOnrampPurchaseAttemptResponse | PlainMessage<DeclareFiatOnrampPurchaseAttemptResponse> | undefined, b: DeclareFiatOnrampPurchaseAttemptResponse | PlainMessage<DeclareFiatOnrampPurchaseAttemptResponse> | undefined): boolean {
+    return proto3.util.equals(DeclareFiatOnrampPurchaseAttemptResponse, a, b);
+  }
+}
+
+/**
+ * @generated from enum code.transaction.v2.DeclareFiatOnrampPurchaseAttemptResponse.Result
+ */
+export enum DeclareFiatOnrampPurchaseAttemptResponse_Result {
+  /**
+   * @generated from enum value: OK = 0;
+   */
+  OK = 0,
+
+  /**
+   * The owner account is not valid (ie. it isn't a Code account)
+   *
+   * @generated from enum value: INVALID_OWNER = 1;
+   */
+  INVALID_OWNER = 1,
+
+  /**
+   * The currency isn't supported
+   *
+   * @generated from enum value: UNSUPPORTED_CURRENCY = 2;
+   */
+  UNSUPPORTED_CURRENCY = 2,
+
+  /**
+   * The amount specified exceeds limits
+   *
+   * @generated from enum value: AMOUNT_EXCEEDS_MAXIMUM = 3;
+   */
+  AMOUNT_EXCEEDS_MAXIMUM = 3,
+}
+// Retrieve enum metadata with: proto3.getEnumType(DeclareFiatOnrampPurchaseAttemptResponse_Result)
+proto3.util.setEnumType(DeclareFiatOnrampPurchaseAttemptResponse_Result, "code.transaction.v2.DeclareFiatOnrampPurchaseAttemptResponse.Result", [
+  { no: 0, name: "OK" },
+  { no: 1, name: "INVALID_OWNER" },
+  { no: 2, name: "UNSUPPORTED_CURRENCY" },
+  { no: 3, name: "AMOUNT_EXCEEDS_MAXIMUM" },
 ]);
 
 /**
@@ -2105,11 +2255,20 @@ export class OpenAccountsMetadata extends Message<OpenAccountsMetadata> {
  *   TemporaryPrivacyExchangeAction(BUCKET_X_KIN, BUCKET_X_KIN, multiple * bucketSize),
  *   TemporaryPrivacyTransferAction(BUCKET_X_KIN, TEMPORARY_OUTGOING[index], multiple * bucketSize),
  *
- *   // Section 2: Rotate TEMPORARY_OUTGOING account
+ *   // Section 2: Fee payments
+ *
+ *   // Hard-coded Code $0.01 USD fee to a dynamic fee account
+ *   FeePayment(TEMPORARY_OUTGOING[index], codeFeeAccount, $0.01 USD of Kin),
+ *
+ *   // Additional fees, exactly as specified in the original payment request
+ *   FeePayment(TEMPORARY_OUTGOING[index], additionalFeeAccount0, additionalFeeQuarks0),
+ *   ...
+ *   FeePayment(TEMPORARY_OUTGOING[index], additionalFeeAccountN, additionalFeeQuarksN),
+ *
+ *   // Section 3: Rotate TEMPORARY_OUTGOING account
  *
  *   // Below must appear last in this exact order
- *   FeePayment(TEMPORARY_OUTGOING[index], feeAccount, $0.01 USD of Kin),
- *   NoPrivacyWithdrawAction(TEMPORARY_OUTGOING[index], destination, ExchangeData.Quarks - $0.01 USD of Kin),
+ *   NoPrivacyWithdrawAction(TEMPORARY_OUTGOING[index], destination, ExchangeData.Quarks - $0.01 USD of Kin - additionalFeeQuarks0 - ... - additionalFeeQuarksN),
  *   OpenAccountAction(TEMPORARY_OUTGOING[index + 1]),
  *   CloseDormantAccount(TEMPORARY_OUTGOING[index + 1]),
  * ]
@@ -3270,14 +3429,19 @@ export class PermanentPrivacyUpgradeAction extends Message<PermanentPrivacyUpgra
  *    3. timelock::TransferWithAuthority (source -> fee account)
  *  Client Signature Required: Yes
  *
- * Note: This is exactly a NoPrivacyTransferAction, except the destination
- *       account is controlled by Code and provided in a server parameter.
- * Note: The fee amount is hardcoded at the client and validated by server.
- *       Currently, its set to $0.01 USD.
+ * Note: This is exactly a NoPrivacyTransferAction, but with specialized metadata
+ *       for fees.
  *
  * @generated from message code.transaction.v2.FeePaymentAction
  */
 export class FeePaymentAction extends Message<FeePaymentAction> {
+  /**
+   * The type of fee being operated on
+   *
+   * @generated from field: code.transaction.v2.FeePaymentAction.FeeType type = 4;
+   */
+  type = FeePaymentAction_FeeType.CODE;
+
   /**
    * The public key of the private key that has authority over source
    *
@@ -3299,6 +3463,14 @@ export class FeePaymentAction extends Message<FeePaymentAction> {
    */
   amount = protoInt64.zero;
 
+  /**
+   * The destination where the fee payment is being made for fees outside of
+   * Code.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId destination = 5;
+   */
+  destination?: SolanaAccountId;
+
   constructor(data?: PartialMessage<FeePaymentAction>) {
     super();
     proto3.util.initPartial(data, this);
@@ -3307,9 +3479,11 @@ export class FeePaymentAction extends Message<FeePaymentAction> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "code.transaction.v2.FeePaymentAction";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 4, name: "type", kind: "enum", T: proto3.getEnumType(FeePaymentAction_FeeType) },
     { no: 1, name: "authority", kind: "message", T: SolanaAccountId },
     { no: 2, name: "source", kind: "message", T: SolanaAccountId },
     { no: 3, name: "amount", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 5, name: "destination", kind: "message", T: SolanaAccountId },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): FeePaymentAction {
@@ -3328,6 +3502,30 @@ export class FeePaymentAction extends Message<FeePaymentAction> {
     return proto3.util.equals(FeePaymentAction, a, b);
   }
 }
+
+/**
+ * @generated from enum code.transaction.v2.FeePaymentAction.FeeType
+ */
+export enum FeePaymentAction_FeeType {
+  /**
+   * Hardcoded $0.01 USD fee to a dynamic fee account specified by server
+   *
+   * @generated from enum value: CODE = 0;
+   */
+  CODE = 0,
+
+  /**
+   * Third party fee specified at time of payment request
+   *
+   * @generated from enum value: THIRD_PARTY = 1;
+   */
+  THIRD_PARTY = 1,
+}
+// Retrieve enum metadata with: proto3.getEnumType(FeePaymentAction_FeeType)
+proto3.util.setEnumType(FeePaymentAction_FeeType, "code.transaction.v2.FeePaymentAction.FeeType", [
+  { no: 0, name: "CODE" },
+  { no: 1, name: "THIRD_PARTY" },
+]);
 
 /**
  * ServerParameter are a set of parameters known and returned by server that
@@ -3846,11 +4044,12 @@ export class PermanentPrivacyUpgradeServerParameter extends Message<PermanentPri
  */
 export class FeePaymentServerParameter extends Message<FeePaymentServerParameter> {
   /**
-   * The destination account where the fee payment should be sent.
+   * The destination account where Code fee payments should be sent. This will
+   * only be set when the corresponding FeePaymentAction Type is CODE.
    *
-   * @generated from field: code.common.v1.SolanaAccountId destination = 1;
+   * @generated from field: code.common.v1.SolanaAccountId code_destination = 1;
    */
-  destination?: SolanaAccountId;
+  codeDestination?: SolanaAccountId;
 
   constructor(data?: PartialMessage<FeePaymentServerParameter>) {
     super();
@@ -3860,7 +4059,7 @@ export class FeePaymentServerParameter extends Message<FeePaymentServerParameter
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "code.transaction.v2.FeePaymentServerParameter";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "destination", kind: "message", T: SolanaAccountId },
+    { no: 1, name: "code_destination", kind: "message", T: SolanaAccountId },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): FeePaymentServerParameter {
@@ -4451,9 +4650,56 @@ export class ExchangeDataWithoutRate extends Message<ExchangeDataWithoutRate> {
 }
 
 /**
- * @generated from message code.transaction.v2.RemainingSendLimit
+ * @generated from message code.transaction.v2.AdditionalFeePayment
  */
-export class RemainingSendLimit extends Message<RemainingSendLimit> {
+export class AdditionalFeePayment extends Message<AdditionalFeePayment> {
+  /**
+   * Destination Kin token account where the fee payment will be made
+   *
+   * @generated from field: code.common.v1.SolanaAccountId destination = 1;
+   */
+  destination?: SolanaAccountId;
+
+  /**
+   * Fee percentage, in basis points, of the total quark amount of a payment.
+   *
+   * @generated from field: uint32 fee_bps = 2;
+   */
+  feeBps = 0;
+
+  constructor(data?: PartialMessage<AdditionalFeePayment>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.transaction.v2.AdditionalFeePayment";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "destination", kind: "message", T: SolanaAccountId },
+    { no: 2, name: "fee_bps", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AdditionalFeePayment {
+    return new AdditionalFeePayment().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AdditionalFeePayment {
+    return new AdditionalFeePayment().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AdditionalFeePayment {
+    return new AdditionalFeePayment().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AdditionalFeePayment | PlainMessage<AdditionalFeePayment> | undefined, b: AdditionalFeePayment | PlainMessage<AdditionalFeePayment> | undefined): boolean {
+    return proto3.util.equals(AdditionalFeePayment, a, b);
+  }
+}
+
+/**
+ * @generated from message code.transaction.v2.SendLimit
+ */
+export class SendLimit extends Message<SendLimit> {
   /**
    * Remaining limit to apply on the next transaction
    *
@@ -4461,31 +4707,47 @@ export class RemainingSendLimit extends Message<RemainingSendLimit> {
    */
   nextTransaction = 0;
 
-  constructor(data?: PartialMessage<RemainingSendLimit>) {
+  /**
+   * Maximum allowed on a per-transaction basis
+   *
+   * @generated from field: float max_per_transaction = 2;
+   */
+  maxPerTransaction = 0;
+
+  /**
+   * Maximum allowed on a per-day basis
+   *
+   * @generated from field: float max_per_day = 3;
+   */
+  maxPerDay = 0;
+
+  constructor(data?: PartialMessage<SendLimit>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "code.transaction.v2.RemainingSendLimit";
+  static readonly typeName = "code.transaction.v2.SendLimit";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "next_transaction", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 2, name: "max_per_transaction", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 3, name: "max_per_day", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RemainingSendLimit {
-    return new RemainingSendLimit().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendLimit {
+    return new SendLimit().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RemainingSendLimit {
-    return new RemainingSendLimit().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendLimit {
+    return new SendLimit().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RemainingSendLimit {
-    return new RemainingSendLimit().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendLimit {
+    return new SendLimit().fromJsonString(jsonString, options);
   }
 
-  static equals(a: RemainingSendLimit | PlainMessage<RemainingSendLimit> | undefined, b: RemainingSendLimit | PlainMessage<RemainingSendLimit> | undefined): boolean {
-    return proto3.util.equals(RemainingSendLimit, a, b);
+  static equals(a: SendLimit | PlainMessage<SendLimit> | undefined, b: SendLimit | PlainMessage<SendLimit> | undefined): boolean {
+    return proto3.util.equals(SendLimit, a, b);
   }
 }
 
@@ -4575,6 +4837,53 @@ export class MicroPaymentLimit extends Message<MicroPaymentLimit> {
 
   static equals(a: MicroPaymentLimit | PlainMessage<MicroPaymentLimit> | undefined, b: MicroPaymentLimit | PlainMessage<MicroPaymentLimit> | undefined): boolean {
     return proto3.util.equals(MicroPaymentLimit, a, b);
+  }
+}
+
+/**
+ * @generated from message code.transaction.v2.BuyModuleLimit
+ */
+export class BuyModuleLimit extends Message<BuyModuleLimit> {
+  /**
+   * Minimum amount that can be purchased through the buy module
+   *
+   * @generated from field: float min_per_transaction = 1;
+   */
+  minPerTransaction = 0;
+
+  /**
+   * Maximum amount that can be purchased through the buy module
+   *
+   * @generated from field: float max_per_transaction = 2;
+   */
+  maxPerTransaction = 0;
+
+  constructor(data?: PartialMessage<BuyModuleLimit>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.transaction.v2.BuyModuleLimit";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "min_per_transaction", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 2, name: "max_per_transaction", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BuyModuleLimit {
+    return new BuyModuleLimit().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): BuyModuleLimit {
+    return new BuyModuleLimit().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): BuyModuleLimit {
+    return new BuyModuleLimit().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: BuyModuleLimit | PlainMessage<BuyModuleLimit> | undefined, b: BuyModuleLimit | PlainMessage<BuyModuleLimit> | undefined): boolean {
+    return proto3.util.equals(BuyModuleLimit, a, b);
   }
 }
 

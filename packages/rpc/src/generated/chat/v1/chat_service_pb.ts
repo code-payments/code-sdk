@@ -1043,9 +1043,12 @@ export class Content extends Message<Content> {
  */
 export class LocalizedContent extends Message<LocalizedContent> {
   /**
-   * @generated from field: string key = 1;
+   * When server-side localization is in place, clients will always see the
+   * localized text.
+   *
+   * @generated from field: string key_or_text = 1;
    */
-  key = "";
+  keyOrText = "";
 
   constructor(data?: PartialMessage<LocalizedContent>) {
     super();
@@ -1055,7 +1058,7 @@ export class LocalizedContent extends Message<LocalizedContent> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "code.chat.v1.LocalizedContent";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "key", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "key_or_text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LocalizedContent {

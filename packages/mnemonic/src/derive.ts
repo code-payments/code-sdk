@@ -2,7 +2,7 @@ import { Buffer } from 'buffer';
 import { pbkdf2  } from '@noble/hashes/pbkdf2';
 import { sha512 } from '@noble/hashes/sha512';
 import { hmac } from '@noble/hashes/hmac';
-import { Keypair } from '@code-wallet/library';
+import { Keypair } from '@code-wallet/keys';
 import { Path } from './path';
 import { Offset } from './offset';
 

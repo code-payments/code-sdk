@@ -8,5 +8,5 @@ const opt: Options = {
 
 initConfig(opt);
 
-export default { elements, errors }
 export { elements, errors }
+export default { elements, errors }

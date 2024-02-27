@@ -1,4 +1,4 @@
-import { PublicKey } from './keys';
+import { PublicKey } from '@code-wallet/keys';
 
 /**
  * Represents the Kin cryptocurrency with operations to handle whole and fractional units.

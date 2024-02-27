@@ -18,6 +18,17 @@ type ElementAppearance = 'dark' | 'light';
 type ElementLocale = string;
 
 /**
+ * Defines a fee payment for a payment request.
+ */
+interface PaymentRequestFee {
+    /** The destination token address as a base58 string for this fee. */
+    destination: string;
+
+    /** Fee percentage, in basis point (0 - 10,000), of the total quark amount of a payment. */
+    basisPoints: number;
+}
+
+/**
  * Defines the options needed for processing a payment request.
  */
 interface PaymentRequestOptions {
@@ -29,6 +40,13 @@ interface PaymentRequestOptions {
 
     /** The currency code of the requested payment amount. */
     currency: CurrencyCode;
+
+    /** 
+     * Additional fee payments (optional). This allows a payment request to send
+     * a percentage of the payment to another account. This is in addition to
+     * the hard-coded Code $0.01 USD fee.
+     * */
+    fees?: PaymentRequestFee[];
 }
 
 /**

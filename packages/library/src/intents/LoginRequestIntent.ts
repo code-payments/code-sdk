@@ -1,5 +1,5 @@
 import * as proto from '@code-wallet/rpc';
-import { Keypair, PublicKey } from '../keys';
+import { Keypair, PublicKey } from '@code-wallet/keys';
 import { CodePayload, CodeKind } from '../payload';
 import { SignedIntent } from '../intent';
 import { 
@@ -9,7 +9,7 @@ import {
     ErrUnexpectedError
 } from '../errors';
 import { validateElementOptions } from '../elements/validate';
-import { ElementOptions  } from '../elements/options';
+import { ElementOptions, LoginRequestOptions  } from '../elements/options';
 import { AbstractIntent } from './AbstractIntent';
 
 /**
@@ -25,7 +25,7 @@ class LoginRequestIntent extends AbstractIntent {
      * 
      * @param opt - The payment request options.
      */
-    constructor(opt: ElementOptions) {
+    constructor(opt: LoginRequestOptions & ElementOptions) {
         super({
             ...opt,
             mode: 'login',
