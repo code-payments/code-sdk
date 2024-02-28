@@ -2,18 +2,18 @@ import * as proto from '@code-wallet/rpc';
 import { Keypair, PublicKey } from '../keys';
 import { CodePayload, CodeKind } from '../payload';
 import { SignedIntent } from '../intent';
-import { 
+import {
     ErrLoginDomainRequired, 
     ErrLoginRequired, 
     ErrLoginVerifierRequired, 
     ErrUnexpectedError
 } from '../errors';
 import { validateElementOptions } from '../elements/validate';
-import { ElementOptions  } from '../elements/options';
+import { ElementOptions } from '../elements/options';
 import { AbstractIntent } from './AbstractIntent';
 
 /**
- * Represents a login request and provides methods to construct, validate, and sign the request.
+ * Class representing a login request, providing methods to construct, validate, and sign the request.
  */
 class LoginRequestIntent extends AbstractIntent {
     domain: string;
@@ -21,119 +21,80 @@ class LoginRequestIntent extends AbstractIntent {
     signer?: Keypair;
 
     /**
-     * Constructs a new PaymentRequestIntent instance.
-     * 
-     * @param opt - The payment request options.
+     * Constructs a new LoginRequestIntent instance with the given options.
+     * @param opt The options for the login request.
      */
     constructor(opt: ElementOptions) {
-        super({
-            ...opt,
-            mode: 'login',
-        });
+        super({ ...opt, mode: 'login' });
 
-        const { signers } = opt;
         const { domain, verifier } = opt.login!;
-
         this.domain = domain;
         this.verifier = PublicKey.fromBase58(verifier);
-
-        if (signers) {
-            this.signer = signers.find((k) => k.getPublicKey().toBase58() === verifier)
-        }
+        this.signer = opt.signers?.find((k) => k.getPublicKey().toBase58() === verifier);
     }
 
     init(): void {
-        // noop
+        // No operation (noop), provided for extending AbstractIntent
     }
 
     toPayload(): CodePayload {
-        // See payload encoding for CodeKind.RequestPayment
-        const kind = CodeKind.RequestLogin;
-        const nonce = this.nonce.value;
-
-        // Create a rendezvous payload and derive a keypair from it
-        return new CodePayload({ kind, nonce, });
-    }
-
-    /**
-     * Validates the payment request options.
-     */
-    validate() {
-        validateElementOptions(this.options);
-
-        if (!this.options.login) {
-            throw ErrLoginRequired();
-        }
-
-        if (!this.options.login.domain) {
-            throw ErrLoginDomainRequired();
-        }
-
-        if (!this.options.login.verifier) {
-            throw ErrLoginVerifierRequired();
-        }
-    }
-
-    /**
-     * Converts the payment request intent to its protobuf representation.
-     * 
-     * @returns The protobuf representation of the payment request intent.
-     */
-    toProto() : proto.Message {
-        const msg = new proto.RequestToLogin({
-            domain: {
-                value: this.domain,
-            },
-            verifier: {
-                value: this.verifier.toBuffer(),
-            },
-            rendezvousKey: {
-                value: this.rendezvousKeypair.getPublicKey().toBuffer(),
-            },
+        return new CodePayload({
+            kind: CodeKind.RequestLogin,
+            nonce: this.nonce.value,
         });
+    }
 
+    /**
+     * Validates the login request options, ensuring necessary information is provided.
+     */
+    validate(): void {
+        validateElementOptions(this.options);
+        const { login } = this.options;
+
+        if (!login) throw ErrLoginRequired();
+        if (!login.domain) throw ErrLoginDomainRequired();
+        if (!login.verifier) throw ErrLoginVerifierRequired();
+    }
+
+    /**
+     * Converts the login request to its protobuf representation for transmission.
+     * @returns The protobuf representation of the login request.
+     */
+    toProto(): proto.Message {
         return new proto.Message({
             kind: {
                 case: 'requestToLogin',
-                value: msg,
-            }
+                value: new proto.RequestToLogin({
+                    domain: { value: this.domain },
+                    verifier: { value: this.verifier.toBuffer() },
+                    rendezvousKey: { value: this.rendezvousKeypair.getPublicKey().toBuffer() },
+                }),
+            },
         });
     }
 
     /**
-     * Signs the payment request intent.
-     * 
-     * @returns A signed intent containing the message, intent, and signature.
+     * Signs the login request, ensuring it's authenticated before being sent.
+     * @returns The signed intent with signature and envelope.
      */
     sign(): SignedIntent {
-        if (!this.signer) {
-            throw ErrLoginVerifierRequired();
-        }
+        if (!this.signer) throw ErrLoginVerifierRequired();
 
         const envelope = this.toProto();
         const msg = envelope.kind.value as proto.RequestToLogin;
-        if (!msg) {
-            throw ErrUnexpectedError();
-        }
 
+        if (!msg) throw ErrUnexpectedError();
+
+        const signedBytes = msg.toBinary();
         msg.signature = new proto.Common.Signature({
-            value: this.signer.sign(msg.toBinary()),
+            value: this.signer.sign(signedBytes),
         });
 
-        const sig = this.rendezvousKeypair.sign(envelope.toBinary());
+        const signature = this.rendezvousKeypair.sign(envelope.toBinary());
         const intent = this.rendezvousKeypair.getPublicKey().toBase58();
-        const signedBytes = msg.toBinary();
-        const signature = sig;
 
-        return {
-            envelope,
-            signedBytes,
-            intent,
-            signature,
-        }
+        return { envelope, signedBytes, intent, signature };
     }
 }
 
-export {
-    LoginRequestIntent,
-}
+export { LoginRequestIntent };
