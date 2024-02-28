@@ -21,7 +21,7 @@ class PaymentRequestIntent extends AbstractIntent {
     convertedAmount: number | undefined;
 
     /**
-     * Initializes a new instance of a payment request intent with specified options.
+     * Initialises a new instance of a payment request intent with specified options.
      * @param opt The payment request options, including amount, currency, and destination.
      */
     constructor(opt: ElementOptions) {
@@ -33,7 +33,7 @@ class PaymentRequestIntent extends AbstractIntent {
     }
 
     init(): void {
-        // Normalizes and converts the floating point amount to a whole number for encoding,
+        // Normalises and converts the floating point amount to a whole number for encoding,
         // addressing floating point precision issues by rounding to 2 decimal places first.
         if (this.options.amount !== undefined) {
             const normalizedAmount = parseFloat(this.options.amount.toFixed(2));
@@ -42,7 +42,7 @@ class PaymentRequestIntent extends AbstractIntent {
     }
 
     toPayload(): CodePayload {
-        // Constructs the payment request payload with the normalized amount and currency.
+        // Constructs the payment request payload with the normalised amount and currency.
         if (!this.convertedAmount) throw ErrUnexpectedError();
         
         return new CodePayload({
