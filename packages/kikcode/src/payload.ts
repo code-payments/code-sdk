@@ -49,6 +49,10 @@ class CodePayload {
         return this.kind === CodeKind.RequestPayment && this.currency != null && this.amount != null;
     }
 
+    private isRequestPaymentWithFeesSupport(): this is this & { currency: string, amount: bigint } {
+        return this.kind === CodeKind.RequestPaymentWithFeesSupport && this.currency != null && this.amount != null;
+    }
+
     /**
      * Validates the payload, throwing an error if invalid.
      */
@@ -79,7 +83,7 @@ class CodePayload {
 
         this.validate();
 
-        if (this.isRequestPayment()) {
+        if (this.isRequestPayment() || this.isRequestPaymentWithFeesSupport()) {
             // for Payment Request
             if (!this.currency) {
                 throw ErrInvalidCurrency();
@@ -120,7 +124,7 @@ class CodePayload {
         let nonce: Uint8Array;
         let currency: CurrencyCode | undefined;
 
-        if (kind === CodeKind.RequestPayment) {
+        if (kind === CodeKind.RequestPayment || kind === CodeKind.RequestPaymentWithFeesSupport) {
             // for Payment Request
             const currencyIndex = data[1];
             currency = indexToCurrencyCode(currencyIndex);

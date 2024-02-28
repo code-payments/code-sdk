@@ -1,6 +1,6 @@
 {
   "name": "@code-wallet/proxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "repository": {
       "type": "git",
@@ -15,7 +15,8 @@
   ],
   "scripts": {
     "test": "echo \"no tests yet\"",
-    "dev": "bun example/index.ts",
+    "dev": "LOG_LEVEL=debug ts-node-dev --respawn --transpile-only --exit-child --watch src example/index.ts",
+    "dev:inspect": "LOG_LEVEL=debug ts-node-dev --inspect --respawn --transpile-only --exit-child --watch src example/index.ts",
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc && tsc -p tsconfig.cjs.json"
   },

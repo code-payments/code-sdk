@@ -66,9 +66,17 @@ class PaymentRequestIntent extends AbstractIntent {
         }
     }
 
+    private getRequestKind(): CodeKind {
+        if (this.options.fees) {
+            return CodeKind.RequestPaymentWithFeesSupport;
+        }
+
+        return CodeKind.RequestPayment;
+    } 
+
     toPayload(): CodePayload {
         // See payload encoding for CodeKind.RequestPayment
-        const kind = CodeKind.RequestPayment;
+        const kind = this.getRequestKind();
         const amount = BigInt(this.convertedAmount!);
         const nonce = this.nonce.value;
 
@@ -135,6 +143,17 @@ class PaymentRequestIntent extends AbstractIntent {
             }),
             exchangeData,
         });
+
+        if (this.options.fees) {
+            msg.additionalFees = this.options.fees.map((f) => {
+                return new proto.AdditionalFeePayment({
+                    destination: new proto.Common.SolanaAccountId({
+                        value: PublicKey.fromBase58(f.destination).toBuffer(),
+                    }),
+                    feeBps: f.basisPoints,
+                });
+            });
+        }
 
         return new proto.Message({
             kind: {

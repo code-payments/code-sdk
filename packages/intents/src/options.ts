@@ -145,3 +145,6 @@ export type ElementOptions = Partial<IntentOptions> &
     Partial<AppearanceOptions> & 
     Partial<WebhookParams> &
     Partial<ConfirmParams>;
+
+export type ElementOptionsWithLogin = ElementOptions & LoginRequestOptions;
+export type ElementOptionsWithPayment = ElementOptions & PaymentRequestOptions;

@@ -83,17 +83,6 @@ class PaymentRequestWithLoginIntent extends PaymentRequestIntent {
             value: this.rendezvousKeypair.getPublicKey().toBuffer(),
         });
 
-        if (this.options.fees) {
-            req.additionalFees = this.options.fees.map((f) => {
-                return new proto.AdditionalFeePayment({
-                    destination: new proto.Common.SolanaAccountId({
-                        value: PublicKey.fromBase58(f.destination).toBuffer(),
-                    }),
-                    feeBps: f.basisPoints,
-                });
-            });
-        }
-
         return new proto.Message({
             kind: {
                 case: 'requestToReceiveBill',

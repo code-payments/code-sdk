@@ -72,6 +72,7 @@ export enum CodeKind {
     GiftCard = 1,
     RequestPayment = 2,
     RequestLogin = 3,
+    RequestPaymentWithFeesSupport = 4
 }
 
 export interface CodePayloadOptions {

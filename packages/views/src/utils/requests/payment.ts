@@ -1,5 +1,10 @@
 import { AbstractRequest } from '../';
-import { ElementOptions, PaymentRequestIntent, PaymentRequestOptions,} from "@code-wallet/intents";
+import { 
+    ElementOptionsWithPayment,
+    LoginRequestOptions, 
+    PaymentRequestIntent, 
+    PaymentRequestWithLoginIntent, 
+} from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
 
 class PaymentRequest extends AbstractRequest {
@@ -22,6 +27,13 @@ class PaymentRequest extends AbstractRequest {
         return this.intent.options.destination;
     }
 
+    static getIntent(body: ElementOptionsWithPayment) {
+        if (body.login) {
+            return new PaymentRequestWithLoginIntent(body as ElementOptionsWithPayment & LoginRequestOptions);
+        }
+        return new PaymentRequestIntent(body);
+    }
+
     static fromPayload(val: string, opt: { 
         clientSecret?: string,
         idempotencyKey?: string,
@@ -30,7 +42,7 @@ class PaymentRequest extends AbstractRequest {
     } = {}) {
 
         const body = AbstractRequest.bodyFromPayload(val, opt);
-        const intent = new PaymentRequestIntent(body as ElementOptions & PaymentRequestOptions);
+        const intent = PaymentRequest.getIntent(body);
         const req = new PaymentRequest(intent);
 
         return req;
