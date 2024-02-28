@@ -42,7 +42,7 @@ class PaymentRequest extends AbstractRequest {
     } = {}) {
 
         const body = AbstractRequest.bodyFromPayload(val, opt);
-        const intent = PaymentRequest.getIntent(body);
+        const intent = PaymentRequest.getIntent(body as ElementOptionsWithPayment);
         const req = new PaymentRequest(intent);
 
         return req;
