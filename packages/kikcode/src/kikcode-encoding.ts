@@ -1,4 +1,4 @@
-import wasmModule from './kikcode_webassembly.js';
+//import wasmModule from './kikcode_webassembly.js';
 
 const MAIN_BYTE_COUNT = 35;
 const PAYLOAD_BYTE_COUNT = 20;
@@ -16,7 +16,8 @@ export interface KikCodeModule {
 }
 
 const init = (): Promise<KikCodeModule> => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    const wasmModule = (await import('./kikcode_webassembly.js')).default as any;
     wasmModule().then((module: KikCodeModule) => {
       resolve(module);
     }).catch((err: Error) => {

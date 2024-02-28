@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AirdropRequest, AirdropResponse, CanWithdrawToAccountRequest, CanWithdrawToAccountResponse, GetIntentMetadataRequest, GetIntentMetadataResponse, GetLimitsRequest, GetLimitsResponse, GetPaymentHistoryRequest, GetPaymentHistoryResponse, GetPrioritizedIntentsForPrivacyUpgradeRequest, GetPrioritizedIntentsForPrivacyUpgradeResponse, GetPrivacyUpgradeStatusRequest, GetPrivacyUpgradeStatusResponse, SubmitIntentRequest, SubmitIntentResponse, SwapRequest, SwapResponse } from "./transaction_service_pb";
+import { AirdropRequest, AirdropResponse, CanWithdrawToAccountRequest, CanWithdrawToAccountResponse, DeclareFiatOnrampPurchaseAttemptRequest, DeclareFiatOnrampPurchaseAttemptResponse, GetIntentMetadataRequest, GetIntentMetadataResponse, GetLimitsRequest, GetLimitsResponse, GetPaymentHistoryRequest, GetPaymentHistoryResponse, GetPrioritizedIntentsForPrivacyUpgradeRequest, GetPrioritizedIntentsForPrivacyUpgradeResponse, GetPrivacyUpgradeStatusRequest, GetPrivacyUpgradeStatusResponse, SubmitIntentRequest, SubmitIntentResponse, SwapRequest, SwapResponse } from "./transaction_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -149,6 +149,13 @@ export const Transaction = {
      *  * Balance changes are applied after the transaction has finalized
      *  * Transactions use recent blockhashes over a nonce
      *
+     * The transaction will have the following instruction format:
+     *   1. ComputeBudget::SetComputeUnitLimit
+     *   2. ComputeBudget::SetComputeUnitPrice
+     *   3. SwapValidator::PreSwap
+     *   4. Dynamic swap instruction
+     *   5. SwapValidator::PostSwap
+     *
      * Note: Currently limited to swapping USDC to Kin.
      * Note: Kin is deposited into the primary account.
      *
@@ -159,6 +166,18 @@ export const Transaction = {
       I: SwapRequest,
       O: SwapResponse,
       kind: MethodKind.BiDiStreaming,
+    },
+    /**
+     * DeclareFiatOnrampPurchaseAttempt is called whenever a user attempts to use a fiat
+     * onramp to purchase crypto for use in Code.
+     *
+     * @generated from rpc code.transaction.v2.Transaction.DeclareFiatOnrampPurchaseAttempt
+     */
+    declareFiatOnrampPurchaseAttempt: {
+      name: "DeclareFiatOnrampPurchaseAttempt",
+      I: DeclareFiatOnrampPurchaseAttemptRequest,
+      O: DeclareFiatOnrampPurchaseAttemptResponse,
+      kind: MethodKind.Unary,
     },
   }
 } as const;

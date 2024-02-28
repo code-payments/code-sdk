@@ -1,8 +1,8 @@
+import { PublicKey } from "@code-wallet/keys";
 import * as proto from "@code-wallet/rpc";
 import * as client from "../src/";
 
 import { Client } from "../src/";
-import { PublicKey } from "@code-wallet/library";
 import { expect } from 'chai';
 
 describe('Low level client', () => {

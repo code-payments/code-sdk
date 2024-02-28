@@ -1,5 +1,5 @@
 import { randomBytes } from '@noble/hashes/utils';
-import { Keypair } from '@code-wallet/library';
+import { Keypair } from '@code-wallet/keys';
 import { Path } from "./path";
 import { Derive } from "./derive";
 import { Mnemonic, MnemonicType } from "./mnemonic";

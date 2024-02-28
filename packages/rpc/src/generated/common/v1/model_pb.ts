@@ -84,9 +84,9 @@ export enum AccountType {
   RELATIONSHIP = 13,
 
   /**
-   * @generated from enum value: ASSOCIATED_TOKEN_ACCOUNT = 14;
+   * @generated from enum value: SWAP = 14;
    */
-  ASSOCIATED_TOKEN_ACCOUNT = 14,
+  SWAP = 14,
 }
 // Retrieve enum metadata with: proto3.getEnumType(AccountType)
 proto3.util.setEnumType(AccountType, "code.common.v1.AccountType", [
@@ -104,7 +104,7 @@ proto3.util.setEnumType(AccountType, "code.common.v1.AccountType", [
   { no: 11, name: "LEGACY_PRIMARY_2022" },
   { no: 12, name: "REMOTE_SEND_GIFT_CARD" },
   { no: 13, name: "RELATIONSHIP" },
-  { no: 14, name: "ASSOCIATED_TOKEN_ACCOUNT" },
+  { no: 14, name: "SWAP" },
 ]);
 
 /**
@@ -680,6 +680,84 @@ export class Hash extends Message<Hash> {
 
   static equals(a: Hash | PlainMessage<Hash> | undefined, b: Hash | PlainMessage<Hash> | undefined): boolean {
     return proto3.util.equals(Hash, a, b);
+  }
+}
+
+/**
+ * Locale is a user locale consisting of a combination of language, script and region
+ *
+ * @generated from message code.common.v1.Locale
+ */
+export class Locale extends Message<Locale> {
+  /**
+   * @generated from field: string value = 1;
+   */
+  value = "";
+
+  constructor(data?: PartialMessage<Locale>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.common.v1.Locale";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "value", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Locale {
+    return new Locale().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Locale {
+    return new Locale().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Locale {
+    return new Locale().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Locale | PlainMessage<Locale> | undefined, b: Locale | PlainMessage<Locale> | undefined): boolean {
+    return proto3.util.equals(Locale, a, b);
+  }
+}
+
+/**
+ * UUID is a 16 byte UUID value
+ *
+ * @generated from message code.common.v1.UUID
+ */
+export class UUID extends Message<UUID> {
+  /**
+   * @generated from field: bytes value = 1;
+   */
+  value = new Uint8Array(0);
+
+  constructor(data?: PartialMessage<UUID>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.common.v1.UUID";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "value", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UUID {
+    return new UUID().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UUID {
+    return new UUID().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UUID {
+    return new UUID().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UUID | PlainMessage<UUID> | undefined, b: UUID | PlainMessage<UUID> | undefined): boolean {
+    return proto3.util.equals(UUID, a, b);
   }
 }
 

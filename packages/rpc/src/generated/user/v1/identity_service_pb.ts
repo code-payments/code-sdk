@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
-import { DataContainerId, IntentId, PhoneNumber, Signature, SolanaAccountId, UserId } from "../../common/v1/model_pb";
+import { DataContainerId, IntentId, Locale, PhoneNumber, Signature, SolanaAccountId, UserId } from "../../common/v1/model_pb";
 import { PhoneLinkingToken } from "../../phone/v1/phone_verification_service_pb";
 import { AirdropType } from "../../transaction/v2/transaction_service_pb";
 
@@ -487,6 +487,135 @@ proto3.util.setEnumType(GetUserResponse_Result, "code.user.v1.GetUserResponse.Re
 ]);
 
 /**
+ * @generated from message code.user.v1.UpdatePreferencesRequest
+ */
+export class UpdatePreferencesRequest extends Message<UpdatePreferencesRequest> {
+  /**
+   * The public key of the owner account that signed this request message.
+   *
+   * @generated from field: code.common.v1.SolanaAccountId owner_account_id = 1;
+   */
+  ownerAccountId?: SolanaAccountId;
+
+  /**
+   * The data container for the copy of the contact list being added to.
+   *
+   * @generated from field: code.common.v1.DataContainerId container_id = 2;
+   */
+  containerId?: DataContainerId;
+
+  /**
+   * The signature is of serialize(UpdatePreferencesRequest) without this field set
+   * using the private key of owner_account_id.
+   *
+   * @generated from field: code.common.v1.Signature signature = 3;
+   */
+  signature?: Signature;
+
+  /**
+   * The user's locale, which is used for server-side localization of things like
+   * chat messages, pushes, etc. If no locale is set, or the provided locale isn't
+   * supported, then English is used as the default fallback.
+   *
+   * Note: This is required since it's the only preference. In the future, we'll add
+   *       optional fields, where the subset of fields provided will be the ones that
+   *       are updated.
+   *
+   * @generated from field: code.common.v1.Locale locale = 4;
+   */
+  locale?: Locale;
+
+  constructor(data?: PartialMessage<UpdatePreferencesRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.UpdatePreferencesRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "owner_account_id", kind: "message", T: SolanaAccountId },
+    { no: 2, name: "container_id", kind: "message", T: DataContainerId },
+    { no: 3, name: "signature", kind: "message", T: Signature },
+    { no: 4, name: "locale", kind: "message", T: Locale },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePreferencesRequest {
+    return new UpdatePreferencesRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePreferencesRequest {
+    return new UpdatePreferencesRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePreferencesRequest {
+    return new UpdatePreferencesRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdatePreferencesRequest | PlainMessage<UpdatePreferencesRequest> | undefined, b: UpdatePreferencesRequest | PlainMessage<UpdatePreferencesRequest> | undefined): boolean {
+    return proto3.util.equals(UpdatePreferencesRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message code.user.v1.UpdatePreferencesResponse
+ */
+export class UpdatePreferencesResponse extends Message<UpdatePreferencesResponse> {
+  /**
+   * @generated from field: code.user.v1.UpdatePreferencesResponse.Result result = 1;
+   */
+  result = UpdatePreferencesResponse_Result.OK;
+
+  constructor(data?: PartialMessage<UpdatePreferencesResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "code.user.v1.UpdatePreferencesResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "result", kind: "enum", T: proto3.getEnumType(UpdatePreferencesResponse_Result) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePreferencesResponse {
+    return new UpdatePreferencesResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePreferencesResponse {
+    return new UpdatePreferencesResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePreferencesResponse {
+    return new UpdatePreferencesResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdatePreferencesResponse | PlainMessage<UpdatePreferencesResponse> | undefined, b: UpdatePreferencesResponse | PlainMessage<UpdatePreferencesResponse> | undefined): boolean {
+    return proto3.util.equals(UpdatePreferencesResponse, a, b);
+  }
+}
+
+/**
+ * @generated from enum code.user.v1.UpdatePreferencesResponse.Result
+ */
+export enum UpdatePreferencesResponse_Result {
+  /**
+   * @generated from enum value: OK = 0;
+   */
+  OK = 0,
+
+  /**
+   * The provided locale couldn't be parsed or recognized and is invalid.
+   *
+   * @generated from enum value: INVALID_LOCALE = 1;
+   */
+  INVALID_LOCALE = 1,
+}
+// Retrieve enum metadata with: proto3.getEnumType(UpdatePreferencesResponse_Result)
+proto3.util.setEnumType(UpdatePreferencesResponse_Result, "code.user.v1.UpdatePreferencesResponse.Result", [
+  { no: 0, name: "OK" },
+  { no: 1, name: "INVALID_LOCALE" },
+]);
+
+/**
  * @generated from message code.user.v1.LoginToThirdPartyAppRequest
  */
 export class LoginToThirdPartyAppRequest extends Message<LoginToThirdPartyAppRequest> {
@@ -505,8 +634,8 @@ export class LoginToThirdPartyAppRequest extends Message<LoginToThirdPartyAppReq
   userId?: SolanaAccountId;
 
   /**
-   * Signature of this message using the user private key, authenticates the
-   * user.
+   * Signature of this message using the user private key, which authenticates
+   * the user.
    *
    * @generated from field: code.common.v1.Signature signature = 3;
    */
@@ -584,6 +713,9 @@ export class LoginToThirdPartyAppResponse extends Message<LoginToThirdPartyAppRe
  */
 export enum LoginToThirdPartyAppResponse_Result {
   /**
+   * This supports idempotency. The same login with the same user will result
+   * in OK.
+   *
    * @generated from enum value: OK = 0;
    */
   OK = 0,
@@ -610,11 +742,11 @@ export enum LoginToThirdPartyAppResponse_Result {
   LOGIN_NOT_SUPPORTED = 3,
 
   /**
-   * A login already exists
+   * A login with a different user already exists
    *
-   * @generated from enum value: LOGIN_EXISTS = 4;
+   * @generated from enum value: DIFFERENT_LOGIN_EXISTS = 4;
    */
-  LOGIN_EXISTS = 4,
+  DIFFERENT_LOGIN_EXISTS = 4,
 
   /**
    * The provided account is not valid for login. It must be a relationship
@@ -630,7 +762,7 @@ proto3.util.setEnumType(LoginToThirdPartyAppResponse_Result, "code.user.v1.Login
   { no: 1, name: "REQUEST_NOT_FOUND" },
   { no: 2, name: "PAYMENT_REQUIRED" },
   { no: 3, name: "LOGIN_NOT_SUPPORTED" },
-  { no: 4, name: "LOGIN_EXISTS" },
+  { no: 4, name: "DIFFERENT_LOGIN_EXISTS" },
   { no: 5, name: "INVALID_ACCOUNT" },
 ]);
 
@@ -757,12 +889,21 @@ export enum GetLoginForThirdPartyAppResponse_Result {
    * @generated from enum value: LOGIN_NOT_SUPPORTED = 2;
    */
   LOGIN_NOT_SUPPORTED = 2,
+
+  /**
+   * The intent supports login, but it hasn't been submitted. There is no
+   * logged in user yet.
+   *
+   * @generated from enum value: NO_USER_LOGGED_IN = 3;
+   */
+  NO_USER_LOGGED_IN = 3,
 }
 // Retrieve enum metadata with: proto3.getEnumType(GetLoginForThirdPartyAppResponse_Result)
 proto3.util.setEnumType(GetLoginForThirdPartyAppResponse_Result, "code.user.v1.GetLoginForThirdPartyAppResponse.Result", [
   { no: 0, name: "OK" },
   { no: 1, name: "REQUEST_NOT_FOUND" },
   { no: 2, name: "LOGIN_NOT_SUPPORTED" },
+  { no: 3, name: "NO_USER_LOGGED_IN" },
 ]);
 
 /**

@@ -1,6 +1,6 @@
 {
     "name": "@code-wallet/kikcode",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -23,6 +23,7 @@
         "maintained node versions"
     ],
     "dependencies": {
+        "@code-wallet/currency": "^1.0.0"
     },
     "devDependencies": {
         "@types/chai": "^4.3.5",

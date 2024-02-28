@@ -7,7 +7,7 @@ import {
     ElementType, 
     IntentType, 
     validateElementOptions
-} from '@code-wallet/library';
+} from '@code-wallet/intents';
 
 import { ErrUnknownElementType } from './errors';
 import { 

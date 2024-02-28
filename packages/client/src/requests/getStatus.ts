@@ -1,5 +1,5 @@
 import * as proto from "@code-wallet/rpc";
-import { PublicKey, } from "@code-wallet/library";
+import { PublicKey } from "@code-wallet/keys";
 import { CodeRequest } from "../request";
 import { Client } from "../client";
 

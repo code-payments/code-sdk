@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetLoginForThirdPartyAppRequest, GetLoginForThirdPartyAppResponse, GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, LoginToThirdPartyAppRequest, LoginToThirdPartyAppResponse, UnlinkAccountRequest, UnlinkAccountResponse } from "./identity_service_pb";
+import { GetLoginForThirdPartyAppRequest, GetLoginForThirdPartyAppResponse, GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, LoginToThirdPartyAppRequest, LoginToThirdPartyAppResponse, UnlinkAccountRequest, UnlinkAccountResponse, UpdatePreferencesRequest, UpdatePreferencesResponse } from "./identity_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -64,6 +64,17 @@ export const Identity = {
       name: "GetUser",
       I: GetUserRequest,
       O: GetUserResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * UpdatePreferences updates user preferences.
+     *
+     * @generated from rpc code.user.v1.Identity.UpdatePreferences
+     */
+    updatePreferences: {
+      name: "UpdatePreferences",
+      I: UpdatePreferencesRequest,
+      O: UpdatePreferencesResponse,
       kind: MethodKind.Unary,
     },
     /**

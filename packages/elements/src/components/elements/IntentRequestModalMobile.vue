@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { EventChannel, InternalEvents } from '@code-wallet/events';
-    import { ElementOptions, encode } from '@code-wallet/library';
+    import { ElementOptions, encode } from '@code-wallet/intents';
     import { useConfig } from '../../config';
     import { inject, onMounted, ref, watchEffect } from 'vue';
 

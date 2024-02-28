@@ -1,5 +1,5 @@
 import { AbstractRequest } from '../';
-import { LoginRequestIntent } from "@code-wallet/library";
+import { ElementOptions, LoginRequestIntent, LoginRequestOptions } from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
 
 class LoginRequest extends AbstractRequest {
@@ -18,7 +18,7 @@ class LoginRequest extends AbstractRequest {
     } = {}) {
 
         const body = AbstractRequest.bodyFromPayload(val, opt);
-        const intent = new LoginRequestIntent(body);
+        const intent = new LoginRequestIntent(body as ElementOptions & LoginRequestOptions);
         const req = new LoginRequest(intent);
 
         return req;
