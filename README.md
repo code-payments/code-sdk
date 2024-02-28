@@ -24,15 +24,7 @@ See the [docs](https://code-payments.github.io/code-sdk/docs/guide/introduction)
 The Code SDK is available as a set of JavaScript packages on npm, and can be used in both the browser and on the server.
 
 ```bash
-npm install --worspaces
-```
-
-##  Usage
-
-You can build the packages locally using npm or yarn.
-
-```bash
-npm run build --workspaces
+make build
 ```
 
 ## Contributors
