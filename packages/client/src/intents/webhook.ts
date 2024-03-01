@@ -1,31 +1,31 @@
 import { useClient } from "../utils/useClient";
-import { 
-    RegisterWebhookOptions,
-    RegisterWebhookForIntentRequest
-} from "../requests/registerWebhook";
-
+import { RegisterWebhookOptions, RegisterWebhookForIntentRequest } from "../requests/registerWebhook";
 import { ClientOptions } from "../client";
+// Is there a logger utility?
 
 /**
- * Collection of methods related to handling webooks.
+ * A service class for handling webhook registrations.
  */
-const webhook = {
-
+class WebhookService {
     /**
      * Registers a webhook for a specified intent.
      * 
-     * @param opt - The options for registering a webhook.
-     * @throws Will throw an error if unable to create the intent.
-     **/
-    register: async (opt: RegisterWebhookOptions & ClientOptions) => {
-        const client = useClient(opt);
-
-        const req = new RegisterWebhookForIntentRequest(opt);
-        return await req.send(client);
-    },
+     * @param options - The options for registering a webhook.
+     * @returns A promise that resolves with the result of the webhook registration request.
+     * @throws Will throw an error if unable to register the webhook.
+     */
+    async register(options: RegisterWebhookOptions & ClientOptions): Promise<any> {
+        try {
+            const client = useClient(options);
+            const request = new RegisterWebhookForIntentRequest(options);
+            const response = await request.send(client);
+            logger.info(`Webhook registered successfully for intent: ${options.intent}`);
+            return response;
+        } catch (error) {
+            logger.error(`Error registering webhook: ${error.message}`);
+            throw error; // Rethrow to allow caller to handle
+        }
+    }
 }
 
-
-export {
-    webhook,
-}
+export const webhookService = new WebhookService();
