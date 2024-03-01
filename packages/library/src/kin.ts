@@ -1,4 +1,4 @@
-import { PublicKey } from './keys';
+import { PublicKey } from '@code-wallet/keys';
 
 /**
  * Represents the Kin cryptocurrency with operations to handle whole and fractional units.
@@ -12,10 +12,14 @@ class Kin {
 
   /**
    * Constructs a new Kin instance.
+   * Validates input to ensure non-negative values and proper types.
    * @param whole - The whole part of the Kin amount.
    * @param quarks - The fractional part (quarks) of the Kin amount. Default is 0.
    */
   constructor(whole: number, quarks: number = 0) {
+    if (!Number.isInteger(whole) || whole < 0 || !Number.isInteger(quarks) || quarks < 0) {
+      throw new Error("Invalid input for Kin constructor: values must be non-negative integers.");
+    }
     this.whole = BigInt(whole);
     this.quarks = BigInt(quarks);
     this.normalize();
@@ -48,24 +52,32 @@ class Kin {
   }
 
   /**
-   * Creates a Kin instance from a given quarks value.
-   * @param quarks - The value in quarks.
-   * @returns A new Kin instance.
-   */
-  static fromQuarks(quarks: bigint): Kin {
-    const whole = Number(quarks / Kin.quarksPerKin);
-    const remainingQuarks = Number(quarks % Kin.quarksPerKin);
-    return new Kin(whole, remainingQuarks);
-  }
-
-  /**
    * Creates a Kin instance from a decimal value.
+   * Validates input to ensure a non-negative value.
    * @param decimal - The decimal value to convert.
    * @returns A new Kin instance.
    */
   static fromDecimal(decimal: number): Kin {
+    if (typeof decimal !== 'number' || decimal < 0) {
+      throw new Error("Invalid input for fromDecimal: value must be a non-negative number.");
+    }
     const quarks = BigInt(Math.round(decimal * Number(Kin.quarksPerKin)));
     return Kin.fromQuarks(quarks);
+  }
+
+  /**
+   * Creates a Kin instance from a given quarks value.
+   * Validates input to ensure a non-negative value.
+   * @param quarks - The value in quarks.
+   * @returns A new Kin instance.
+   */
+  static fromQuarks(quarks: bigint): Kin {
+    if (typeof quarks !== 'bigint' || quarks < 0n) {
+      throw new Error("Invalid input for fromQuarks: value must be a non-negative bigint.");
+    }
+    const whole = Number(quarks / Kin.quarksPerKin);
+    const remainingQuarks = Number(quarks % Kin.quarksPerKin);
+    return new Kin(whole, remainingQuarks);
   }
 
   /**
@@ -104,7 +116,6 @@ class Kin {
    * @returns A new Kin instance with the divided value.
    */
   divide(divisor: number): Kin {
-    // Note: Using integer division which truncates towards zero.
     const resultQuarks = this.toQuarks() / BigInt(divisor);
     return Kin.fromQuarks(resultQuarks);
   }
@@ -115,9 +126,8 @@ class Kin {
   /**
    * Defines the conversion rate between whole Kin and quarks.
    * Note: Using 100000n instead of (10n ** Kin.decimals) to avoid a bug in babel.
-   * See https://github.com/facebook/create-react-app/issues/10785#issuecomment-838310427
    */
-  static readonly quarksPerKin = 100000n; // (10n ** Kin.decimals);
+  static readonly quarksPerKin = 100000n;
 
   /** The mint address for the Kin cryptocurrency. */
   static readonly mintAddress = "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6";
