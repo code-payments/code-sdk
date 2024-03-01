@@ -1,4 +1,4 @@
-import { 
+import {
     IntentOptions,
     IntentSigners,
     PaymentRequestIntent,
@@ -11,22 +11,12 @@ import {
 
 import { useClient } from "../utils/useClient";
 import { createIntent } from "../utils/createIntent";
-import { 
-    GetStatusForIntentRequest, 
-    GetStatusForIntentOptions
-} from "../requests/getStatus";
-import { ClientOptions } from "../client";
+import { GetStatusForIntentRequest } from "../requests/getStatus";
 import { RegisterWebhookForIntentRequest } from "../requests/registerWebhook";
+import { logger } from "../utils/logger"; // Assuming a logger utility is available
 
 /**
- * Options for creating a payment intent.
- * 
- * Payments can optionally be made with a login request. If a login request is
- * provided, the user id can be retrieved from the intent after it is confirmed.
- * 
- * Any intent can optionally be configured with a webhook. If a webhook is
- * provided, the intent details will be sent to the webhook after it is
- * confirmed.
+ * Enhanced options for creating a payment intent with added configurability.
  */
 type CreatePaymentIntentOptions = PaymentRequestOptions & 
     IntentOptions & 
@@ -36,58 +26,60 @@ type CreatePaymentIntentOptions = PaymentRequestOptions &
     Partial<ClientOptions>;
 
 /**
- * Collection of methods related to handling payment intents.
+ * A modular and feature-rich collection of methods for handling payment intents.
  */
-const paymentIntents = {
+class PaymentIntentService {
+    /**
+     * Creates and registers a payment intent with optional login and webhook configuration.
+     */
+    async createIntent(options: CreatePaymentIntentOptions): Promise<Intent> {
+        try {
+            const client = useClient(options);
+            const intent = options.login ? new PaymentRequestWithLoginIntent(options) : new PaymentRequestIntent(options);
+            const result = await createIntent(intent, client);
+            logger.info(`Intent created with ID: ${result.id}`);
+            
+            if (options.webhook) {
+                await this.registerWebhook(result.id, options.webhook, client);
+            }
+
+            return result;
+        } catch (error) {
+            logger.error(`Error creating intent: ${error.message}`);
+            throw error; // Rethrow to allow caller to handle
+        }
+    }
 
     /**
-     * Creates a new payment intent.
-     * 
-     * @param opt - The options for creating a payment intent.
-     * @returns An object containing the client secret and intent ID.
-     * @throws Will throw an error if unable to create the intent.
+     * Registers a webhook for the specified intent.
      */
-    create: async (opt: CreatePaymentIntentOptions & ClientOptions) => {
-        const client = useClient(opt);
+    async registerWebhook(intentId: string, webhookParams: WebhookParams, client: any): Promise<void> {
+        const req = new RegisterWebhookForIntentRequest({
+            intent: intentId,
+            url: webhookParams.url,
+        });
 
-        let intent : Intent;
-        if (opt.login) {
-            intent = new PaymentRequestWithLoginIntent(opt);
-        } else {
-            intent = new PaymentRequestIntent(opt);
+        const response = await req.send(client);
+        if (!response.success) {
+            throw new Error(`Unable to register webhook: ${response.message}`);
         }
 
-        const res = await createIntent(intent, client);
-
-        if (opt.webhook) {
-            const req = new RegisterWebhookForIntentRequest({
-                intent: res.id,
-                url: opt.webhook.url,
-            });
-            const whRes = await req.send(client);
-            if (!whRes.success) {
-                throw new Error(`Unable to register webhook: ${whRes.message}`);
-            }
-        }
-
-        return res;
-    },
+        logger.info(`Webhook registered for intent ID: ${intentId}`);
+    }
 
     /**
      * Retrieves the status of a specified payment intent.
-     * 
-     * @param opt - The options containing the intent ID to check status for.
-     * @returns An object representing the intent's status.
-     * @throws Will throw an error if unable to retrieve the intent's status.
      */
-    getStatus: async (opt: GetStatusForIntentOptions & ClientOptions) => {
-        const connection = useClient(opt);
-
-        const req = new GetStatusForIntentRequest(opt);
-        return await req.send(connection);
+    async getIntentStatus(options: GetStatusForIntentOptions & ClientOptions): Promise<any> {
+        try {
+            const client = useClient(options);
+            const req = new GetStatusForIntentRequest(options);
+            return await req.send(client);
+        } catch (error) {
+            logger.error(`Error retrieving intent status: ${error.message}`);
+            throw error; // Rethrow for external handling
+        }
     }
 }
 
-export {
-    paymentIntents,
-}
+export const paymentIntents = new PaymentIntentService();
