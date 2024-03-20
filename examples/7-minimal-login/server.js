@@ -1,5 +1,5 @@
 import * as code from "@code-wallet/client";
-import { Keypair } from "@code-wallet/library";
+import { Keypair } from "@code-wallet/keys";
 import express from "express";
 
 const port = process.env.PORT || 3080;
