@@ -37,7 +37,6 @@ describe('Low level client', () => {
         expect(phrase).to.not.be.undefined;
         expect(phrase).to.be.equal('ugly bind decline coil faculty roof surge lake judge fix seminar child');
 
-        console.log(phrase);
         const keypair = new MnemonicPhrase(phrase).toKeypair();
 
         // Create a new request message
