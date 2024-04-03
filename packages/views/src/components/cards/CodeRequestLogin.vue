@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
-import CodeLogo from "../elements/CodeLogo.vue";
+
+import CodeLogo from "../elements/logos/CodeLogo.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,
@@ -43,7 +44,10 @@ watchEffect(() => {
           boxShadow: '0 0px 0 1px #2B2B2B inset',
         }">
 
-        <CodeLogo class="absolute w-auto h-5 bottom-4 left-4 "/>
+        <CodeLogo class="absolute w-auto bottom-4 left-4"
+            :style="{
+              height: `${ scale * 0.08 }vh`,
+            }" />
 
         <svg v-if="kikcode" class="absolute" 
         viewBox="0 0 220 220"

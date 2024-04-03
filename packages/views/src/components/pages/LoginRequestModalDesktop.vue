@@ -23,9 +23,9 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
 
     <template #default="{ state, request }">
 
-      <h2 class="text-white text-[3.5vh] leading-tight
+      <h2 class="text-white text-[2.8vh] leading-tight
       font-avenir-next-bold mb-10">
-        Scan with the Code Wallet app to login
+        Scan with the Code Wallet<br>app to login
       </h2>
 
       <div class="m-auto relative">

@@ -3,7 +3,7 @@ import { CodeSpinner, DownloadAppQR, } from '../elements';
 import { TipRequest,  } from "../../utils"
 
 import CodeDesktopModal from '../sdk/CodeDesktopModal.vue';
-import CodeRequestLogin from '../cards/CodeRequestLogin.vue';
+import CodeRequestTip from '../cards/CodeRequestTip.vue';
 
 const props = defineProps({
   id: { type: String, required: true, },
@@ -23,9 +23,9 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
 
     <template #default="{ state, request }">
 
-      <h2 class="text-white text-[3.5vh] leading-tight
+      <h2 class="text-white text-[2.8vh] leading-tight
       font-avenir-next-bold mb-10">
-        Scan with the Code Wallet app to tip
+        Scan with the Code Wallet<br>app to tip
       </h2>
 
       <div class="m-auto relative">
@@ -40,8 +40,9 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
 
         <div v-show="!state.isLoading" class="mv-left-start delay-800"
           :class="{ 'invisible': state.hasScanned, 'mv-left-end': state.isShowingDownloadQr, }">
-          <CodeRequestLogin 
+          <CodeRequestTip 
             :payload="request.kikCode" 
+            :username="request.intent.options.platform?.username"
             class="bounce" />
         </div>
 

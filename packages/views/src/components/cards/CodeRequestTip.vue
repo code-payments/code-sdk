@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
-import { flagForCurrency } from "@code-wallet/flags";
-import { formatCurrency } from "../../utils";
 
-import Background from "../elements/backgrounds/RecieptBg.vue";
+import Background from "../elements/backgrounds/TipBg.vue";
+import XLogo from "../elements/logos/XLogo.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,
   scanned?: boolean,
-  amount?: number,
-  currency?: string,
+  username?: string,
 }>();
 
-const flag = ref<string | undefined>();
 const size = { width: 200, height: 200 };
 const scale = 30;
 const logo = {
@@ -29,10 +26,6 @@ const kikcode : Ref<KikCodeDescription | undefined> = ref();
 watchEffect(async () => {
   if (!props.payload) return;
   kikcode.value = KikCode.generateDescription(size, props.payload);
-
-  if (props.currency) {
-    flag.value = await flagForCurrency(props.currency);
-  }
 });
 </script>
 
@@ -47,22 +40,25 @@ watchEffect(async () => {
       <div class="relative m-auto" 
         :style="{
           width: `${ scale * 1 }vh`,
-          height: `${ scale * 1.53 }vh`,
+          height: `${ scale * 1.75 }vh`,
         }">
 
-        <div v-if="amount && currency"
-          class="font-roboto-mono-medium absolute text-center w-full" 
+        <div v-if="username"
+          class="absolute font-medium text-center text-white w-full capitalize" 
           :style="{
-            top: `${ scale * 1.17 }vh`,
-            fontSize: `${ scale * 0.06 }vh`,
+            top: `${ scale * 1.33 }vh`,
+            fontSize: `${ scale * 0.07 }vh`,
           }">
-          <img v-if="flag" :src="flag"
-          class="rounded-full inline-block -mt-1" 
-          :style="{
-            width: `${ scale * 0.06 }vh`,
-            height: `${ scale * 0.06 }vh`,
-          }" />
-          {{ formatCurrency(amount, currency) }} of Kin
+
+          <XLogo 
+            class="inline-block"
+            :style="{
+              width: `${ scale * 0.08 }vh`,
+              marginRight: `${ scale * 0.01 }vh`,
+              marginTop: `-${ scale * 0.005 }vh`,
+            }" />
+
+          {{ username }}
         </div>
 
         <Background class="w-full" />
@@ -70,13 +66,11 @@ watchEffect(async () => {
         <svg v-if="kikcode" class="absolute" 
         viewBox="0 0 220 220"
         :style="{
-          width: `${ (kikcode.size.width/320)*scale }vh`,
-          height: `${ (kikcode.size.height/320)*scale }vh`,
-          top: `${ scale * 0.19 }vh`,
-          left: `${ scale * 0.19 }vh`,
+          width: `${ (kikcode.size.width/277)*scale }vh`,
+          height: `${ (kikcode.size.height/277)*scale }vh`,
+          top: `${ scale * 0.32 }vh`,
+          left: `${ scale * 0.14 }vh`,
         }">
-          <circle cx="110" cy="110" r="110" fill="#45464E" />         
-
           <mask id="circle-mask">
             <rect width="100%" height="100%" fill="white" />
             <g :transform="'translate(' +

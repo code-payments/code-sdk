@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { CodeButton } from '../sdk';
-  import { CodeLogoSmall } from '../elements';
+  import CodeLogoSmall from '../elements/logos/CodeLogoSmall.vue';
 
   defineProps({
     id: { type: String, required: true, },

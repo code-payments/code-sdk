@@ -12,11 +12,13 @@
   <div style="padding: 10%; background-color: lightgray;">
     <span id="button-pay2"></span>
     <span id="button-login2"></span>
+    <span id="button-tip2"></span>
   </div>
 
   <div style="padding: 10%; background-color: black;">
     <span id="button-pay1"></span>
     <span id="button-login1"></span>
+    <span id="button-tip1"></span>
   </div>
 
   <script type="module">
@@ -70,13 +72,35 @@
       button.mount(id);
     }
 
+    function mount_tip(id, appearance) {
+
+      const options = {
+        appearance,
+        mode: 'tip',
+        platform: {
+          name: 'twitter',
+          username: 'tontontwitch'
+        }
+      }
+
+      const { button } = code.elements.create('button', options);
+
+      button.on('error', (e) => { console.log('sdk-error', e); });
+      button.on('cancel', (e) => { console.log('sdk-cancel', e); });
+      button.on('success', (e) => { console.log('sdk-success', e); alert('thank you'); return true; });
+
+      button.mount(id);
+
+    }
+
     mount_payment('#button-pay1', 'light');
     mount_payment('#button-pay2', 'dark');
 
     mount_login('#button-login1', 'light');
     mount_login('#button-login2', 'dark');
 
-    console.log(code)
+    mount_tip('#button-tip1', 'light');
+    mount_tip('#button-tip2', 'dark');
 
   </script>
 </body>

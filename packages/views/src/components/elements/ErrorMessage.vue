@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeLogo } from '.';
+import CodeLogo from './logos/CodeLogo.vue';
 
 const props = defineProps<{
   errMessage: string

@@ -3,10 +3,12 @@ import { Ref, inject, nextTick, ref } from 'vue';
 import { 
   ElementEventEmitter, 
   ElementOptions, 
+  ExternalPlatformOptions, 
   LoginRequestIntent, 
   LoginRequestOptions, 
   PaymentRequestIntent,
-PaymentRequestOptions
+PaymentRequestOptions,
+TipRequestIntent
 } from '@code-wallet/intents';
 import { EventChannel, InternalEvents } from '@code-wallet/events';
 import * as code from "@code-wallet/client";
@@ -41,11 +43,15 @@ const userProvidedCancelUrl = options?.confirmParams?.cancel?.url !== undefined;
 
 function canMount() {
   if (options) {
-    if (options.mode === 'payment') {
-      return options.amount && options.currency && options.destination;
-    }
-    if (options.mode === 'login') {
-      return options.login && options.login.domain;
+    switch (options.mode) {
+      case 'login':
+        return options.login && options.login.domain;
+      case 'payment':
+        return options.amount && options.currency && options.destination;
+      case 'tip':
+        return options.platform && options.platform.name && options.platform.username;
+      default:
+        return false;
     }
   }
 
@@ -77,10 +83,18 @@ async function onInvoke() {
   }
 
   // Get the intent id from the receiving app or iframe
-  if (options.mode === 'payment') {
-    intent.value = new PaymentRequestIntent(options as ElementOptions & PaymentRequestOptions).getIntentId();
-  } else {
-    intent.value = new LoginRequestIntent(options as ElementOptions & LoginRequestOptions).getIntentId();
+  switch (options.mode) {
+    case 'login':
+      intent.value = new LoginRequestIntent(options as ElementOptions & LoginRequestOptions).getIntentId();
+      break;
+    case 'payment':
+      intent.value = new PaymentRequestIntent(options as ElementOptions & PaymentRequestOptions).getIntentId();
+      break;
+    case 'tip':
+      intent.value = new TipRequestIntent(options as ElementOptions & ExternalPlatformOptions).getIntentId();
+      break;
+    default:
+      throw new Error('Invalid mode');
   }
 
   const variables = {

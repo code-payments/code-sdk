@@ -1,5 +1,3 @@
-export { default as CodeLogo } from './CodeLogo.vue'
-export { default as CodeLogoSmall } from './CodeLogoSmall.vue'
 export { default as CodeSpinner } from './CodeSpinner.vue'
 export { default as DownloadAppQR } from './DownloadAppQR.vue'
 export { default as ErrorMessage } from './ErrorMessage.vue'
