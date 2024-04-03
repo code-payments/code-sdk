@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CodeSpinner, DownloadAppQR, } from '../elements';
-import { LoginRequest,  } from "../../utils"
+import { LoginRequest } from "../../requests"
 
 import CodeDesktopModal from '../sdk/CodeDesktopModal.vue';
 import CodeRequestLogin from '../cards/CodeRequestLogin.vue';

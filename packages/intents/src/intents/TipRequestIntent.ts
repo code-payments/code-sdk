@@ -17,9 +17,9 @@ class TipRequestIntent extends BaseIntent {
     platform: string = '';
 
     /**
-     * Constructs a new PaymentRequestIntent instance.
+     * Constructs a new TipRequestIntent instance.
      * 
-     * @param opt - The payment request options.
+     * @param opt - The tip request options.
      */
     constructor(opt: ExternalPlatformOptions & ElementOptions) {
         super({

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { LoginRequest, openInAppStore, openInApp } from "../../utils";
+import { LoginRequest } from "../../requests";
+import { openInAppStore, openInApp } from "../../utils";
 import { CodeSpinner } from '../elements';
 import CodeMobileModal from '../sdk/CodeMobileModal.vue';
 

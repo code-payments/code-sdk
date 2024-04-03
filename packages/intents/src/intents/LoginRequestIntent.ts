@@ -22,9 +22,9 @@ class LoginRequestIntent extends BaseIntent implements IntentWithMessage {
     signer?: Keypair;
 
     /**
-     * Constructs a new PaymentRequestIntent instance.
+     * Constructs a new LoginRequestIntent instance.
      * 
-     * @param opt - The payment request options.
+     * @param opt - The login request options.
      */
     constructor(opt: LoginRequestOptions & ElementOptions) {
         super({

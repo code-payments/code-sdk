@@ -1,6 +1,6 @@
 import * as proto from '@code-wallet/rpc';
 import { ElementOptions, LoginRequestIntent, LoginRequestOptions } from "@code-wallet/intents";
-import { BaseRequest, BaseRequestWithMessage } from "./base";
+import { BaseRequest, BaseRequestWithMessage } from "./BaseRequest";
 
 class LoginRequest extends BaseRequestWithMessage {
     intent: LoginRequestIntent;

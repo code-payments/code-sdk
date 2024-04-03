@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { EventChannel, InternalEvents } from "@code-wallet/events";
-import { CodeRequest, CodeRequestFromPayload, CodeRequestWithMessage, LoginRequest } from "../../utils"
+import { CodeRequest, CodeRequestFromPayload, CodeRequestWithMessage, LoginRequest } from "../../requests"
 import { ErrorMessage } from '../elements';
 
 const props = defineProps<{

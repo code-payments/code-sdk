@@ -1,6 +1,6 @@
 import { ElementOptions, TipRequestIntent  } from "@code-wallet/intents";
 import { ExternalPlatformOptions } from "@code-wallet/intents";
-import { BaseRequest } from './base';
+import { BaseRequest } from './BaseRequest';
 
 class TipRequest extends BaseRequest {
     intent: TipRequestIntent;

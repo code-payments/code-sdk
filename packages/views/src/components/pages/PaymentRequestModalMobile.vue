@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PaymentRequest, openInAppStore, openInApp, formatCurrency } from "../../utils";
+import { PaymentRequest } from "../../requests";
+import { openInAppStore, openInApp, formatCurrency } from "../../utils";
 import { CodeSpinner } from '../elements';
 import CodeMobileModal from '../sdk/CodeMobileModal.vue';
 

@@ -1,10 +1,11 @@
-import { useConfig } from '../../config';
-import { CodeRequest, CodeRequestWithMessage } from './types';
-import { EventChannel, InternalCardEvents, InternalEvents } from "@code-wallet/events";
+import * as proto from '@code-wallet/rpc';
+import * as Kik from '@code-wallet/kikcode';
+
 import { decode, encode, Intent } from "@code-wallet/intents";
 import { PublicKey } from "@code-wallet/keys"
-import * as Kik from '@code-wallet/kikcode';
-import * as proto from '@code-wallet/rpc';
+import { useConfig } from '../config';
+import { CodeRequest, CodeRequestWithMessage } from './CodeRequest';
+import { EventChannel, InternalCardEvents, InternalEvents } from "@code-wallet/events";
 
 abstract class BaseRequest implements CodeRequest {
     emitter: EventChannel<InternalEvents> | null;

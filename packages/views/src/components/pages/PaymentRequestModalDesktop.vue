@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CodeSpinner, DownloadAppQR, } from '../elements';
-import { PaymentRequest, formatCurrency,  } from "../../utils"
+import { PaymentRequest, } from "../../requests"
 
 import CodeDesktopModal from '../sdk/CodeDesktopModal.vue';
 import CodeRequestPayment from '../cards/CodeRequestPayment.vue';
@@ -12,10 +12,6 @@ const props = defineProps({
 
 function onDownload(state: { isShowingDownloadQr: boolean; }) {
   state.isShowingDownloadQr = !state.isShowingDownloadQr;
-}
-
-function getFormattedAmount(req: PaymentRequest) {
-  return formatCurrency(req.getAmount()!, req.getCurrency()!);
 }
 </script>
 

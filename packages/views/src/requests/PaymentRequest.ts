@@ -1,11 +1,11 @@
+import * as proto from '@code-wallet/rpc';
 import { 
     ElementOptionsWithPayment,
     LoginRequestOptions, 
     PaymentRequestIntent, 
     PaymentRequestWithLoginIntent, 
 } from "@code-wallet/intents";
-import * as proto from '@code-wallet/rpc';
-import { BaseRequest, BaseRequestWithMessage } from './base';
+import { BaseRequest, BaseRequestWithMessage } from './BaseRequest';
 
 class PaymentRequest extends BaseRequestWithMessage {
     intent: PaymentRequestIntent;

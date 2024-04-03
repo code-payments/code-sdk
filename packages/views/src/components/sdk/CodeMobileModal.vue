@@ -3,7 +3,13 @@ import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { EventChannel, InternalEvents } from "@code-wallet/events";
-import { openInApp, setHasCodeApp, sleep, CodeRequest, hasCodeApp, CodeRequestFromPayload, LoginRequest, CodeRequestWithMessage } from "../../utils";
+import { openInApp, setHasCodeApp, sleep, hasCodeApp } from "../../utils";
+import { 
+  CodeRequest, 
+  CodeRequestFromPayload, 
+  LoginRequest, 
+  CodeRequestWithMessage
+} from "../../requests";
 import { CodeSpinner, ErrorMessage } from '../elements';
 
 const props = defineProps<{
