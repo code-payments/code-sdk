@@ -5,11 +5,11 @@ import { ElementOptions } from './options';
 import { IdempotencyKey } from './keys/idempotency';
 
 /**
- * An interface for an intent that can be created and signed.
+ * An interface for an intent that might have a message to send to the Code Sequencer, but not necessarily. 
  */
 export interface Intent {
     options: ElementOptions;
-    nonce: IdempotencyKey | undefined;
+    nonce: IdempotencyKey;
 
     rendezvousPayload: CodePayload;
     rendezvousKeypair: Keypair;
@@ -37,8 +37,9 @@ export interface Intent {
     getIntentId(): string;
 }
 
-export type IntentWithMessage = Intent & WithMessage;
-
+/**
+ * An interface for an object that can be serialized into a message to send to the Code Sequencer.
+ */
 export interface WithMessage {
     /**
      * Serialize this intent into a minimal message for sending to the Code Sequencer.
@@ -59,6 +60,11 @@ export interface WithMessage {
      */
     sign(): SignedIntent;
 }
+
+/**
+ * An intent that has a message to send to the Code Sequencer.
+ */
+export type IntentWithMessage = Intent & WithMessage;
  
 /**
  * An object containing a signed intent and its signature.
