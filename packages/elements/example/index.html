@@ -73,13 +73,12 @@
     }
 
     function mount_tip(id, appearance) {
-
       const options = {
         appearance,
         mode: 'tip',
         platform: {
           name: 'twitter',
-          username: 'tontontwitch'
+          username: 'getcode'
         }
       }
 
@@ -87,10 +86,8 @@
 
       button.on('error', (e) => { console.log('sdk-error', e); });
       button.on('cancel', (e) => { console.log('sdk-cancel', e); });
-      button.on('success', (e) => { console.log('sdk-success', e); alert('thank you'); return true; });
 
       button.mount(id);
-
     }
 
     mount_payment('#button-pay1', 'light');

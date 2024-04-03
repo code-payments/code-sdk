@@ -2,7 +2,7 @@ import * as proto from '@code-wallet/rpc';
 import { Keypair, PublicKey } from '@code-wallet/keys';
 import { CodePayload, CodeKind } from '@code-wallet/kikcode';
 
-import { AbstractIntent, getSendMessageRequestProto } from './AbstractIntent';
+import { BaseIntent, getSendMessageRequestProto } from './BaseIntent';
 import { IntentWithMessage, SignedIntent } from '../types';
 import { ElementOptions, LoginRequestOptions } from '../options';
 import { 
@@ -16,7 +16,7 @@ import { validateElementOptions } from '../utils/validate';
 /**
  * Represents a login request and provides methods to construct, validate, and sign the request.
  */
-class LoginRequestIntent extends AbstractIntent implements IntentWithMessage {
+class LoginRequestIntent extends BaseIntent implements IntentWithMessage {
     domain: string;
     verifier: PublicKey;
     signer?: Keypair;

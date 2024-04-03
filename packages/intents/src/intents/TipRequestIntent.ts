@@ -1,6 +1,6 @@
 import { CodePayload, CodeKind } from '@code-wallet/kikcode';
 
-import { AbstractIntent } from './AbstractIntent';
+import { BaseIntent } from './BaseIntent';
 import { ElementOptions, ExternalPlatformOptions } from '../options';
 import { 
     ErrExpectedPlatformName,
@@ -12,7 +12,7 @@ import { validateElementOptions } from '../utils/validate';
 /**
  * Represents a login request and provides methods to construct, validate, and sign the request.
  */
-class TipRequestIntent extends AbstractIntent {
+class TipRequestIntent extends BaseIntent {
     username: string = '';
     platform: string = '';
 

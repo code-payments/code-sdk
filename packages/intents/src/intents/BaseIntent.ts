@@ -10,7 +10,7 @@ import { generateRendezvousKeypair } from '../keys/rendezvous';
 /**
  * An abstract class for an intent that can be created and signed.
  */
-abstract class AbstractIntent implements Intent {
+abstract class BaseIntent implements Intent {
     options: ElementOptions;
     nonce: IdempotencyKey;
 
@@ -85,6 +85,6 @@ async function getSendMessageRequestProto(intent: IntentWithMessage) {
 }
 
 export {
-    AbstractIntent,
+    BaseIntent,
     getSendMessageRequestProto,
 }

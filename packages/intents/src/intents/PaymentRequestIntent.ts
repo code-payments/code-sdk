@@ -3,7 +3,7 @@ import { PublicKey } from '@code-wallet/keys';
 import { CurrencyCode, Kin } from '@code-wallet/currency';
 import { CodePayload, CodeKind } from '@code-wallet/kikcode';
 
-import { AbstractIntent, getSendMessageRequestProto } from './AbstractIntent';
+import { BaseIntent, getSendMessageRequestProto } from './BaseIntent';
 import { IntentWithMessage, SignedIntent } from '../types';
 import { ElementOptions, PaymentRequestOptions, } from '../options';
 import { 
@@ -17,7 +17,7 @@ import { validateElementOptions } from '../utils/validate';
 /**
  * Represents a payment request and provides methods to construct, validate, and sign the request.
  */
-class PaymentRequestIntent extends AbstractIntent implements IntentWithMessage {
+class PaymentRequestIntent extends BaseIntent implements IntentWithMessage {
     convertedAmount: number | undefined;
 
     /**
