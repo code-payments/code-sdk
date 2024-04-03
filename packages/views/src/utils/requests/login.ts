@@ -1,13 +1,17 @@
-import { AbstractRequest } from '../';
-import { ElementOptions, LoginRequestIntent, LoginRequestOptions } from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
+import { ElementOptions, LoginRequestIntent, LoginRequestOptions } from "@code-wallet/intents";
+import { BaseRequest, BaseRequestWithMessage } from "./base";
 
-class LoginRequest extends AbstractRequest {
+class LoginRequest extends BaseRequestWithMessage {
     intent: LoginRequestIntent;
 
     constructor(intent: LoginRequestIntent) {
         super(intent);
         this.intent = intent;
+    }
+
+    hasMessage() : boolean {
+        return true;
     }
 
     static fromPayload(val: string, opt: { 
@@ -17,7 +21,7 @@ class LoginRequest extends AbstractRequest {
         cancelUrl?: string,
     } = {}) {
 
-        const body = AbstractRequest.bodyFromPayload(val, opt);
+        const body = BaseRequest.bodyFromPayload(val, opt);
         const intent = new LoginRequestIntent(body as ElementOptions & LoginRequestOptions);
         const req = new LoginRequest(intent);
 

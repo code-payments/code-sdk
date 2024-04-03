@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { EventChannel, InternalEvents } from "@code-wallet/events";
-import { openInApp, setHasCodeApp, sleep, CodeRequest, hasCodeApp, CodeRequestFromPayload, LoginRequest } from "../../utils";
+import { openInApp, setHasCodeApp, sleep, CodeRequest, hasCodeApp, CodeRequestFromPayload, LoginRequest, CodeRequestWithMessage } from "../../utils";
 import { CodeSpinner, ErrorMessage } from '../elements';
 
 const props = defineProps<{
@@ -77,7 +77,12 @@ channel.on("afterInvoke", async () => {
     });
   }
 
-  request.value.openStream(channel);
+  if (request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+
+    // intentionally ignoring the await here
+    reqWithMessage.openStream(channel);
+  }
 
   // If we know the user has the app, then give the system prompt asking them if
   // they want to open the app, wait 5 seconds, then show the modal content
@@ -111,14 +116,19 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (request.value) {
-    request.value.closeStream();
+  if (request.value && request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+    reqWithMessage.closeStream();
   }
 });
 
 function onClose () {
   state.isOpen = false;
-  request.value.closeStream();
+
+  if (request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+    reqWithMessage.closeStream();
+  }
 
   // Wait for the modal to close before emitting the event
   setTimeout(() => { 

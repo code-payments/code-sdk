@@ -9,7 +9,7 @@ import { IdempotencyKey } from './keys/idempotency';
  */
 export interface Intent {
     options: ElementOptions;
-    nonce: IdempotencyKey;
+    nonce: IdempotencyKey | undefined;
 
     rendezvousPayload: CodePayload;
     rendezvousKeypair: Keypair;
@@ -18,7 +18,28 @@ export interface Intent {
      * Validate the details of this intent, and throw an error if they're invalid.
      */
     validate(): void;
+
+    /**
+     * Whether this intent has a message to send to the Code Sequencer.
+     */
+    hasMessage(): boolean;
  
+    /**
+     * Get the client secret for this intent, which can be used to create linked browser elements. For example, the "Pay with Code" button.
+     * 
+     * @returns {string} The client secret for this intent.
+     */
+    getClientSecret(): string;
+
+    /**
+     * Get the intent ID for this intent, which can be used to create linked browser elements or request status.
+     */
+    getIntentId(): string;
+}
+
+export type IntentWithMessage = Intent & WithMessage;
+
+export interface WithMessage {
     /**
      * Serialize this intent into a minimal message for sending to the Code Sequencer.
      */
@@ -37,18 +58,6 @@ export interface Intent {
      * @returns {SignedIntent} The signed intent.
      */
     sign(): SignedIntent;
- 
-    /**
-     * Get the client secret for this intent, which can be used to create linked browser elements. For example, the "Pay with Code" button.
-     * 
-     * @returns {string} The client secret for this intent.
-     */
-    getClientSecret(): string;
-
-    /**
-     * Get the intent ID for this intent, which can be used to create linked browser elements or request status.
-     */
-    getIntentId(): string;
 }
  
 /**

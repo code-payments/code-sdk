@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { CodeRequestLogin, CodeSpinner, DownloadAppQR, } from '../elements';
+import { CodeSpinner, DownloadAppQR, } from '../elements';
 import { LoginRequest,  } from "../../utils"
+
 import CodeDesktopModal from '../sdk/CodeDesktopModal.vue';
+import CodeRequestLogin from '../cards/CodeRequestLogin.vue';
 
 const props = defineProps({
   id: { type: String, required: true, },

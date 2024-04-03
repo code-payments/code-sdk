@@ -1,32 +1,12 @@
 import { useConfig } from '../../config';
+import { CodeRequest, CodeRequestWithMessage } from './types';
 import { EventChannel, InternalCardEvents, InternalEvents } from "@code-wallet/events";
 import { decode, encode, Intent } from "@code-wallet/intents";
 import { PublicKey } from "@code-wallet/keys"
 import * as Kik from '@code-wallet/kikcode';
 import * as proto from '@code-wallet/rpc';
 
-export interface CodeRequest {
-    emitter: EventChannel<InternalEvents> | null;
-    intent: Intent;
-    kikCode?: Uint8Array;
-
-    generateKikCode(): Promise<void>;
-    toPayload(): string;
-    toProto(): Promise<proto.SendMessageRequest>;
-    openStream(emitter: EventChannel<InternalEvents>): Promise<void>;
-    closeStream(): void;
-}
-
-export type CodeRequestFromPayload = (
-    payload: string, 
-    options?: { 
-        clientSecret?: string; 
-        idempotencyKey?: string; 
-        successUrl?: string; 
-        cancelUrl?: string; 
-    }) => CodeRequest;
-
-abstract class AbstractRequest implements CodeRequest {
+abstract class BaseRequest implements CodeRequest {
     emitter: EventChannel<InternalEvents> | null;
     intent: Intent;
     kikCode?: Uint8Array
@@ -90,6 +70,12 @@ abstract class AbstractRequest implements CodeRequest {
         return body;
     }
 
+    abstract hasMessage(): boolean;
+}
+
+abstract class BaseRequestWithMessage 
+    extends BaseRequest implements CodeRequestWithMessage {
+
     abstract toProto(): Promise<proto.SendMessageRequest>;
 
     closeStream() {
@@ -124,6 +110,7 @@ abstract class AbstractRequest implements CodeRequest {
         const req = await this.toProto();
         const msgSend = await proto.RpcStream.createUnaryMethod(proto.Messaging, "sendMessage", config.wsPath());
         try {
+
             const res = await msgSend(req);
             if (res.result == proto.SendMessageResponse_Result.OK) {
                 return res;
@@ -210,5 +197,6 @@ abstract class AbstractRequest implements CodeRequest {
 }
 
 export {
-    AbstractRequest
+    BaseRequest,
+    BaseRequestWithMessage,
 }

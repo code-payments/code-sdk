@@ -3,7 +3,7 @@ import { Keypair } from '@code-wallet/keys';
 import { CodePayload } from '@code-wallet/kikcode';
 
 import { ElementOptions } from '../options';
-import { Intent, SignedIntent } from '../types';
+import { Intent, IntentWithMessage } from '../types';
 import { IdempotencyKey } from '../keys/idempotency';
 import { generateRendezvousKeypair } from '../keys/rendezvous';
 
@@ -27,7 +27,7 @@ abstract class AbstractIntent implements Intent {
             ...opt,
         };
 
-        this.init();
+        this.init(opt);
         this.validate();
 
         // Create an 11 byte buffer from idempotencyKey if provided, otherwise generate a random nonce
@@ -43,28 +43,10 @@ abstract class AbstractIntent implements Intent {
         this.rendezvousKeypair = generateRendezvousKeypair(this.rendezvousPayload)
     }
 
-    abstract init(): void;
+    abstract init(opt: ElementOptions): void;
     abstract toPayload(): CodePayload;
     abstract validate(): void;
-    abstract toProto(): proto.Message;
-    abstract sign(): SignedIntent; 
-
-    /**
-     * Constructs a SendMessageRequest message to be sent to the Code Sequencer.
-     */
-    async getSendMessageRequestProto() {
-        const { signature, envelope } = this.sign();
-
-        return new proto.SendMessageRequest({
-            message: envelope,
-            rendezvousKey: {
-                value: this.rendezvousKeypair.getPublicKey().value,
-            },
-            signature: {
-                value: signature,
-            }
-        });
-    }
+    abstract hasMessage(): boolean;
 
     /**
      * Retrieves the client secret.
@@ -85,6 +67,24 @@ abstract class AbstractIntent implements Intent {
     }
 }
 
+/**
+ * Constructs a SendMessageRequest message to be sent to the Code Sequencer.
+ */
+async function getSendMessageRequestProto(intent: IntentWithMessage) {
+    const { signature, envelope } = intent.sign();
+
+    return new proto.SendMessageRequest({
+        message: envelope,
+        rendezvousKey: {
+            value: intent.rendezvousKeypair.getPublicKey().value,
+        },
+        signature: {
+            value: signature,
+        }
+    });
+}
+
 export {
     AbstractIntent,
+    getSendMessageRequestProto,
 }

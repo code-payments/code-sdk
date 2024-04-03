@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
-import CodeLogo from "./CodeLogo.vue";
+import CodeLogo from "../elements/CodeLogo.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,

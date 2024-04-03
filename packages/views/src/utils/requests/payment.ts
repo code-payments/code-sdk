@@ -1,4 +1,3 @@
-import { AbstractRequest } from '../';
 import { 
     ElementOptionsWithPayment,
     LoginRequestOptions, 
@@ -6,13 +5,18 @@ import {
     PaymentRequestWithLoginIntent, 
 } from "@code-wallet/intents";
 import * as proto from '@code-wallet/rpc';
+import { BaseRequest, BaseRequestWithMessage } from './base';
 
-class PaymentRequest extends AbstractRequest {
+class PaymentRequest extends BaseRequestWithMessage {
     intent: PaymentRequestIntent;
 
     constructor(intent: PaymentRequestIntent) {
         super(intent);
         this.intent = intent;
+    }
+
+    hasMessage() : boolean {
+        return true;
     }
 
     getAmount() {
@@ -41,7 +45,7 @@ class PaymentRequest extends AbstractRequest {
         cancelUrl?: string,
     } = {}) {
 
-        const body = AbstractRequest.bodyFromPayload(val, opt);
+        const body = BaseRequest.bodyFromPayload(val, opt);
         const intent = PaymentRequest.getIntent(body as ElementOptionsWithPayment);
         const req = new PaymentRequest(intent);
 

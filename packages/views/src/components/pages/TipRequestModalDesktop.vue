@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { CodeSpinner, DownloadAppQR, } from '../elements';
-import { PaymentRequest, formatCurrency,  } from "../../utils"
+import { TipRequest,  } from "../../utils"
 
 import CodeDesktopModal from '../sdk/CodeDesktopModal.vue';
-import CodeRequestPayment from '../cards/CodeRequestPayment.vue';
+import CodeRequestLogin from '../cards/CodeRequestLogin.vue';
 
 const props = defineProps({
   id: { type: String, required: true, },
@@ -14,24 +14,22 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
   state.isShowingDownloadQr = !state.isShowingDownloadQr;
 }
 
-function getFormattedAmount(req: PaymentRequest) {
-  return formatCurrency(req.getAmount()!, req.getCurrency()!);
-}
 </script>
 
 <template>
-  <CodeDesktopModal :create-request="PaymentRequest.fromPayload" 
+  <CodeDesktopModal :create-request="TipRequest.fromPayload" 
     :payload="props.payload" 
     :id="props.id">
 
     <template #default="{ state, request }">
 
-      <h2 class="text-white text-[34px] leading-tight
+      <h2 class="text-white text-[3.5vh] leading-tight
       font-avenir-next-bold mb-10">
-        Scan with the Code Wallet app to pay
+        Scan with the Code Wallet app to tip
       </h2>
 
       <div class="m-auto relative">
+
         <div class="absolute top-[10vh] right-0 max-w-[21vh] mv-right-start"
           :class="{ 'mv-right-end': state.isShowingDownloadQr }">
 
@@ -42,10 +40,8 @@ function getFormattedAmount(req: PaymentRequest) {
 
         <div v-show="!state.isLoading" class="mv-left-start delay-800"
           :class="{ 'invisible': state.hasScanned, 'mv-left-end': state.isShowingDownloadQr, }">
-          <CodeRequestPayment
+          <CodeRequestLogin 
             :payload="request.kikCode" 
-            :amount="request.intent.options.amount" 
-            :currency="request.intent.options.currency"
             class="bounce" />
         </div>
 
@@ -57,12 +53,14 @@ function getFormattedAmount(req: PaymentRequest) {
 
         <div v-if="state.hasScanned" class="absolute top-1/2 left-1/2 -translate-x-1/2">
           <p class="text-white text-[12px] leading-tight font-avenir-next-bold pb-10">
-            Confirm payment on Code
+            Confirm login on Code
             <button type="button" @click="state.hasScanned = false"
               class="underline block mt-2 text-center w-full">Need to scan again?</button>
           </p>
         </div>
       </div>
+
+      <div>
 
       <button type="button" @click="onDownload(state)" 
         class="mt-10 block rounded-md bg-transparent border
@@ -75,6 +73,8 @@ function getFormattedAmount(req: PaymentRequest) {
           <path d="M30.2242 6.23775C29.6817 6.23775 29.25 6.66945 29.25 7.21197V11.2699C29.25 11.8125 29.6817 12.2442 30.2242 12.2442C30.7667 12.2442 31.1984 11.8125 31.1984 11.2699V7.21197C31.1984 6.66945 30.7667 6.23775 30.2242 6.23775ZM40.2498 6.40485V12.7021C40.2498 13.2452 39.8417 13.6894 39.3142 13.7464L39.1995 13.7524L38.5018 13.7523L38.5028 15.9007C38.5028 16.4433 38.071 16.875 37.5285 16.875C37.0248 16.875 36.6166 16.5027 36.5608 16.0153L36.5543 15.9007L36.5534 13.7523H35.2561L35.2564 15.9007C35.2564 16.4433 34.8247 16.875 34.2821 16.875C33.7784 16.875 33.3702 16.5027 33.3144 16.0153L33.3079 15.9007L33.3077 13.7523L32.6112 13.7524C32.0681 13.7524 31.6239 13.3444 31.5671 12.8169L31.5609 12.7021V6.40485H40.2498ZM41.5865 6.23775C42.0903 6.23775 42.4985 6.60998 42.5543 7.09752L42.5608 7.21197V11.2699C42.5608 11.8125 42.129 12.2442 41.5865 12.2442C41.0828 12.2442 40.6746 11.8719 40.6188 11.3844L40.6123 11.2699V7.21197C40.6123 6.66945 41.0441 6.23775 41.5865 6.23775ZM38.6027 1.12501C38.6258 1.12523 38.6472 1.13118 38.6684 1.14292C38.724 1.17372 38.7496 1.23097 38.7379 1.28829L38.722 1.33089L38.0358 2.57065C39.2901 3.22333 40.1577 4.43428 40.2428 5.83844L40.2498 6.06171H31.5609C31.5626 4.63821 32.3676 3.38873 33.5801 2.67831L33.7749 2.57067L33.0886 1.33089C33.05 1.26124 33.0729 1.18143 33.1423 1.14292C33.1635 1.13118 33.185 1.12524 33.208 1.12501C33.2408 1.12469 33.2726 1.13554 33.2979 1.15686L33.3303 1.19662L34.0255 2.44982C34.5943 2.19755 35.2322 2.05596 35.9053 2.05596C36.4823 2.05596 37.0334 2.15998 37.5373 2.34857L37.7851 2.44982L38.4804 1.19661C38.5066 1.14916 38.5534 1.12453 38.6027 1.12501ZM33.9002 3.74628C33.7019 3.74628 33.5377 3.91046 33.5377 4.10881C33.5377 4.30716 33.7019 4.47134 33.9002 4.47134C34.0986 4.47134 34.2627 4.30716 34.2627 4.10881C34.2627 3.91046 34.0986 3.74628 33.9002 3.74628ZM37.9104 3.74628C37.7121 3.74628 37.5479 3.91046 37.5479 4.10881C37.5479 4.30716 37.7121 4.47134 37.9104 4.47134C38.1088 4.47134 38.273 4.30716 38.273 4.10881C38.273 3.91046 38.1088 3.74628 37.9104 3.74628Z" fill="white"/>
         </svg>
       </button>
+
+      </div>
 
     </template>
   </CodeDesktopModal>  
@@ -128,7 +128,7 @@ function getFormattedAmount(req: PaymentRequest) {
 
 .delay-800 {
   opacity: 0;
-  animation: delay 0.8s linear 0.8s forwards;
+  animation: delay 0.2s linear 0.7s forwards;
 }
 
 @keyframes delay {

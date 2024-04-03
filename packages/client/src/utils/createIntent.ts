@@ -1,14 +1,17 @@
-import { Client } from "../client";
-import { Intent, } from "@code-wallet/intents";
 import * as proto from "@code-wallet/rpc";
+import { Intent, IntentWithMessage } from "@code-wallet/intents";
+import { Client } from "../client";
 import { ErrUnexpectedError } from "../errors";
 
 async function createIntent(intent: Intent, client: Client) {
-    const msg = await intent.getSendMessageRequestProto()
-    const res = await client.send(proto.Messaging, 'sendMessage', msg);
+    if (intent.hasMessage()) {
+        const withMessage = intent as IntentWithMessage;
+        const msg = await withMessage.getSendMessageRequestProto();
+        const res = await client.send(proto.Messaging, 'sendMessage', msg);
 
-    if (res.result !== proto.SendMessageResponse_Result.OK) {
-        ErrUnexpectedError();
+        if (res.result !== proto.SendMessageResponse_Result.OK) {
+            ErrUnexpectedError();
+        }
     }
     
     return {

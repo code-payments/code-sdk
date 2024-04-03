@@ -3,7 +3,7 @@ import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
 import { flagForCurrency } from "@code-wallet/flags";
 import { formatCurrency } from "../../utils";
-import CodeRequestBg from "./CodeRequestBg.vue";
+import CodeRequestBg from "../elements/CodeRequestBg.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,
