@@ -1,5 +1,4 @@
 import { App as VueApp, createApp, reactive } from 'vue';
-
 import { 
     ElementEventEmitter, 
     ElementEvents, 
@@ -9,10 +8,11 @@ import {
     validateElementOptions
 } from '@code-wallet/intents';
 
+import { withoutReactivity } from './utils/state';
 import { ErrUnknownElementType } from './errors';
 import { 
     ButtonFlow,
-    IntentRequestModalDesktop,
+    PageFlow,
 } from './components';
 
 const defaultMode = 'payment';
@@ -35,7 +35,7 @@ export interface CodeElement {
 /**
  * Abstract class representing a general element with common functionalities.
  */
-abstract class AbstractElement implements CodeElement {
+abstract class BaseElement implements CodeElement {
     listeners: { event: string, callback: (args: any) => Promise<boolean | void> }[];
     intent: ElementOptions;
     app: VueApp<any>;
@@ -153,19 +153,9 @@ abstract class AbstractElement implements CodeElement {
 }
 
 /**
- * Utility function to create a deep clone of the object without Vue's reactivity system.
- * @param obj - The object to process.
- * @returns A deep clone of the object without reactivity.
- */
-function withoutReactivity(obj?: unknown) {
-    if (typeof obj !== 'object') { return obj; }
-    return JSON.parse(JSON.stringify(obj));
-}
-
-/**
  * Concrete class representing a specialized button element.
  */
-class CodeButton extends AbstractElement {
+class CodeButton extends BaseElement {
     /**
      * Constructs a new CodeButton with specific options.
      * @param options - Partial element options.
@@ -176,15 +166,15 @@ class CodeButton extends AbstractElement {
 }
 
 /**
- * Concrete class representing a specialized card element.
+ * Concrete class representing a specialized page element.
  */
-class CodeCard extends AbstractElement {
+class CodePage extends BaseElement {
     /**
-     * Constructs a new CodeCard with specific options.
+     * Constructs a new CodePage with specific options.
      * @param options - Partial element options.
      */
     constructor(options: Partial<ElementOptions>) {
-        super(options, createApp(IntentRequestModalDesktop));
+        super(options, createApp(PageFlow));
     }
 }
 
@@ -198,12 +188,17 @@ const elements = {
      * @param options - The options for the element.
      * @returns An object containing the newly created element.
      */
-    create: (type: ElementType, options: Omit<ElementOptions, 'signers'>): { button?: CodeElement, card?: CodeElement } => {
+    create: (type: ElementType, options: Omit<ElementOptions, 'signers'>): { 
+        button?: CodeElement, 
+        page?: CodeElement,
+    } => {
         switch (type) {
             case 'button':
                 return { button: new CodeButton(options) };
+            case 'page':
+                return { page: new CodePage(options) };
             case 'card':
-                return { card: new CodeCard(options) };
+                throw new Error('Card elements are not yet supported.');
             default:
                 throw ErrUnknownElementType(type);
         }

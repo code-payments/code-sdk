@@ -12,12 +12,16 @@
   <div style="padding: 10%; background-color: lightgray;">
     <span id="button-pay2"></span>
     <span id="button-login2"></span>
+    <span id="button-tip2"></span>
   </div>
 
   <div style="padding: 10%; background-color: black;">
     <span id="button-pay1"></span>
     <span id="button-login1"></span>
+    <span id="button-tip1"></span>
   </div>
+
+  <span id="page-tip3"></span>
 
   <script type="module">
     import code from '../src/index';
@@ -70,10 +74,54 @@
       button.mount(id);
     }
 
+    function mount_tip(id, appearance) {
+      const options = {
+        appearance,
+        mode: 'tip',
+        platform: {
+          name: 'twitter',
+          username: 'getcode'
+        }
+      }
+
+      const { button } = code.elements.create('button', options);
+
+      button.on('error', (e) => { console.log('sdk-error', e); });
+      button.on('cancel', (e) => { console.log('sdk-cancel', e); });
+
+      button.mount(id);
+    }
+
+    /*
+    function mount_page(id) {
+      const options = {
+        mode: 'tip',
+        platform: {
+          name: 'twitter',
+          username: 'getcode'
+        }
+      }
+
+      const { page } = code.elements.create('page', options);
+
+      page.on('error', (e) => { console.log('sdk-error', e); });
+      page.on('cancel', (e) => { console.log('sdk-cancel', e); });
+
+      page.mount(id);
+    }
+    mount_page('#page-tip3');
+    */
+
     mount_payment('#button-pay1', 'light');
     mount_payment('#button-pay2', 'dark');
+
     mount_login('#button-login1', 'light');
     mount_login('#button-login2', 'dark');
+
+    mount_tip('#button-tip1', 'light');
+    mount_tip('#button-tip2', 'dark');
+
+
   </script>
 </body>
 

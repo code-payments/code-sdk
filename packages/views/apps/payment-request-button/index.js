@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import CodeApp from '../../src/index'
-import { routes } from '../../src/routes/payment-request-button'
+import { routes } from '../../src/routes/buttons/payment-request-button'
 
 import './style.css'
 

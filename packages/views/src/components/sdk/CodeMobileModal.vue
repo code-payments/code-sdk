@@ -3,13 +3,20 @@ import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { EventChannel, InternalEvents } from "@code-wallet/events";
-import { openInApp, setHasCodeApp, sleep, CodeRequest, hasCodeApp, CodeRequestFromPayload, LoginRequest } from "../../utils";
-import { CodeSpinner, ErrorMessage } from '../elements';
+import { openInApp, setHasCodeApp, sleep, hasCodeApp } from "../../utils";
+import { 
+  CodeRequest, 
+  CodeRequestFromPayload, 
+  LoginRequest, 
+  CodeRequestWithMessage
+} from "../../requests";
+import { CodeSpinner, ErrorMessage } from '../common';
 
 const props = defineProps<{
+  createRequest: CodeRequestFromPayload;
   id: string;
   payload: string;
-  createRequest: CodeRequestFromPayload;
+  asPage?: boolean;
 }>();
 
 const el = ref<HTMLElement | null>(null);
@@ -77,7 +84,12 @@ channel.on("afterInvoke", async () => {
     });
   }
 
-  request.value.openStream(channel);
+  if (request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+
+    // intentionally ignoring the await here
+    reqWithMessage.openStream(channel);
+  }
 
   // If we know the user has the app, then give the system prompt asking them if
   // they want to open the app, wait 5 seconds, then show the modal content
@@ -111,14 +123,23 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (request.value) {
-    request.value.closeStream();
+  if (request.value && request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+    reqWithMessage.closeStream();
   }
 });
 
 function onClose () {
+  if (props.asPage) {
+    return;
+  }
+
   state.isOpen = false;
-  request.value.closeStream();
+
+  if (request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+    reqWithMessage.closeStream();
+  }
 
   // Wait for the modal to close before emitting the event
   setTimeout(() => { 
@@ -143,7 +164,7 @@ function onClose () {
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
 
-          <TransitionChild as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
+          <TransitionChild v-if="!asPage" as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[800ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
               class="absolute right-2 top-2 flex h-14 w-14 items-center justify-center rounded-full z-100">

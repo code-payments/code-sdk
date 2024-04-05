@@ -5,7 +5,7 @@ import { ElementOptions } from './options';
 import { IdempotencyKey } from './keys/idempotency';
 
 /**
- * An interface for an intent that can be created and signed.
+ * An interface for an intent that might have a message to send to the Code Sequencer, but not necessarily. 
  */
 export interface Intent {
     options: ElementOptions;
@@ -18,7 +18,29 @@ export interface Intent {
      * Validate the details of this intent, and throw an error if they're invalid.
      */
     validate(): void;
+
+    /**
+     * Whether this intent has a message to send to the Code Sequencer.
+     */
+    hasMessage(): boolean;
  
+    /**
+     * Get the client secret for this intent, which can be used to create linked browser elements. For example, the "Pay with Code" button.
+     * 
+     * @returns {string} The client secret for this intent.
+     */
+    getClientSecret(): string;
+
+    /**
+     * Get the intent ID for this intent, which can be used to create linked browser elements or request status.
+     */
+    getIntentId(): string;
+}
+
+/**
+ * An interface for an object that can be serialized into a message to send to the Code Sequencer.
+ */
+export interface WithMessage {
     /**
      * Serialize this intent into a minimal message for sending to the Code Sequencer.
      */
@@ -37,19 +59,12 @@ export interface Intent {
      * @returns {SignedIntent} The signed intent.
      */
     sign(): SignedIntent;
- 
-    /**
-     * Get the client secret for this intent, which can be used to create linked browser elements. For example, the "Pay with Code" button.
-     * 
-     * @returns {string} The client secret for this intent.
-     */
-    getClientSecret(): string;
-
-    /**
-     * Get the intent ID for this intent, which can be used to create linked browser elements or request status.
-     */
-    getIntentId(): string;
 }
+
+/**
+ * An intent that has a message to send to the Code Sequencer.
+ */
+export type IntentWithMessage = Intent & WithMessage;
  
 /**
  * An object containing a signed intent and its signature.

@@ -18,6 +18,9 @@ import {
     ErrLoginPortsNotSupported,
     ErrInvalidLoginDomain,
     ErrLoginExpectedDomainName,
+    ErrPlatformRequired,
+    ErrExpectedPlatformName,
+    ErrExpectedUsername,
 } from '../errors';
 
 /**
@@ -146,6 +149,28 @@ function validateLoginRequestOptions(intent: ElementOptions) {
 }
 
 /**
+ * Validates the tip request options.
+ * 
+ * @param intent The options to validate.
+ * @throws {ErrPlatformRequired} If the `platform` property is undefined.
+ * @throws {ErrExpectedPlatformName} If the `platform.name` property is undefined.
+ * @throws {ErrExpectedUsername} If the `platform.username` property is undefined.
+ */
+function validateTipRequestOptions(intent: ElementOptions) {
+    if (intent.platform === undefined) {
+        throw ErrPlatformRequired();
+    }
+
+    if (intent.platform.name === undefined) {
+        throw ErrExpectedPlatformName();
+    }
+
+    if (intent.platform.username === undefined) {
+        throw ErrExpectedUsername();
+    }
+}
+
+/**
  * Validates the properties of the given `ElementOptions` for signers.
  */
 function validateSigners(intent: ElementOptions) {
@@ -185,6 +210,10 @@ function validateElementOptions(intent: ElementOptions) {
             if (intent.signers) {
                 validateSigners(intent);
             }
+            break;
+        case 'tip':
+            validateTipRequestOptions(intent);
+
             break;
         default:
             throw ErrInvalidMode();

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import CodeApp from '../../src/index'
-import { routes } from '../../src/routes/login-request-modal-desktop'
+import { routes } from '../../src/routes/modals/login-request-modal-desktop'
 
 import './style.css'
 

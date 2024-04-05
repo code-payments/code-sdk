@@ -4,12 +4,12 @@ import { Keypair } from '@code-wallet/keys';
 /**
  * The mode of the intent.
  */
-export type IntentType = 'payment' | 'login';
+export type IntentType = 'payment' | 'login' | 'tip';
 
 /**
  * Represents the possible types of elements.
  */
-export type ElementType = 'button' | 'card';
+export type ElementType = 'button' | 'page' | 'card';
 
 /**
  * Describes the appearance themes for the element.
@@ -118,6 +118,16 @@ export interface LoginRequestOptions {
 }
 
 /**
+ * Defines the options needed for external platform integrations.
+ */
+export interface ExternalPlatformOptions {
+    platform: {
+        name: 'twitter', // At the moment, only Twitter is supported.
+        username: string;
+    }
+}
+
+/**
  * Describes the locale options for the element.
  */
 export interface LocaleOptions {
@@ -141,6 +151,7 @@ export type ElementOptions = Partial<IntentOptions> &
     Partial<IntentSigners> &
     Partial<PaymentRequestOptions> & 
     Partial<LoginRequestOptions> &
+    Partial<ExternalPlatformOptions> &
     Partial<LocaleOptions> & 
     Partial<AppearanceOptions> & 
     Partial<WebhookParams> &

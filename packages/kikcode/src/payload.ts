@@ -1,12 +1,15 @@
+import { sha256 } from '@noble/hashes/sha256';
+import { bytesToBase64 } from './utils';
+
 import { 
     CurrencyCode,
     currencyCodeToIndex,
     indexToCurrencyCode,
     isValidCurrency, 
-    ErrInvalidCurrency
+    ErrInvalidCurrency,
 } from "@code-wallet/currency";
 
-import { ErrInvalidSize, ErrInvalidValue } from "./errors";
+import { ErrInvalidSize, ErrInvalidValue, ErrInvalidUsername, ErrInvalidNonce } from "./errors";
 import { CodeKind, CodePayloadOptions } from "./types";
 
 /**
@@ -15,9 +18,11 @@ import { CodeKind, CodePayloadOptions } from "./types";
  */
 class CodePayload {
     kind: CodeKind;
-    nonce: Uint8Array;
+
+    nonce?: Uint8Array;
     amount?: bigint;
     currency?: CurrencyCode;
+    username?: string;
 
     static readonly MAX_LENGTH: number = 20;
 
@@ -28,8 +33,9 @@ class CodePayload {
      */
     constructor(opt: CodePayloadOptions) {
         this.kind = opt.kind;
-        this.amount = opt.amount;
         this.nonce = opt.nonce;
+        this.amount = opt.amount;
+        this.username = opt.username;
         
         if (opt.currency && !isValidCurrency(opt.currency)) {
             throw ErrInvalidCurrency();
@@ -53,6 +59,10 @@ class CodePayload {
         return this.kind === CodeKind.RequestPaymentWithFeesSupport && this.currency != null && this.amount != null;
     }
 
+    private isTip(): this is this & { username: string } {
+        return this.kind === CodeKind.Tip && this.username != null;
+    }
+
     /**
      * Validates the payload, throwing an error if invalid.
      */
@@ -69,6 +79,20 @@ class CodePayload {
             if (!this.amount) {
                 throw ErrInvalidValue();
             }
+        }
+
+        if (this.kind === CodeKind.Tip) {
+            if (!this.username) {
+                throw ErrInvalidUsername();
+            }
+
+            if (this.username.length > 15) {
+                throw ErrInvalidUsername();
+            }
+        }
+
+        if (this.kind !== CodeKind.Tip && (!this.nonce || this.nonce.length !== 11)) {
+            throw ErrInvalidNonce();
         }
     }
 
@@ -103,8 +127,42 @@ class CodePayload {
             }
         }
 
-        data.set(this.nonce, 9);
-        
+        if (this.isTip()) {
+            const usernameBuffer = new TextEncoder().encode(this.username);
+            const maxLength = 15;
+            const sanitizedUsername = usernameBuffer.slice(0, maxLength);
+            data.set(sanitizedUsername, 5);
+
+            const paddingRequired = maxLength - sanitizedUsername.length;
+            let padding = "";
+            if (paddingRequired > 0) {
+                padding = ".";
+            }
+
+            if (paddingRequired > 1) {
+                const hash = sha256(usernameBuffer);
+
+                // Buffer is not available in browser environment
+                // const encoded = Buffer.from(hash).toString('base64');
+                const encoded = bytesToBase64(hash);
+
+                padding = `${padding}${encoded.slice(0, paddingRequired - 1)}`;
+            }
+
+            if (padding.length > 0) {
+                //console.log(padding, padding.length, paddingRequired)
+                const paddingBuffer = new TextEncoder().encode(padding);
+                data.set(paddingBuffer, 5 + sanitizedUsername.length);
+            }
+
+            return data;
+        }
+
+        // for Cash, Gift Card, Logins, and Payment Request
+        if (this.nonce) {
+            data.set(this.nonce, 9);
+        }
+
         return data;
     }
 
@@ -120,12 +178,14 @@ class CodePayload {
         }
 
         const kind = data[0] as CodeKind;
-        let amount: bigint | undefined;
         let nonce: Uint8Array;
+
+        let amount: bigint | undefined;
         let currency: CurrencyCode | undefined;
+        let username: string | undefined;
 
         if (kind === CodeKind.RequestPayment || kind === CodeKind.RequestPaymentWithFeesSupport) {
-            // for Payment Request
+            // for Payment request
             const currencyIndex = data[1];
             currency = indexToCurrencyCode(currencyIndex);
             amount = data.slice(2, 9).reduce((acc, val, i) => acc + (BigInt(val) << BigInt(8 * i)), BigInt(0));
@@ -135,10 +195,22 @@ class CodePayload {
             // for Cash and Gift Card
             amount = data.slice(1, 9).reduce((acc, val, i) => acc + (BigInt(val) << BigInt(8 * i)), BigInt(0));
         }
+
+        if (kind === CodeKind.Tip) {
+            // for Tip request
+            username = new TextDecoder().decode(data.slice(5, 20)).split(".")[0];
+            return new CodePayload({ kind, username, nonce: new Uint8Array(11) });
+        }
         
         nonce = data.slice(9);
 
-        return new CodePayload({ kind, amount, currency, nonce });
+        return new CodePayload({ 
+            kind, 
+            nonce,
+            amount,
+            currency,
+            username,
+        });
     }
 }
 

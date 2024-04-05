@@ -18,6 +18,9 @@ const ErrLoginIPNotSupported = () => new Error("login IP addresses are not suppo
 const ErrLoginLocalhostNotSupported = () => new Error("login localhost is not supported");
 const ErrLoginPortsNotSupported = () => new Error("login ports are not supported");
 const ErrLoginExpectedDomainName = () => new Error("login expected domain name but received a path");
+const ErrPlatformRequired = () => new Error("platform is required");
+const ErrExpectedPlatformName = () => new Error("expected platform name");
+const ErrExpectedUsername = () => new Error("expected username");
 
 export {
     ErrNotImplemented,
@@ -40,4 +43,7 @@ export {
     ErrLoginLocalhostNotSupported,
     ErrLoginPortsNotSupported,
     ErrLoginExpectedDomainName,
+    ErrPlatformRequired,
+    ErrExpectedPlatformName,
+    ErrExpectedUsername,
 };

@@ -3,13 +3,14 @@ import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { EventChannel, InternalEvents } from "@code-wallet/events";
-import { CodeRequest, CodeRequestFromPayload, LoginRequest } from "../../utils"
-import { ErrorMessage } from '../elements';
+import { CodeRequest, CodeRequestFromPayload, CodeRequestWithMessage, LoginRequest } from "../../requests"
+import { ErrorMessage } from '../common';
 
 const props = defineProps<{
+  createRequest: CodeRequestFromPayload;
   id: string;
   payload: string;
-  createRequest: CodeRequestFromPayload;
+  asPage?: boolean;
 }>();
 
 const el = ref<HTMLElement | null>(null);
@@ -53,7 +54,7 @@ channel.on(['clientRejectedLogin', 'clientRejectedPayment'], () => {
 channel.on("intentSubmitted", () => { state.hasCompletedIntent = true; });
 channel.on("codeScanned", () => { state.hasScanned = true; });
 channel.on("beforeInvoke", () => { state.isLoading = true; })
-channel.on("afterInvoke", () => {
+channel.on("afterInvoke", async () => {
   const { clientSecret, idempotencyKey, successUrl, cancelUrl } = updatableFields;
 
   const shouldRecreateRequest : boolean = [
@@ -73,7 +74,15 @@ channel.on("afterInvoke", () => {
     });
   }
 
-  request.value.openStream(channel);
+  if (request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+
+    // intentionally ignoring the await here
+    reqWithMessage.openStream(channel);
+  } else {
+    request.value.generateKikCode();
+  }
+
   state.isLoading = false;
 })
 
@@ -89,15 +98,22 @@ onMounted(() => {
   if (request.value && !request.value.kikCode) {
     request.value.generateKikCode();
   }
+
+  state.isLoading = false;
 });
 
 onUnmounted(() => {
-  if (request.value) {
-    request.value.closeStream();
+  if (request.value && request.value.hasMessage()) {
+    const reqWithMessage = request.value as CodeRequestWithMessage;
+    reqWithMessage.closeStream();
   }
 });
 
 function onClose() {
+  if (props.asPage) {
+    return;
+  }
+
   // Avoid an obscure headlessui Firefox bug where the dialog is closed on open (hard to reproduce)
   // Source of issue:
   // https://github.com/tailwindlabs/headlessui/blob/1469b85c36802265c2409f443f926e1bb02230d4/packages/%40headlessui-vue/src/components/dialog/dialog.ts#L280-L287
@@ -135,10 +151,10 @@ function onClose() {
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
 
-          <TransitionChild as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
+          <TransitionChild  v-if="!asPage" as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[100ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
-              class="absolute right-4 top-4 flex h-14 w-14 items-center justify-center rounded-full z-100">
+              class="absolute right-10 top-5 flex h-14 w-14 items-center justify-center rounded-full z-100">
               <XMarkIcon class="h-9 w-9 text-white" aria-hidden="true" />
             </button>
           </TransitionChild>

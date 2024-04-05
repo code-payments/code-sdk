@@ -35,6 +35,21 @@ describe('CodePayload', () => {
         0x07, 0x08, 0x09, 0x10, 0x11
     ])
 
+    const sampleTip = new Uint8Array([
+        0x05, 0x00, 0x00, 0x00, 0x00,
+        0x67, 0x65, 0x74, 0x63, 0x6f,
+        0x64, 0x65, 0x2e, 0x34, 0x56,
+        0x71, 0x2f, 0x72, 0x2b, 0x58,
+    ]);
+
+    const sampleTipDot = new Uint8Array([
+        0x05, 0x00, 0x00, 0x00, 0x00,
+        0x62, 0x6f, 0x62, 0x5f, 0x62,
+        0x65, 0x6e, 0x6e, 0x69, 0x6e,
+        0x67, 0x74, 0x6f, 0x6e, 0x2e,
+    ]);
+
+
     it('should create new payload from parameters', () => {
         const kind = CodeKind.Cash;
         const amount = BigInt(100);
@@ -169,5 +184,46 @@ describe('CodePayload', () => {
         const binaryData = payload.toBinary();
 
         expect(binaryData.length).to.equal(CodePayload.MAX_LENGTH);
+    });
+
+    it('should encode standard username', () => {
+        
+        const payload = new CodePayload({
+            kind: CodeKind.Tip,
+            username: "getcode"
+        });
+        const encoded = payload.toBinary();
+
+        expect(encoded.toString()).to.eql(sampleTip.toString());
+    });
+
+    it('should encode single pad username', () => {
+        const payload = new CodePayload({
+            kind: CodeKind.Tip,
+            username: "bob_bennington"
+        });
+        const encoded = payload.toBinary();
+
+        expect(encoded.toString()).to.eql(sampleTipDot.toString());
+    });
+
+    it('should throw when username is too long', () => {
+        try {
+            new CodePayload({
+                kind: CodeKind.Tip,
+                username: "bob_benningtons"
+            });
+        }
+        catch (e) {
+            expect(e.message).to.equal(ErrInvalidValue().message);
+        }
+    });
+
+    it('should decode username', () => {
+        const payload = CodePayload.fromData(sampleTip);
+
+        expect(payload.kind).to.equal(CodeKind.Tip);
+        expect(payload.username).to.equal("getcode");
+        expect(payload.nonce).to.eql(new Uint8Array(11));
     });
 });

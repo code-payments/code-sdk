@@ -2,8 +2,8 @@ import * as proto from '@code-wallet/rpc';
 import { Keypair, PublicKey } from '@code-wallet/keys';
 import { CodePayload, CodeKind } from '@code-wallet/kikcode';
 
-import { AbstractIntent } from './AbstractIntent';
-import { SignedIntent } from '../types';
+import { BaseIntent, getSendMessageRequestProto } from './BaseIntent';
+import { IntentWithMessage, SignedIntent } from '../types';
 import { ElementOptions, LoginRequestOptions } from '../options';
 import { 
     ErrLoginDomainRequired, 
@@ -16,15 +16,15 @@ import { validateElementOptions } from '../utils/validate';
 /**
  * Represents a login request and provides methods to construct, validate, and sign the request.
  */
-class LoginRequestIntent extends AbstractIntent {
+class LoginRequestIntent extends BaseIntent implements IntentWithMessage {
     domain: string;
     verifier: PublicKey;
     signer?: Keypair;
 
     /**
-     * Constructs a new PaymentRequestIntent instance.
+     * Constructs a new LoginRequestIntent instance.
      * 
-     * @param opt - The payment request options.
+     * @param opt - The login request options.
      */
     constructor(opt: LoginRequestOptions & ElementOptions) {
         super({
@@ -41,6 +41,10 @@ class LoginRequestIntent extends AbstractIntent {
         if (signers) {
             this.signer = signers.find((k) => k.getPublicKey().toBase58() === verifier)
         }
+    }
+
+    hasMessage(): boolean {
+        return true;
     }
 
     init(): void {
@@ -132,6 +136,10 @@ class LoginRequestIntent extends AbstractIntent {
             intent,
             signature,
         }
+    }
+
+    getSendMessageRequestProto(): Promise<proto.SendMessageRequest> {
+        return getSendMessageRequestProto(this);
     }
 }
 
