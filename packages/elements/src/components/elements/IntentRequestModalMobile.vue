@@ -8,6 +8,10 @@
     const options = inject<ElementOptions>('options');
     const mode = options?.mode ?? 'payment';
 
+    const props = defineProps<{
+        asPage?: boolean,
+    }>();
+
     const emit = defineEmits([
         'codeScanned',
         'clientRejectedPayment',
@@ -20,7 +24,8 @@
     ]);
 
     const channel = new EventChannel<InternalEvents>();
-    const url = `${config.codeSdk()}/${mode}-request-modal-mobile/#/${channel.id}/p=${encode(options)}`;
+    const kind = props.asPage ? 'page' : 'modal';
+    const url = `${config.codeSdk()}/${mode}-request-${kind}-mobile/#/${channel.id}/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
     channel.on('codeScanned' , () => { emit('codeScanned'); });
@@ -82,9 +87,10 @@
 
     function getStyle() : { [key:string]: string } {
         const _ = (v:string) => v + ' !important';
+        const inset = { inset: _('0'), top: _('0'), left: _('0'), right: _('0'), bottom: _('0'), }
         return {
+            ...inset,
             position: _('fixed'),
-            inset: _('0'),
             zIndex: _('2147483647'),
             overflow: _('hidden'),
             width: _('100dvw'),

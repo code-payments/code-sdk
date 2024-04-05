@@ -2,8 +2,8 @@
 import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
 
-import Background from "../elements/backgrounds/TipBg.vue";
-import XLogo from "../elements/logos/XLogo.vue";
+import Background from "../common/backgrounds/TipBg.vue";
+import XLogo from "../common/logos/XLogo.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,
@@ -44,7 +44,7 @@ watchEffect(async () => {
         }">
 
         <div v-if="username"
-          class="absolute font-medium text-center text-white w-full capitalize" 
+          class="absolute font-medium text-center text-white w-full" 
           :style="{
             top: `${ scale * 1.33 }vh`,
             fontSize: `${ scale * 0.07 }vh`,

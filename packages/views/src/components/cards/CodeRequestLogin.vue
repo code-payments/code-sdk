@@ -2,7 +2,7 @@
 import { Ref, ref, watchEffect } from "vue";
 import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
 
-import CodeLogo from "../elements/logos/CodeLogo.vue";
+import CodeLogo from "../common/logos/CodeLogo.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,

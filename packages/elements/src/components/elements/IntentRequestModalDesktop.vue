@@ -6,7 +6,10 @@
 
     const config = useConfig();
     const options = inject<ElementOptions>('options');
-    const mode = options?.mode ?? 'payment';
+
+    const props = defineProps<{
+        asPage?: boolean,
+    }>();
 
     const emit = defineEmits([
         'codeScanned',
@@ -20,7 +23,9 @@
     ]);
 
     const channel = new EventChannel<InternalEvents>();
-    const url = `${config.codeSdk()}/${mode}-request-modal-desktop/#/${channel.id}/p=${encode(options)}`;
+    const mode = options?.mode ?? 'payment';
+    const kind = props.asPage ? 'page' : 'modal';
+    const url = `${config.codeSdk()}/${mode}-request-${kind}-desktop/#/${channel.id}/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
     console.log('url', url);
@@ -79,9 +84,10 @@
 
     function getStyle() : { [key:string]: string } {
         const _ = (v:string) => v + ' !important';
+        const inset = { inset: _('0'), top: _('0'), left: _('0'), right: _('0'), bottom: _('0'), }
         return {
+            ...inset,
             position: _('fixed'),
-            inset: _('0'),
             zIndex: _('2147483647'),
             overflow: _('hidden'),
             width: _('100dvw'),

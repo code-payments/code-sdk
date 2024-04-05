@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import CodeApp from '../../src/index'
-import { routes } from '../../src/routes/tip-request-button'
+import { routes } from '../../src/routes/buttons/tip-request-button'
 
 import './style.css'
 

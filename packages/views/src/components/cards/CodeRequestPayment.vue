@@ -4,7 +4,7 @@ import { KikCode, KikCodeDescription } from "@code-wallet/kikcode";
 import { flagForCurrency } from "@code-wallet/flags";
 import { formatCurrency } from "../../utils";
 
-import Background from "../elements/backgrounds/RecieptBg.vue";
+import Background from "../common/backgrounds/RecieptBg.vue";
 
 const props = defineProps<{
   payload?: Uint8Array,

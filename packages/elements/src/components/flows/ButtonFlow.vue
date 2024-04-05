@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, inject, nextTick, ref } from 'vue';
+import { Ref, inject, nextTick, reactive, ref } from 'vue';
 import { 
   ElementEventEmitter, 
   ElementOptions, 
@@ -7,8 +7,8 @@ import {
   LoginRequestIntent, 
   LoginRequestOptions, 
   PaymentRequestIntent,
-PaymentRequestOptions,
-TipRequestIntent
+  PaymentRequestOptions,
+  TipRequestIntent
 } from '@code-wallet/intents';
 import { EventChannel, InternalEvents } from '@code-wallet/events';
 import * as code from "@code-wallet/client";
@@ -26,15 +26,19 @@ import {
 
 import { isMobileDevice } from '../../utils/user-agent';
 import { getURLParam } from '../../utils/url';
+import { sleep } from '../../utils/delay';
 
 const fadeDuration = 500; // Animation duration in milliseconds (we use this to delay emitting events)
-const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const options = inject<ElementOptions>('options');
 const sdkEmit = inject<ElementEventEmitter>('emit', async () => false);
 const channel : Ref<EventChannel<InternalEvents> | null> = ref(null);
-const intent = ref<string | null>(null);
-const open = ref(false);
-const mobile = isMobileDevice();
+
+const state = reactive({
+  intent: null as string | null,
+  open: false,
+  mobile: isMobileDevice(),
+});
 
 // We're going to try to guess these values later, so we have to keep track of
 // whether or not the user has provided them before we do that.
@@ -63,7 +67,7 @@ function onChannelCreated(val: EventChannel<InternalEvents>) {
 }
 
 async function onInvoke() {
-  open.value = true;
+  state.open = true;
 
   // Wait for the modal to be mounted, this is necessary because we need to wait
   // for the iframe to be mounted before we can get the channel for it.
@@ -78,27 +82,27 @@ async function onInvoke() {
   // Invoke user code, if the user returns true, we'll cancel the invocation
   const preventAction = await sdkEmit('invoke');
   if (preventAction) {
-    open.value = false;
+    state.open = false;
     return;
   }
 
   // Get the intent id from the receiving app or iframe
   switch (options.mode) {
     case 'login':
-      intent.value = new LoginRequestIntent(options as ElementOptions & LoginRequestOptions).getIntentId();
+      state.intent = new LoginRequestIntent(options as ElementOptions & LoginRequestOptions).getIntentId();
       break;
     case 'payment':
-      intent.value = new PaymentRequestIntent(options as ElementOptions & PaymentRequestOptions).getIntentId();
+      state.intent = new PaymentRequestIntent(options as ElementOptions & PaymentRequestOptions).getIntentId();
       break;
     case 'tip':
-      intent.value = new TipRequestIntent(options as ElementOptions & ExternalPlatformOptions).getIntentId();
+      state.intent = new TipRequestIntent(options as ElementOptions & ExternalPlatformOptions).getIntentId();
       break;
     default:
       throw new Error('Invalid mode');
   }
 
   const variables = {
-    INTENT_ID: intent.value,
+    INTENT_ID: state.intent,
     // ...
   }
 
@@ -125,13 +129,13 @@ async function onInvoke() {
 }
 
 async function onSuccess() {
-  open.value = false;
+  state.open = false;
 
   // Ensure that the modal is fully closed before emitting events
   await sleep(fadeDuration); 
 
   const url = options?.confirmParams?.success?.url;
-  const preventAction = await sdkEmit('success', { url, options, intent: intent.value });
+  const preventAction = await sdkEmit('success', { url, options, intent: state.intent });
   if (preventAction) {
     return;
   }
@@ -142,13 +146,13 @@ async function onSuccess() {
 }
 
 async function onCancel() {
-  open.value = false;
+  state.open = false;
 
   // Ensure that the modal is fully closed before emitting events
   await sleep(fadeDuration);
 
   const url = options?.confirmParams?.cancel?.url;
-  const preventAction = await sdkEmit('cancel', { url, options, intent: intent.value });
+  const preventAction = await sdkEmit('cancel', { url, options, intent: state.intent });
   if (preventAction) {
     return;
   }
@@ -164,23 +168,23 @@ async function onError(err: any) {
 }
 
 async function onStreamTimeout() {
-  open.value = false;
+  state.open = false;
   await onError('stream_timed_out');
 }
 
 async function onStreamClosed() {
-  open.value = false;
+  state.open = false;
   await onError('stream_closed');
 }
 
 // Add an event listener for the 'visibilitychange' event
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState === "visible") {
-    if (!intent.value) { return; }
+    if (!state.intent) { return; }
 
     // Background tabs that might miss the 'intent-submitted' event, so we need
     // to check if the intent has been confirmed when the tab becomes visible.
-    const { status } = await code.paymentIntents.getStatus({ intent: intent.value }); 
+    const { status } = await code.paymentIntents.getStatus({ intent: state.intent }); 
 
     if (status === 'confirmed') {
       onSuccess();
@@ -195,9 +199,9 @@ document.addEventListener("visibilitychange", async () => {
       @invoke="onInvoke" />
     
     <Teleport to="body">
-      <div v-if="open">
+      <div v-if="state.open">
         <IntentRequestModalMobile
-          v-if="mobile"
+          v-if="state.mobile"
           @channel-created="onChannelCreated"
           @intent-submitted="onSuccess"
           @client-rejected-payment="onCancel"
@@ -219,7 +223,7 @@ document.addEventListener("visibilitychange", async () => {
         />
       </div>
       <div v-else>
-        <PreloadIntentRequestModalMobile v-if="mobile" />
+        <PreloadIntentRequestModalMobile v-if="state.mobile" />
         <PreloadIntentRequestModalDesktop v-else />
       </div>
     </Teleport>

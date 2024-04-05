@@ -10,12 +10,13 @@ import {
   LoginRequest, 
   CodeRequestWithMessage
 } from "../../requests";
-import { CodeSpinner, ErrorMessage } from '../elements';
+import { CodeSpinner, ErrorMessage } from '../common';
 
 const props = defineProps<{
+  createRequest: CodeRequestFromPayload;
   id: string;
   payload: string;
-  createRequest: CodeRequestFromPayload;
+  asPage?: boolean;
 }>();
 
 const el = ref<HTMLElement | null>(null);
@@ -129,6 +130,10 @@ onUnmounted(() => {
 });
 
 function onClose () {
+  if (props.asPage) {
+    return;
+  }
+
   state.isOpen = false;
 
   if (request.value.hasMessage()) {
@@ -159,7 +164,7 @@ function onClose () {
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
 
-          <TransitionChild as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
+          <TransitionChild v-if="!asPage" as="template" enter="duration-[800ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[800ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
               class="absolute right-2 top-2 flex h-14 w-14 items-center justify-center rounded-full z-100">

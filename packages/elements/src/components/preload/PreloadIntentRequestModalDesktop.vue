@@ -3,10 +3,15 @@
     import { useConfig } from '../../config';
     import { inject, ref } from 'vue';
 
+    const props = defineProps<{
+        asPage?: boolean,
+    }>();
+
     const config = useConfig();
     const options = inject<ElementOptions>('options');
     const mode = options?.mode ?? 'payment';
-    const url = `${config.codeSdk()}/${mode}-request-modal-desktop/#/preload/p=${encode(options)}`;
+    const kind = props.asPage ? 'page' : 'modal';
+    const url = `${config.codeSdk()}/${mode}-request-${kind}-desktop/#/preload/p=${encode(options)}`;
     const el = ref<HTMLIFrameElement | null>(null);
 
     function getStyle() : { [key:string]: string } {

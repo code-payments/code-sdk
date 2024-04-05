@@ -51,9 +51,20 @@ export default defineConfig({
         'payment-request-button': path.resolve(__dirname, 'payment-request-button', 'index.html'),
         'payment-request-modal-desktop': path.resolve(__dirname, 'payment-request-modal-desktop', 'index.html'),
         'payment-request-modal-mobile': path.resolve(__dirname, 'payment-request-modal-mobile', 'index.html'),
+        'payment-request-page-desktop': path.resolve(__dirname, 'payment-request-page-desktop', 'index.html'),
+        'payment-request-page-mobile': path.resolve(__dirname, 'payment-request-page-mobile', 'index.html'),
+
         'login-request-button': path.resolve(__dirname, 'login-request-button', 'index.html'),
         'login-request-modal-desktop': path.resolve(__dirname, 'login-request-modal-desktop', 'index.html'),
         'login-request-modal-mobile': path.resolve(__dirname, 'login-request-modal-mobile', 'index.html'),
+        'login-request-page-desktop': path.resolve(__dirname, 'login-request-page-desktop', 'index.html'),
+        'login-request-page-mobile': path.resolve(__dirname, 'login-request-page-mobile', 'index.html'),
+
+        'tips-request-button': path.resolve(__dirname, 'tips-request-button', 'index.html'),
+        'tips-request-modal-desktop': path.resolve(__dirname, 'tips-request-modal-desktop', 'index.html'),
+        'tips-request-modal-mobile': path.resolve(__dirname, 'tips-request-modal-mobile', 'index.html'),
+        'tips-request-page-desktop': path.resolve(__dirname, 'tips-request-page-desktop', 'index.html'),
+        'tips-request-page-mobile': path.resolve(__dirname, 'tips-request-page-mobile', 'index.html'),
       }
     }
   },

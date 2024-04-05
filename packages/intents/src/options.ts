@@ -9,7 +9,7 @@ export type IntentType = 'payment' | 'login' | 'tip';
 /**
  * Represents the possible types of elements.
  */
-export type ElementType = 'button' | 'card';
+export type ElementType = 'button' | 'page' | 'card';
 
 /**
  * Describes the appearance themes for the element.

@@ -4,12 +4,13 @@ import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { EventChannel, InternalEvents } from "@code-wallet/events";
 import { CodeRequest, CodeRequestFromPayload, CodeRequestWithMessage, LoginRequest } from "../../requests"
-import { ErrorMessage } from '../elements';
+import { ErrorMessage } from '../common';
 
 const props = defineProps<{
+  createRequest: CodeRequestFromPayload;
   id: string;
   payload: string;
-  createRequest: CodeRequestFromPayload;
+  asPage?: boolean;
 }>();
 
 const el = ref<HTMLElement | null>(null);
@@ -109,6 +110,10 @@ onUnmounted(() => {
 });
 
 function onClose() {
+  if (props.asPage) {
+    return;
+  }
+
   // Avoid an obscure headlessui Firefox bug where the dialog is closed on open (hard to reproduce)
   // Source of issue:
   // https://github.com/tailwindlabs/headlessui/blob/1469b85c36802265c2409f443f926e1bb02230d4/packages/%40headlessui-vue/src/components/dialog/dialog.ts#L280-L287
@@ -146,7 +151,7 @@ function onClose() {
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
 
-          <TransitionChild as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
+          <TransitionChild  v-if="!asPage" as="template" enter="duration-[100ms]" enter-from="opacity-0" enter-to="opacity-100"
             leave="duration-[100ms]" leave-from="opacity-100" leave-to="opacity-0">
             <button @click="onClose" type="button"
               class="absolute right-10 top-5 flex h-14 w-14 items-center justify-center rounded-full z-100">

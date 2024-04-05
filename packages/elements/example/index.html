@@ -21,6 +21,8 @@
     <span id="button-tip1"></span>
   </div>
 
+  <span id="page-tip3"></span>
+
   <script type="module">
     import code from '../src/index';
 
@@ -90,6 +92,26 @@
       button.mount(id);
     }
 
+    /*
+    function mount_page(id) {
+      const options = {
+        mode: 'tip',
+        platform: {
+          name: 'twitter',
+          username: 'getcode'
+        }
+      }
+
+      const { page } = code.elements.create('page', options);
+
+      page.on('error', (e) => { console.log('sdk-error', e); });
+      page.on('cancel', (e) => { console.log('sdk-cancel', e); });
+
+      page.mount(id);
+    }
+    mount_page('#page-tip3');
+    */
+
     mount_payment('#button-pay1', 'light');
     mount_payment('#button-pay2', 'dark');
 
@@ -98,6 +120,7 @@
 
     mount_tip('#button-tip1', 'light');
     mount_tip('#button-tip2', 'dark');
+
 
   </script>
 </body>
