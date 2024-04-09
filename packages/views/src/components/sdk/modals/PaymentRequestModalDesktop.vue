@@ -35,7 +35,7 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
           </a>
         </div>
 
-        <div v-show="!state.isLoading" class="mv-left-start delay-800"
+        <div v-show="!state.isLoading" class="mv-left-start"
           :class="{ 'invisible': state.hasScanned, 'mv-left-end': state.isShowingDownloadQr, }">
           <CodeRequestPayment
             :payload="request.kikCode" 
@@ -137,6 +137,7 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
 }
 
 .bounce {
+  opacity: 0;
   transform: scale(0.6);
   animation: pop 0.45s linear(0, 0.67793 0.01%, 0.70702 1.26%, 0.7582 2.65%, 1.06306 9.091%,
       1.11795 10.871%, 1.14755 12.611%, 1.15324 13.471%, 1.1533 14.341%,
@@ -150,10 +151,16 @@ function onDownload(state: { isShowingDownloadQr: boolean; }) {
 
 @keyframes pop {
   0% {
+    opacity: 0;
     transform: scale(0.6);
   }
 
+  3% {
+    opacity: 1;
+  }
+
   100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
