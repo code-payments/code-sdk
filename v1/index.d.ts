@@ -3,7 +3,7 @@ declare const _default: {
     elements: {
         create: (type: import("@code-wallet/intents").ElementType, options: Omit<import("@code-wallet/intents").ElementOptions, "signers">) => {
             button?: internal.CodeElement | undefined;
-            card?: internal.CodeElement | undefined;
+            page?: internal.CodeElement | undefined;
         };
     };
 };
