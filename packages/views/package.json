@@ -53,10 +53,10 @@
     "sdk-login-modal-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-modal-desktop/vite.config.ts",
     "sdk-login-modal-mobile:dev": "vite -c ./apps/login-request-modal-mobile/vite.config.ts --host",
     "sdk-login-modal-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-modal-mobile/vite.config.ts",
-    "sdk-login-page-desktop:dev": "vite -c ./apps/login-request-modal-desktop/vite.config.ts --host",
-    "sdk-login-page-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-modal-desktop/vite.config.ts",
-    "sdk-login-page-mobile:dev": "vite -c ./apps/login-request-modal-mobile/vite.config.ts --host",
-    "sdk-login-page-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-modal-mobile/vite.config.ts",
+    "sdk-login-page-desktop:dev": "vite -c ./apps/login-request-page-desktop/vite.config.ts --host",
+    "sdk-login-page-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-page-desktop/vite.config.ts",
+    "sdk-login-page-mobile:dev": "vite -c ./apps/login-request-page-mobile/vite.config.ts --host",
+    "sdk-login-page-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/login-request-page-mobile/vite.config.ts",
 
     "sdk-tip-button:dev": "vite -c ./apps/tip-request-button/vite.config.ts --host",
     "sdk-tip-button:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-button/vite.config.ts",
@@ -64,10 +64,10 @@
     "sdk-tip-modal-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-modal-desktop/vite.config.ts",
     "sdk-tip-modal-mobile:dev": "vite -c ./apps/tip-request-modal-mobile/vite.config.ts --host",
     "sdk-tip-modal-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-modal-mobile/vite.config.ts",
-    "sdk-tip-page-desktop:dev": "vite -c ./apps/tip-request-modal-desktop/vite.config.ts --host",
-    "sdk-tip-page-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-modal-desktop/vite.config.ts",
-    "sdk-tip-page-mobile:dev": "vite -c ./apps/tip-request-modal-mobile/vite.config.ts --host",
-    "sdk-tip-page-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-modal-mobile/vite.config.ts"
+    "sdk-tip-page-desktop:dev": "vite -c ./apps/tip-request-page-desktop/vite.config.ts --host",
+    "sdk-tip-page-desktop:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-page-desktop/vite.config.ts",
+    "sdk-tip-page-mobile:dev": "vite -c ./apps/tip-request-page-mobile/vite.config.ts --host",
+    "sdk-tip-page-mobile:build": "npm run lib:build && NODE_ENV=production vite build -c ./apps/tip-request-page-mobile/vite.config.ts"
   },
   "dependencies": {
     "@code-wallet/events": "^1.4.0",
