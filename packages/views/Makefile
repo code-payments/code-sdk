@@ -19,29 +19,29 @@ copy-sdk:
 	@mkdir -p ./apps/dist/v1/elements/payment-request-page-desktop/
 	@mkdir -p ./apps/dist/v1/elements/payment-request-page-mobile/
 
-	@cp -r ./apps/payment-request-button/dist/* ./apps/dist/v1/elements/payment-request-button/
-	@cp -r ./apps/payment-request-modal-desktop/dist/* ./apps/dist/v1/elements/payment-request-modal-desktop/
-	@cp -r ./apps/payment-request-modal-mobile/dist/* ./apps/dist/v1/elements/payment-request-modal-mobile/
-	@cp -r ./apps/payment-request-page-desktop/dist/* ./apps/dist/v1/elements/payment-request-page-desktop/
-	@cp -r ./apps/payment-request-page-mobile/dist/* ./apps/dist/v1/elements/payment-request-page-mobile/
-
 	@mkdir -p ./apps/dist/v1/elements/login-request-button/
 	@mkdir -p ./apps/dist/v1/elements/login-request-modal-desktop/
 	@mkdir -p ./apps/dist/v1/elements/login-request-modal-mobile/
 	@mkdir -p ./apps/dist/v1/elements/login-request-page-desktop/
 	@mkdir -p ./apps/dist/v1/elements/login-request-page-mobile/
 
-	@cp -r ./apps/login-request-button/dist/* ./apps/dist/v1/elements/login-request-button/
-	@cp -r ./apps/login-request-modal-desktop/dist/* ./apps/dist/v1/elements/login-request-modal-desktop/
-	@cp -r ./apps/login-request-modal-mobile/dist/* ./apps/dist/v1/elements/login-request-modal-mobile/
-	@cp -r ./apps/login-request-page-desktop/dist/* ./apps/dist/v1/elements/login-request-page-desktop/
-	@cp -r ./apps/login-request-page-mobile/dist/* ./apps/dist/v1/elements/login-request-page-mobile/
-
 	@mkdir -p ./apps/dist/v1/elements/tips-request-button/
 	@mkdir -p ./apps/dist/v1/elements/tips-request-modal-desktop/
 	@mkdir -p ./apps/dist/v1/elements/tips-request-modal-mobile/
 	@mkdir -p ./apps/dist/v1/elements/tips-request-page-desktop/
 	@mkdir -p ./apps/dist/v1/elements/tips-request-page-mobile/
+
+	@cp -r ./apps/payment-request-button/dist/* ./apps/dist/v1/elements/payment-request-button/
+	@cp -r ./apps/payment-request-modal-desktop/dist/* ./apps/dist/v1/elements/payment-request-modal-desktop/
+	@cp -r ./apps/payment-request-modal-mobile/dist/* ./apps/dist/v1/elements/payment-request-modal-mobile/
+	@cp -r ./apps/payment-request-page-desktop/dist/* ./apps/dist/v1/elements/payment-request-page-desktop/
+	@cp -r ./apps/payment-request-page-mobile/dist/* ./apps/dist/v1/elements/payment-request-page-mobile/
+
+	@cp -r ./apps/login-request-button/dist/* ./apps/dist/v1/elements/login-request-button/
+	@cp -r ./apps/login-request-modal-desktop/dist/* ./apps/dist/v1/elements/login-request-modal-desktop/
+	@cp -r ./apps/login-request-modal-mobile/dist/* ./apps/dist/v1/elements/login-request-modal-mobile/
+	@cp -r ./apps/login-request-page-desktop/dist/* ./apps/dist/v1/elements/login-request-page-desktop/
+	@cp -r ./apps/login-request-page-mobile/dist/* ./apps/dist/v1/elements/login-request-page-mobile/
 
 	@cp -r ./apps/tips-request-button/dist/* ./apps/dist/v1/elements/tips-request-button/
 	@cp -r ./apps/tips-request-modal-desktop/dist/* ./apps/dist/v1/elements/tips-request-modal-desktop/
