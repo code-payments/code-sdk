@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetLoginForThirdPartyAppRequest, GetLoginForThirdPartyAppResponse, GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, LoginToThirdPartyAppRequest, LoginToThirdPartyAppResponse, UnlinkAccountRequest, UnlinkAccountResponse, UpdatePreferencesRequest, UpdatePreferencesResponse } from "./identity_service_pb";
+import { GetLoginForThirdPartyAppRequest, GetLoginForThirdPartyAppResponse, GetTwitterUserRequest, GetTwitterUserResponse, GetUserRequest, GetUserResponse, LinkAccountRequest, LinkAccountResponse, LoginToThirdPartyAppRequest, LoginToThirdPartyAppResponse, UnlinkAccountRequest, UnlinkAccountResponse, UpdatePreferencesRequest, UpdatePreferencesResponse } from "./identity_service_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -100,6 +100,23 @@ export const Identity = {
       name: "GetLoginForThirdPartyApp",
       I: GetLoginForThirdPartyAppRequest,
       O: GetLoginForThirdPartyAppResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * GetTwitterUser gets Twitter user information
+     *
+     * Note 1: This RPC will only return results for Twitter users that have
+     * accounts linked with Code.
+     *
+     * Note 2: This RPC is heavily cached, and may not reflect real-time Twitter
+     * information.
+     *
+     * @generated from rpc code.user.v1.Identity.GetTwitterUser
+     */
+    getTwitterUser: {
+      name: "GetTwitterUser",
+      I: GetTwitterUserRequest,
+      O: GetTwitterUserResponse,
       kind: MethodKind.Unary,
     },
   }
