@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" style="background:none transparent; color-scheme:light;">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Code SDK - Button</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <script type="module" crossorigin src="/v1/elements/login-request-button/assets/index-071b6ea6.js"></script>
+  
+</head>
+
+<body>
+  <div id="app">
+    <svg viewBox="0 0 24 24" class="spinner-svg">
+      <g transform="translate(1 1)" fill-rule="nonzero" fill="none">
+        <circle cx="11" cy="11" r="11"></circle>
+        <path d="M10.998 22a.846.846 0 0 1 0-1.692 9.308 9.308 0 0
+          0 0-18.616 9.286 9.286 0 0 0-7.205 3.416.846.846 0 1 1-1.31-1.072A10.978
+          10.978 0 0 1 10.998 0c6.075 0 11 4.925 11 11s-4.925 11-11 11z" fill="currentColor"></path>
+      </g>
+    </svg>
+  </div>
+
+  <style>
+    .spinner-svg {
+      margin: 0 auto;
+      display: block;
+      width: 24px;
+      height: 24px;
+      color: black;
+      transform-origin: 50% 50%;
+      transition-timing-function: ease;
+      transition-property: opacity, transform;
+      animation: SpinnerAnimationShow 250ms normal ease, 
+                 SpinnerAnimationRotation .6s linear infinite,
+                 SpinnerFadeIn 500ms ease 250ms forwards;
+      opacity: 0;
+    }
+
+    @keyframes SpinnerFadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes SpinnerAnimationShow {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes SpinnerAnimationRotation {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <script>
+    // Work-around node polyfills missing in Vite.
+    window.global = window;
+  </script>
+
+  
+
+  
+</body>
+
+</html>
