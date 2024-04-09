@@ -60,11 +60,11 @@ export default defineConfig({
         'login-request-page-desktop': path.resolve(__dirname, 'login-request-page-desktop', 'index.html'),
         'login-request-page-mobile': path.resolve(__dirname, 'login-request-page-mobile', 'index.html'),
 
-        'tips-request-button': path.resolve(__dirname, 'tips-request-button', 'index.html'),
-        'tips-request-modal-desktop': path.resolve(__dirname, 'tips-request-modal-desktop', 'index.html'),
-        'tips-request-modal-mobile': path.resolve(__dirname, 'tips-request-modal-mobile', 'index.html'),
-        'tips-request-page-desktop': path.resolve(__dirname, 'tips-request-page-desktop', 'index.html'),
-        'tips-request-page-mobile': path.resolve(__dirname, 'tips-request-page-mobile', 'index.html'),
+        'tip-request-button': path.resolve(__dirname, 'tip-request-button', 'index.html'),
+        'tip-request-modal-desktop': path.resolve(__dirname, 'tip-request-modal-desktop', 'index.html'),
+        'tip-request-modal-mobile': path.resolve(__dirname, 'tip-request-modal-mobile', 'index.html'),
+        'tip-request-page-desktop': path.resolve(__dirname, 'tip-request-page-desktop', 'index.html'),
+        'tip-request-page-mobile': path.resolve(__dirname, 'tip-request-page-mobile', 'index.html'),
       }
     }
   },

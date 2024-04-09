@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/v1/elements/login-request-modal-desktop/',
+  base: '/v1/elements/tip-request-page-desktop/',
   plugins: [
     vue(),
   ],
