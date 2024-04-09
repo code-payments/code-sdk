@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code SDK - Example/8-minimal-tip-card</title>
+</head>
+
+<body>
+    <div id="button-container"></div>
+
+    <script type="module">
+        import code from 'https://js.getcode.com/v1';
+
+        // Note: the user must have a Code account and have their X account
+        // connected. The Code Wallet app will show an error message if the user
+        // does not have a connected to the X account.
+
+        const username = 'elonmusk';
+        const name = 'x'; // or 'twitter' (if you prefer)
+
+        const options = {
+          mode: 'tip',
+          platform: {
+            username,
+            name,
+          }
+        }
+
+        button.mount('#button-container');
+    </script>
+</body>
+
+</html>

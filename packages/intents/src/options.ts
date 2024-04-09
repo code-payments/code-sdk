@@ -122,7 +122,7 @@ export interface LoginRequestOptions {
  */
 export interface ExternalPlatformOptions {
     platform: {
-        name: 'twitter', // At the moment, only Twitter is supported.
+        name: 'twitter' | 'x', // At the moment, only Twitter is supported.
         username: string;
     }
 }

@@ -4,7 +4,7 @@ import { jwtVerify, importJWK } from 'jose';
 import { PublicKey } from "@code-wallet/keys";
 import * as code from "@code-wallet/client";
 
-const port = 3030;
+const port = 3040;
 const app = express();
 
 // Set the view engine to ejs
