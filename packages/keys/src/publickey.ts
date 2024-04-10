@@ -3,8 +3,10 @@ import { Buffer } from "buffer";
 import { ed25519 } from '@noble/curves/ed25519';
 import { ErrInvalidAddress } from "./errors";
 
-const ED25519_PUBLIC_KEY_LENGTH = 32; // Length of ED25519 public key in bytes
+const PUBLIC_KEY_LENGTH = 32; // Length of ED25519 public key in bytes
 const BASE_58_ALPHABET = /^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$/;
+
+interface PublicKeyLike { toBytes: () => Uint8Array; }
 
 /**
  * Represents a public key and provides utility methods for its manipulation and conversion.
@@ -18,10 +20,21 @@ class PublicKey {
      * @param publicKey - The raw public key as a Uint8Array.
      */
     constructor(publicKey: Uint8Array) {
-        if (publicKey.length !== ED25519_PUBLIC_KEY_LENGTH) {
+        if (publicKey.length !== PUBLIC_KEY_LENGTH) {
             throw ErrInvalidAddress();
         }
+
         this.value = publicKey;
+    }
+
+    /**
+     * Constructs a PublicKey instance from a given PublicKeyLike object.
+     * 
+     * @param value - The PublicKeyLike object to convert.
+     */
+    static from(value: Uint8Array | PublicKeyLike) {
+        const data = 'toBytes' in value ? value.toBytes() : value;
+        return new PublicKey(data);
     }
 
     /**
@@ -37,7 +50,7 @@ class PublicKey {
 
         const decodedBuffer = bs58.decode(base58);
 
-        if (decodedBuffer.length !== ED25519_PUBLIC_KEY_LENGTH) {
+        if (decodedBuffer.length !== PUBLIC_KEY_LENGTH) {
             throw ErrInvalidAddress();
         }
 

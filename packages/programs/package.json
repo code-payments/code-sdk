@@ -1,6 +1,6 @@
 {
     "name": "@code-wallet/programs",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -14,7 +14,7 @@
         "./dist/"
     ],
     "scripts": {
-        "test": "echo \"no tests yet\"",
+        "test": "TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\", \"target\": \"es2019\" }' ts-mocha --require esm './test/**/*.test.ts'",
         "build": "tsc && tsc -p tsconfig.cjs.json"
     },
     "browserslist": [
@@ -22,6 +22,7 @@
         "maintained node versions"
     ],
     "dependencies": {
+        "@code-wallet/keys": "^1.1.0",
         "@metaplex-foundation/beet": "^0.7.1",
         "@metaplex-foundation/beet-solana": "^0.4.0",
         "@solana/spl-token": "^0.3.8",
