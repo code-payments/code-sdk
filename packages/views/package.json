@@ -29,11 +29,11 @@
     "build-tip-buttons": "npm run sdk-tip-button:build",
 
     "build-payment-modals": "npm run sdk-payment-modal-desktop:build && npm run sdk-payment-modal-mobile:build",
-    "build-login-modals": "run sdk-login-modal-desktop:build && npm run sdk-login-modal-mobile:build",
+    "build-login-modals": "npm run sdk-login-modal-desktop:build && npm run sdk-login-modal-mobile:build",
     "build-tip-modals": "npm run sdk-tip-modal-desktop:build && npm run sdk-tip-modal-mobile:build",
 
     "build-payment-pages": "npm run sdk-payment-page-desktop:build && npm run sdk-payment-page-mobile:build",
-    "build-login-pages": "run sdk-login-page-desktop:build && npm run sdk-login-page-mobile:build",
+    "build-login-pages": "npm run sdk-login-page-desktop:build && npm run sdk-login-page-mobile:build",
     "build-tip-pages": "npm run sdk-tip-page-desktop:build && npm run sdk-tip-page-mobile:build",
 
     "sdk-payment-button:dev": "vite -c ./apps/payment-request-button/vite.config.ts --host",
