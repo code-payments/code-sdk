@@ -31,7 +31,7 @@ With this snippet, you can create a payment button that looks like this:
 <br>
 
 ::: danger Early Access
-The Code SDK is currently in early access, the maximum payment amount is $1 USD.
+The Code SDK is currently in early access, the maximum payment amount is $5 USD.
 :::
 
 ::: info Prerequisites
