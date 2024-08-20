@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LoginRequest } from "../../../requests";
-import { openInAppStore, openInApp } from "../../../utils";
+import { openInAppStore, openInApp, getAppUrl } from "../../../utils";
 import { CodeSpinner } from '../../common';
 
 import CodeMobileModal from '../CodeMobileModal.vue';
@@ -21,10 +21,13 @@ const props = defineProps({
       <div class="text-white text-[26px] px-16 text-center leading-tight
         tracking-tighter font-medium">Use the Code Wallet app to login</div>
 
-      <button v-if="!state.isLoading" type="button" @click="openInApp(channel, request.toPayload())" 
-      class="mt-6 block rounded-md bg-white py-4 text-base
-      font-semibold text-[#0f0c1f] text-center shadow-sm
-      w-full">Open in Code</button>
+      <a v-if="!state.isLoading" 
+        :href="getAppUrl(request.toPayload())" 
+        @click="openInApp(channel, request.toPayload(), 300)" 
+        class="mt-6 block rounded-md bg-white py-4 text-base
+        font-semibold text-[#0f0c1f] text-center shadow-sm
+        active:bg-[#0f0c1f] active:text-white active:border-white 
+        border border-transparent w-full">Open in Code</a>
 
       <button v-else type="button" 
       class="mt-6 block rounded-md bg-white py-4 text-base

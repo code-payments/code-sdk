@@ -9,8 +9,7 @@ export function getAppStoreUrl() {
         url = 'https://apps.apple.com/us/app/code-wallet/id1562384846';
     } else {
         // Google Play Store URL
-        // url = 'https://play.google.com/store/apps/details?id=com.getcode';
-        url = 'https://www.getcode.com/download';
+        url = 'https://play.google.com/store/apps/details?id=com.getcode';
     }
 
     return url;
@@ -26,9 +25,11 @@ export function getAppUrl(payload: string) {
     return base.replace(/p=([^&]+)/, `p=${payload}`);
 }
 
-export function openInApp(channel: EventChannel<InternalEvents>, payload: string) {
-    const url = getAppUrl(payload);
-    channel.emit('navigate', { url });
+export function openInApp(channel: EventChannel<InternalEvents>, payload: string, delay: number = 0) {
+    setTimeout(() => {
+        const url = getAppUrl(payload);
+        channel.emit('navigate', { url });
+    }, delay);
 }
 
 export function hasCodeApp() {

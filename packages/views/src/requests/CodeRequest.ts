@@ -16,6 +16,7 @@ export interface CodeRequest {
 export type CodeRequestWithMessage = CodeRequest & {
     toProto(): Promise<proto.SendMessageRequest>;
     openStream(emitter: EventChannel<InternalEvents>): Promise<void>;
+    listenForMessages(): Promise<void>;
     closeStream(): void;
 }
 

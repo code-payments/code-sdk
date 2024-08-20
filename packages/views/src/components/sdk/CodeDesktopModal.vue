@@ -76,9 +76,12 @@ channel.on("afterInvoke", async () => {
 
   if (request.value.hasMessage()) {
     const reqWithMessage = request.value as CodeRequestWithMessage;
+    await reqWithMessage.openStream(channel);
 
-    // intentionally ignoring the await here
-    reqWithMessage.openStream(channel);
+    // Intentionally ignoring the await here (stream is BIDI, it can't be
+    // awaited without blocking the UI)
+    reqWithMessage.listenForMessages();
+
   } else {
     request.value.generateKikCode();
   }
