@@ -7,7 +7,11 @@ import { useConfig } from '../config';
 import { CodeRequest, CodeRequestWithMessage } from './CodeRequest';
 import { EventChannel, InternalCardEvents, InternalEvents } from "@code-wallet/events";
 
+const ErrFailedToGetStatus = () => new Error("Failed to get status");
+const ErrFailedToSendMessage = () => new Error("Failed to send message");
+
 abstract class BaseRequest implements CodeRequest {
+    connection: proto.RpcStream<any, any> | null;
     emitter: EventChannel<InternalEvents> | null;
     intent: Intent;
     kikCode?: Uint8Array
@@ -15,6 +19,7 @@ abstract class BaseRequest implements CodeRequest {
     constructor(intent: Intent) {
         this.intent = intent;
         this.emitter = null;
+        this.connection = null;
     }
 
     async generateKikCode() {
@@ -80,12 +85,14 @@ abstract class BaseRequestWithMessage
     abstract toProto(): Promise<proto.SendMessageRequest>;
 
     closeStream() {
+        this.connection?.close();
+        this.connection = null;
         this.emitter = null;
     }
 
     async openStream(emitter: EventChannel<InternalEvents>) {
         this.emitter = emitter;
-        await this.listen();
+        return this.connect();
     }
 
     private async getStatus() : Promise<proto.GetStatusResponse | undefined> {
@@ -127,7 +134,7 @@ abstract class BaseRequestWithMessage
         }
     }
 
-    private async listen() {
+    private async connect() {
         if (!this.emitter) { return; }
 
         const { rendezvousKeypair } = this.intent;
@@ -151,14 +158,14 @@ abstract class BaseRequestWithMessage
         // Get the status of the intent (in case the server already requested it)
         const status = await this.getStatus();
         if (!status) {
-            return; // Something went wrong, don't continue
+            return this.emitter.emit("error", ErrFailedToGetStatus());
         }
 
         // If the intent does not exist, send the initial request here
         if (!status.exists) {
             const res = await this.sendRequest();
             if (!res) {
-                return; // Something went wrong, don't continue
+                return this.emitter.emit("error", ErrFailedToSendMessage());
             }
         }
 
@@ -169,7 +176,14 @@ abstract class BaseRequestWithMessage
             }),
         }));
 
-        for await (const [res, err] of msgStream.read()) {
+        this.connection = msgStream;
+    }
+
+    async listenForMessages() {
+        if (!this.emitter) { return; }
+        if (!this.connection) { return; }
+
+        for await (const [res, err] of this.connection.read()) {
             // Check emitter at the start of the loop (if it is null, then this
             // stream has been closed)
             if (!this.emitter) break;
