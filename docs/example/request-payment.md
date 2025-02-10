@@ -8,7 +8,7 @@ If you need to verify the payment on your server, see the [Payment Verification]
 
 ## Payment Request
 
-The full example code can be found on [GitHub](https://github.com/code-wallet/code-sdk/tree/main/examples/1-minimal).
+The full example code can be found on [GitHub](https://github.com/code-payments/code-sdk/tree/main/examples/1-minimal).
 
 ```html
 

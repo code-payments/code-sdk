@@ -105,7 +105,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/code-wallet/code-sdk' },
+      { icon: 'github', link: 'https://github.com/code-payments/code-sdk' },
       { icon: 'twitter', link: 'https://twitter.com/getcode' }
     ]
   },

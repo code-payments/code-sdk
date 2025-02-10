@@ -140,5 +140,5 @@ request_to_receive_bill:
 
 This is then signed using the rendezvous key and `POST`ed to the Code Sequencer's `createIntent` endpoint.
 
-You can see an example of this in our [Python SDK](https://github.com/code-wallet/code-sdk-python/blob/main/code_wallet/library/message.py).
+You can see an example of this in our [Python SDK](https://github.com/code-payments/code-sdk-python/blob/main/code_wallet/library/message.py).
 

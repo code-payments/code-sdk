@@ -10,7 +10,7 @@ When you create an intent, you can provide a webhook URL. This URL will be calle
 
 The webhook will contain a [JSON Web Token](https://jwt.io/) that you can use to verify that the webhook was sent by Code and that it hasn't been tampered with. It will be signed with the public key `codeHy87wGD5oMRLG75qKqsSi1vWE3oxNyYmXo5F9YR`. We recommend using a library like [jsonwebtoken](https://www.npmjs.com/package/jose) to verify the JWT (jwtVerify).
 
-You can find a full example of this under the SDK examples [here](https://github.com/code-wallet/code-sdk/blob/main/examples/5-example-purchase-flow/src/routes/payment.ts#L38-L78).
+You can find a full example of this under the SDK examples [here](https://github.com/code-payments/code-sdk/blob/main/examples/5-example-purchase-flow/src/routes/payment.ts#L38-L78).
 
 ::: warning
 The webhook URL will need to be public before you create the intent. The Code Sequencer will verify that the domain you provide is publicly accessible before it will create the intent.

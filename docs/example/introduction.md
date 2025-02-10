@@ -1,6 +1,6 @@
 # Examples
 
-We've put a few samples in our documentation to help you get started. We also have fully working samples as part of the git repository. You can find them in the [examples](https://github.com/code-wallet/code-sdk/tree/main/examples) directory.
+We've put a few samples in our documentation to help you get started. We also have fully working samples as part of the git repository. You can find them in the [examples](https://github.com/code-payments/code-sdk/tree/main/examples) directory.
 
 ## Walkthroughs
 

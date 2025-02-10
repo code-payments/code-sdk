@@ -2,7 +2,7 @@
 The Rendezvous Key is an integral component of the [Code App](./app) and [Code Sequencer](./sequencer), it is a mechanism to establish a trusted communication channel. At its core, the system uses QR-like codes, which, when scanned, create a mechanism for opening a streaming channel for two parties to exchange intent details.
 
 ## What is it?
-At its core, the Rendezvous Key is a [Keypair value](https://github.com/code-wallet/code-sdk/blob/f5ebf9977b51f34f868913d0e3faf57f074eef63/packages/library/src/rendezvous.ts#L6).
+At its core, the Rendezvous Key is a [Keypair value](https://github.com/code-payments/code-sdk/blob/095be2b7231c1d8f612c12b1f23afc0ebb2fdb8a/packages/intents/src/keys/rendezvous.ts#L37).
 
 It allows two parties to establish a direct communication channel without having to know each other's identity beforehand. By scanning a code, they can instantly 'rendezvous' and initiate an interaction. When users scan an [Intent](../intents/introduction) via the Code app, the underlying details are hashed into this key. All future messages and events regarding the intent are then signed using the rendezvous key. While the Code Sequencer can route messages based on this, it cannot alter them due to the key's private nature, ensuring message integrity. The Rendezvous Key elegantly merges SHA-256 hashing with QR code mechanics, simplifying user experience while underpinning robust security.
 
@@ -29,4 +29,4 @@ For payment requests, the payload is structured as follows:
 +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 ```
 
-You can find the payload details [here](https://github.com/code-wallet/code-sdk/blob/main/packages/library/src/payload.ts) and the communication protocol [here](https://github.com/code-wallet/code-sdk/blob/main/packages/rpc/src/generated/messaging/v1/messaging_service_connect.ts).
+You can find the payload details [here](https://github.com/code-payments/code-sdk/blob/main/packages/kikcode/src/payload.ts) and the communication protocol [here](https://github.com/code-payments/code-sdk/blob/main/packages/rpc/src/generated/messaging/v1/messaging_service_connect.ts).

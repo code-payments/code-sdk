@@ -61,4 +61,4 @@ Both the `success` and `cancel` urls can contain a special `INTENT_ID` variable,
 These are optional but encouraged, especially on mobile devices where the `success` event may not be triggered. You can learn more about the differences between desktop and mobile flows on the [Payment Requests](../intents/payment-requests#mobile-vs-desktop-flows) page.
 :::
 
-The full example code can be found on [GitHub](https://github.com/code-wallet/code-sdk/tree/main/examples/4-minimal-with-webhook).
+The full example code can be found on [GitHub](https://github.com/code-payments/code-sdk/tree/main/examples/4-minimal-with-webhook).
