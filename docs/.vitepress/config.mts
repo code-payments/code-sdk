@@ -71,7 +71,6 @@ export default defineConfig({
       {
         text: 'Examples',
         items: [
-          { text: 'Verification', link: '/example/payment-verification' },
           { text: 'Events', link: '/example/payment-events' },
           {
             text: 'Payments',
@@ -82,6 +81,7 @@ export default defineConfig({
               { text: 'Pennypost', link: 'https://github.com/code-payments/code-pennypost/tree/main/packages/backend/src/routes/payment' },
             ]
           },
+          { text: 'Verification', link: '/example/payment-verification' },
           { text: 'More...', link: '/example/introduction' },
         ]
       },
@@ -89,17 +89,17 @@ export default defineConfig({
       {
         text: 'Reference',
         items: [
-          { text: 'Code Wallet', link: '/reference/app' },
-          { text: 'Intents', link: '/intents/introduction' },
-          { text: 'Idempotency', link: '/reference/idempotency' },
-          { text: 'Events', link: '/reference/browser-events' },
-          { text: 'Webhooks', link: '/reference/webhook' },
           { text: 'Appearance', link: '/reference/element-appearance' },
-          { text: 'Sequencer', link: '/reference/sequencer' },
-          { text: 'Private Payments', link: '/reference/splitter' },
-          { text: 'Timelock', link: '/reference/timelock' },
-          { text: 'Rendezvous', link: '/reference/rendezvous' },
           { text: 'Custom Backends', link: '/intents/custom-backends' },
+          { text: 'Events', link: '/reference/browser-events' },
+          { text: 'Idempotency', link: '/reference/idempotency' },
+          { text: 'Intents', link: '/intents/introduction' },
+          { text: 'Private Payments', link: '/reference/splitter' },
+          { text: 'Rendezvous', link: '/reference/rendezvous' },
+          { text: 'Sequencer', link: '/reference/sequencer' },
+          { text: 'Timelock', link: '/reference/timelock' },
+          { text: 'Wallet App', link: '/reference/app' },
+          { text: 'Webhooks', link: '/reference/webhook' },
         ]
       },
     ],
