@@ -95,7 +95,7 @@ This will output the current status of the specified payment intent.
 ## Further Steps
 
 - **Integrate with Your Application:** Incorporate the SDK into your application's backend to handle payments dynamically.
-- **Explore Advanced Features:** Look into features like [Payment Fees](./payment-fees), [Tipping](./tipping), and [Idempotency](../reference/idempotency) to enhance your payment flows.
+- **Explore Advanced Features:** Look into features like [Payment Fees](../intents/payment-fees), [Tipping](../intents/tipping), and [Idempotency](../reference/idempotency) to enhance your payment flows.
 - **Check Examples:** Refer to the [Python Examples](https://github.com/code-payments/code-sdk-python/tree/main/example) repository for more comprehensive use cases.
 
 ## Need Help?
