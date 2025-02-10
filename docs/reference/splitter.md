@@ -72,7 +72,7 @@ graph LR
   s -->|Tx2| b([Bob])
 ```
 
-We use an audited [on-chain program](https://github.com/code-wallet/code-program-library/tree/main/splitter) to ensure that `Tx1` can only be successfully executed after `Tx2`. This condition is on-chain and cannot be forged. The condition is important because it ensures that the program cannot be used to steal funds from Alice.
+We use an audited [on-chain program](https://github.com/code-payments/code-program-library/tree/main/splitter) to ensure that `Tx1` can only be successfully executed after `Tx2`. This condition is on-chain and cannot be forged. The condition is important because it ensures that the program cannot be used to steal funds from Alice.
 
 The on-chain program advances tokens to Bob through `Tx2` first. Ensuring that Bob has non-custodial access over the tokens immediately. In doing so, the on-chain program writes a receipt for this action to its on-chain merkle tree. This receipt is then used as a `proof-of-payment` to prove that Bob has been paid when submitting `Tx1` afterwards. This is analogous to Alice writing a cheque to the Code Sequencer conditional on Bob receiving equal tokens first.
 
@@ -88,7 +88,7 @@ While `Temporary Privacy` is a big step forward in protecting users, there is a 
 
 We briefly mentioned above that an on-chain program is used to provide `proof-of-payment` and enables `conditional payments`. Anyone can use our on-chain program to create their own  associated treasury account. The treasury account can then be used to make token payments to any recipient. All payments made out of the treasury always result in a receipt being generated and stored on-chain. This receipt and private payment details can then later be used to create a special destination account that can only exist if the payment was actually made in the first place.
 
-The on-chain program is called `Splitter`. It is open source and can be found [here](https://github.com/code-wallet/code-program-library/tree/main/splitter). Review the [tests](https://github.com/code-wallet/code-program-library/blob/main/splitter/tests/cases/happy-path.ts#L188-L307) for more details on how it works.
+The on-chain program is called `Splitter`. It is open source and can be found [here](https://github.com/code-payments/code-program-library/tree/main/splitter). Review the [tests](https://github.com/code-payments/code-program-library/blob/main/splitter/tests/cases/happy-path.ts#L188-L307) for more details on how it works.
 
 ## Commitments
 
@@ -173,7 +173,7 @@ Importantly, if the Code Sequencer gives a proof that is not a valid on-chain pr
 It is not possible for the Code Sequencer to submit a transaction that would result in a loss of funds for a user. Additionally, because an advance was issued for `Tx2`, it is in the Code Sequencer's best interest to ensure that `Tx1` is submitted to the Solana blockchain successfully.
 :::
 
-You can view a distilled example of this flow in the [code-program-library](https://github.com/code-wallet/code-program-library/blob/main/splitter/tests/cases/happy-path.ts#L188-L307).
+You can view a distilled example of this flow in the [code-program-library](https://github.com/code-payments/code-program-library/blob/main/splitter/tests/cases/happy-path.ts#L188-L307).
 
 ## Anonymised Amounts
 

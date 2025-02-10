@@ -10,7 +10,7 @@ If you need real-time payment events, see the [Payment Events](./payment-events)
 
 ## Payment Intent Example
 
-The full example code can be found on [GitHub](https://github.com/code-wallet/code-sdk/tree/main/examples/3-minimal-with-verify).
+The full example code can be found on [GitHub](https://github.com/code-payments/code-sdk/tree/main/examples/3-minimal-with-verify).
 
 ::: code-group
 ```js [server.js]

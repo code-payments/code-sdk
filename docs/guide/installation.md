@@ -42,7 +42,7 @@ Learn more about JavaScript modules [here](https://developer.mozilla.org/en-US/d
 
 ### Go-lang
 
-* [code-wallet](https://pkg.go.dev/github.com/code-wallet/code-sdk-go) - The Code Wallet Go SDK is a module that allows Go developers to integrate Code into their applications. Seamlessly start accepting payments with minimal setup and just a few lines of code.
+* [code-wallet](https://pkg.go.dev/github.com/code-payments/code-sdk-go) - The Code Wallet Go SDK is a module that allows Go developers to integrate Code into their applications. Seamlessly start accepting payments with minimal setup and just a few lines of code.
 
 
 ## Next Steps

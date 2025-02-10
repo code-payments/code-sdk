@@ -37,62 +37,75 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/guide/introduction' },
           { text: 'Quick Start', link: '/guide/quick-start' },
-          {
-            text: 'Installation',
-            link: '/guide/installation',
-            collapsed: true,
-            items: [
-              { text: 'Client (browser)', link: '/guide/installation-client' },
-              { text: 'Server', link: '/guide/installation-server' },
-            ],
-          },
+          { text: 'Deposit Address', link: '/guide/deposit-address' },
         ],
       },
 
       {
-        text: 'Essentials',
+        text: 'Install',
         items: [
-          { text: 'Intents', link: '/intents/introduction' },
-          { text: 'Payment Requests', link: '/intents/payment-requests' },
-          { text: 'Idempotency', link: '/reference/idempotency' },
-          { text: 'Browser Events', link: '/reference/browser-events' },
-          { text: 'Webhook Events', link: '/reference/webhook' },
-          { text: 'Element Appearance', link: '/reference/element-appearance' },
+            { text: 'Client (Browser)', link: '/guide/installation-client' },
+            { 
+              text: 'Server', link: '/guide/installation-server',
+              collapsed: true,
+              items: [
+                { text: 'Node', link: '/guide/quick-start-node' },
+                { text: 'Python', link: '/guide/quick-start-python' },
+                { text: 'Php', link: '/guide/quick-start-php' },
+                { text: 'Go', link: '/guide/quick-start-go' },
+              ],
+            },
+        ],
+      },
+
+      {
+        text: 'SDK',
+        items: [
+          { text: 'Payments', link: '/intents/payment-requests' },
+          { text: 'Fees', link: '/intents/payment-fees' },
+          { text: 'Tipping', link: '/intents/tipping' },
+          { text: 'Login', link: '/intents/login' },
         ],
       },
 
       {
         text: 'Examples',
         items: [
-          { text: 'Full Examples', link: '/example/introduction' },
+          { text: 'Events', link: '/example/payment-events' },
           {
-            text: 'Payment Request',
+            text: 'Payments',
             items: [
               { text: 'Minimal (html)', link: '/example/request-payment' },
               { text: 'React Example', link: '/example/react-example' },
               { text: 'Vue Example', link: '/example/vue-example' },
+              { text: 'Pennypost', link: 'https://github.com/code-payments/code-pennypost/tree/main/packages/backend/src/routes/payment' },
             ]
           },
-          { text: 'Payment Verification', link: '/example/payment-verification' },
-          { text: 'Payment Events', link: '/example/payment-events' },
+          { text: 'Verification', link: '/example/payment-verification' },
+          { text: 'More...', link: '/example/introduction' },
         ]
       },
 
       {
-        text: 'Extra Topics',
+        text: 'Reference',
         items: [
-          { text: 'Code App', link: '/reference/app' },
-          { text: 'Code Sequencer', link: '/reference/sequencer' },
-          { text: 'Code Privacy Protocol', link: '/reference/splitter' },
-          { text: 'Timelock Program', link: '/reference/timelock' },
-          { text: 'Rendezvous', link: '/reference/rendezvous' },
+          { text: 'Appearance', link: '/reference/element-appearance' },
           { text: 'Custom Backends', link: '/intents/custom-backends' },
+          { text: 'Events', link: '/reference/browser-events' },
+          { text: 'Idempotency', link: '/reference/idempotency' },
+          { text: 'Intents', link: '/intents/introduction' },
+          { text: 'Private Payments', link: '/reference/splitter' },
+          { text: 'Rendezvous', link: '/reference/rendezvous' },
+          { text: 'Sequencer', link: '/reference/sequencer' },
+          { text: 'Timelock', link: '/reference/timelock' },
+          { text: 'Wallet App', link: '/reference/app' },
+          { text: 'Webhooks', link: '/reference/webhook' },
         ]
       },
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/code-wallet/code-sdk' },
+      { icon: 'github', link: 'https://github.com/code-payments/code-sdk' },
       { icon: 'twitter', link: 'https://twitter.com/getcode' }
     ]
   },

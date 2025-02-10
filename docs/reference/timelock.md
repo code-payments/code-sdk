@@ -15,9 +15,9 @@ Features of the Timelock program include:
 * **User-Initiated Unlocks**: Users maintain control over their funds, with the capability to kick-start the unlocking process on their terms.
 * **Fallback Mechanisms**: As a safeguard, if users face issues with the Code Sequencer, they have a built-in 21-day waiting period after which they can access their funds.
 
-Developers that want to learn more can visit the [GitHub repository](https://github.com/code-wallet/code-program-library/tree/main/timelock) for the Timelock program.
+Developers that want to learn more can visit the [GitHub repository](https://github.com/code-payments/code-program-library/tree/main/timelock) for the Timelock program.
 
-<img src="https://github.com/code-wallet/code-program-library/blob/main/timelock/docs/timelock-token.png?raw=true" />
+<img src="https://github.com/code-payments/code-program-library/blob/main/timelock/docs/timelock-token.png?raw=true" />
 
 ## On-chain Program
 
@@ -25,13 +25,13 @@ The Timelock program is deployed to Solana mainnet-beta at the following address
 
 [time2Z2SCnn3qYg3ULKVtdkh8YmZ5jFdKicnA1W2YnJ](https://explorer.solana.com/address/time2Z2SCnn3qYg3ULKVtdkh8YmZ5jFdKicnA1W2YnJ)
 
-The source code is available on [GitHub](https://github.com/code-wallet/code-program-library/tree/main/timelock). 
+The source code is available on [GitHub](https://github.com/code-payments/code-program-library/tree/main/timelock). 
 
 ## Account Derivation
 
 Each Code user has a primary account, which is derived from a BIP-32 mnemonic. The Timelock program uses this account to create multiple associated Timelock accounts for the user. 
 
-The Timelock account is derived from the primary account using the following [derivation paths](https://github.com/code-wallet/timelock-explorer/blob/77a01f685dbaa4f77c2c1ec1e59b4ce568c8a388/src/types/explorer/CodeWallet.ts#L107C1-L129C2).
+The Timelock account is derived from the primary account using the following [derivation paths](https://github.com/code-payments/timelock-explorer/blob/77a01f685dbaa4f77c2c1ec1e59b4ce568c8a388/src/types/explorer/CodeWallet.ts#L107C1-L129C2).
 
 
 ```js
@@ -64,7 +64,7 @@ If you'd like to derive your own Timelock accounts, you can use the [mnemonic pa
 
 ## Security Concerns
 
-The on-chain programs are open-source and audited. However, if you find something that would improve the efficacy of the program we welcome and encourage patches but ask that you submit any security concerns privately by using this [Report a Vulnerability](https://github.com/code-wallet/code-program-library/security/advisories/new) link.
+The on-chain programs are open-source and audited. However, if you find something that would improve the efficacy of the program we welcome and encourage patches but ask that you submit any security concerns privately by using this [Report a Vulnerability](https://github.com/code-payments/code-program-library/security/advisories/new) link.
 
 ::: warning Disclosures
 Please do not disclose security concerns publicly, or through email or twitter, until they have been addressed by the Code team.

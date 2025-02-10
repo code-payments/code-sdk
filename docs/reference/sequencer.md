@@ -25,7 +25,7 @@ Traditional blockchain confirmations aren't ideal for on-the-spot transactions, 
 * **Reliability**: Utilizes nonced transactions for security and preventing double spends.
 * **Privacy**: Interacts with the Splitter program to upgrade payment intents, safeguarding user account and payment details.
 
-The Code Sequencer is **permissionless and self-custodial**. It doesn't hold a user's funds or private keys, it only schedules signed transactions. Users are able to use the underlying Solana blockchain directly if necessary. There is an open source tool to do so called the [Timelock Explorer](https://github.com/code-wallet/timelock-explorer/tree/main).
+The Code Sequencer is **permissionless and self-custodial**. It doesn't hold a user's funds or private keys, it only schedules signed transactions. Users are able to use the underlying Solana blockchain directly if necessary. There is an open source tool to do so called the [Timelock Explorer](https://github.com/code-payments/timelock-explorer/tree/main).
 
 ::: warning Access Keys
 The Code Sequencer never sees or knows the private keys of a user's accounts or their private key (What Code refers to as an "Access Key").

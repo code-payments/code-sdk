@@ -23,7 +23,7 @@ For example, run `cloudflared tunnel --url localhost:3030`
 
 ## Events Example
 
-The full example code can be found on [GitHub](https://github.com/code-wallet/code-sdk/tree/main/examples/4-minimal-with-webhook).
+The full example code can be found on [GitHub](https://github.com/code-payments/code-sdk/tree/main/examples/4-minimal-with-webhook).
 
 ::: code-group
 
