@@ -22,15 +22,6 @@ export default defineConfig({
     ],
 
     sidebar: [
-      /*
-      {
-        text: 'Release Notes',
-        items: [
-          { text: 'Latest', link: '/release-notes' },
-          { text: 'Contribution Guide', link: '/guide/contribution-guide' },
-        ],
-      },
-      */
 
       {
         text: 'Getting Started',
@@ -63,7 +54,7 @@ export default defineConfig({
         items: [
           { text: 'Payments', link: '/intents/payment-requests' },
           { text: 'Fees', link: '/intents/payment-fees' },
-          { text: 'Tipping', link: '/intents/tipping' },
+          { text: 'Tips', link: '/intents/tipping' },
           { text: 'Login', link: '/intents/login' },
         ],
       },
@@ -71,17 +62,24 @@ export default defineConfig({
       {
         text: 'Examples',
         items: [
-          { text: 'Events', link: '/example/payment-events' },
           {
             text: 'Payments',
+            collapsed: true,
             items: [
               { text: 'Minimal (html)', link: '/example/request-payment' },
-              { text: 'React Example', link: '/example/react-example' },
-              { text: 'Vue Example', link: '/example/vue-example' },
-              { text: 'Pennypost', link: 'https://github.com/code-payments/code-pennypost/tree/main/packages/backend/src/routes/payment' },
+              { text: 'React', link: '/example/react-example' },
+              { text: 'Vue', link: '/example/vue-example' },
             ]
           },
-          { text: 'Verification', link: '/example/payment-verification' },
+          {
+            text: 'Login',
+            collapsed: true,
+            items: [
+              { text: 'Simple Login', link: 'https://github.com/code-payments/code-sdk/tree/main/examples/7-minimal-login' },
+              { text: 'Login With Payment', link: 'https://github.com/code-payments/code-sdk/tree/main/examples/6-minimal-purchase-with-login' },
+              { text: 'Pennypost', link: 'https://github.com/code-payments/code-pennypost/tree/main/packages/backend/src/routes/login' },
+            ]
+          },
           { text: 'More...', link: '/example/introduction' },
         ]
       },
@@ -90,8 +88,9 @@ export default defineConfig({
         text: 'Reference',
         items: [
           { text: 'Appearance', link: '/reference/element-appearance' },
-          { text: 'Custom Backends', link: '/intents/custom-backends' },
-          { text: 'Events', link: '/reference/browser-events' },
+          { text: 'Browser Events', link: '/reference/browser-events' },
+          { text: 'Payment Verification', link: '/example/payment-verification' },
+          { text: 'Payment Lifecycle', link: '/example/payment-events' },
           { text: 'Idempotency', link: '/reference/idempotency' },
           { text: 'Intents', link: '/intents/introduction' },
           { text: 'Private Payments', link: '/reference/splitter' },
@@ -100,6 +99,31 @@ export default defineConfig({
           { text: 'Timelock', link: '/reference/timelock' },
           { text: 'Wallet App', link: '/reference/app' },
           { text: 'Webhooks', link: '/reference/webhook' },
+        ]
+      },
+
+      {
+        text: 'gRPC API',
+        items: [
+          { text: 'Introduction', link: '/intents/custom-backends#code-api' },
+          {  
+            text: 'Getting Started', link: '/intents/custom-backends#getting-started',
+            collapsed: true,
+            items: [
+              { text: 'API Endpoints', link: '/intents/custom-backends#grpc-proxy' },
+              { text: 'Proto Defs', link: '/intents/custom-backends#protobuf' },
+              { text: 'Intents', link: '/intents/custom-backends#intents' },
+            ],
+          },
+          {  
+            text: 'Examples', link: '/intents/custom-backends#example-requests',
+            collapsed: true,
+            items: [
+              { text: 'Payments', link: '/intents/custom-backends#payment-requests' },
+              { text: 'Login', link: '/intents/custom-backends#login-intents' },
+            ],
+          },
+          { text: 'Contributing', link: '/intents/custom-backends#contributing' },
         ]
       },
     ],

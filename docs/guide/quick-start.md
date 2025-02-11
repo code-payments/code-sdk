@@ -1,6 +1,6 @@
 # Getting Started
 
-Learn how to embed a [Code Payments](https://www.codepayments.org/) button in your website or web app. The client- and server-side code mounts everything needed to complete a payment using the Code app and verify it on your server.
+Learn how to embed a Code payments button in your website or web app. The client- and server-side code mounts everything needed to complete a payment using the Code app and verify it on your server.
 
 ## Create a Payment Button
 

@@ -22,6 +22,31 @@ To implement **Login with Code**, ensure you have the following:
    - The public key must be accessible from the root of your domain using **HTTPS** (not HTTP). 
    - Subdomains are **not** supported.
 
+## Flow Overview
+
+The **Login with Code** flow consists of the following steps, which are largely handled by the Code SDK:
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant User
+  participant Browser
+
+  User->>Browser: Lands on login page
+  Browser->>Server: Sends login request
+  Server->>Code Sequencer: POST /v1/createIntent
+  Code Sequencer->>Server: Returns LoginIntent status
+  Server->>Browser: Returns LoginIntent's client_secret
+  Browser->>Code Sequencer: Open message stream at rendezvous value
+```
+
+If you are using the Code SDK, you can create a login intent using the `code.loginIntents.create()` method. This method will return a `clientSecret` that you can use to authenticate the user. This `clientSecret` is used to create a button that will trigger the login flow.
+
+::: tip NOTE
+This feature is currently not supported by the PHP, Python, or Go libraries. These SDKs will be updated to support this feature in the future.
+
+In the meantime, you can achieve the same functionality by sending a POST containing a signed `RequestToLogin`. You can read more about this in our [Code API](./custom-backends) section.
+:::
 
 ## Example Login Integration
 
@@ -116,7 +141,7 @@ You should now have a working **Login with Code** integration that allows users 
   1. Use a verifier keypair to create a login intent.
   2. Deploy your verifier's public key at `https://yourdomain.com/.well-known/code-payments.json` using HTTPS.
   3. Ensure the public key is hosted at the root of your domain; subdomains are unsupported.
-  4. Hosting the `.well-known/code-payments.json` file over HTTP will **not** work—HTTPS is mandatory.
+  4. Hosting the `.well-known/code-payments.json` file over HTTP will **not** work—HTTPS is mandatory. 
 
 ## Further Reading
 
