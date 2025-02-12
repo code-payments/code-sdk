@@ -50,16 +50,6 @@ export default defineConfig({
       },
 
       {
-        text: 'SDK',
-        items: [
-          { text: 'Payments', link: '/intents/payment-requests' },
-          { text: 'Fees', link: '/intents/payment-fees' },
-          { text: 'Tips', link: '/intents/tipping' },
-          { text: 'Login', link: '/intents/login' },
-        ],
-      },
-
-      {
         text: 'Examples',
         items: [
           {
@@ -85,6 +75,42 @@ export default defineConfig({
       },
 
       {
+        text: 'SDK (simple)',
+        items: [
+          { text: 'Payments', link: '/intents/payment-requests' },
+          { text: 'Fees', link: '/intents/payment-fees' },
+          { text: 'Tips', link: '/intents/tipping' },
+          { text: 'Login', link: '/intents/login' },
+        ],
+      },
+
+      {
+        text: 'API (advanced)', 
+        items: [
+          { text: 'Introduction', link: '/intents/custom-backends#introduction' },
+          {  
+            text: 'Getting Started', link: '/intents/custom-backends#getting-started',
+            collapsed: true,
+            items: [
+              { text: 'API Endpoints', link: '/intents/custom-backends#grpc-proxy' },
+              { text: 'Proto Defs', link: '/intents/custom-backends#protobuf' },
+              { text: 'Building Your Own Client', link: '/intents/custom-backends#building-a-client' },
+              { text: 'Intents', link: '/intents/custom-backends#intents' },
+            ],
+          },
+          {  
+            text: 'Examples',
+            collapsed: true,
+            items: [
+              { text: 'Payments', link: '/intents/custom-backends#payment-requests' },
+              { text: 'Login', link: '/intents/custom-backends#login-intents' },
+            ],
+          },
+          { text: 'Contributing', link: '/intents/custom-backends#contributing' },
+        ]
+      },
+
+      {
         text: 'Reference',
         items: [
           { text: 'Appearance', link: '/reference/element-appearance' },
@@ -99,31 +125,6 @@ export default defineConfig({
           { text: 'Timelock', link: '/reference/timelock' },
           { text: 'Wallet App', link: '/reference/app' },
           { text: 'Webhooks', link: '/reference/webhook' },
-        ]
-      },
-
-      {
-        text: 'gRPC API',
-        items: [
-          { text: 'Introduction', link: '/intents/custom-backends#code-api' },
-          {  
-            text: 'Getting Started', link: '/intents/custom-backends#getting-started',
-            collapsed: true,
-            items: [
-              { text: 'API Endpoints', link: '/intents/custom-backends#grpc-proxy' },
-              { text: 'Proto Defs', link: '/intents/custom-backends#protobuf' },
-              { text: 'Intents', link: '/intents/custom-backends#intents' },
-            ],
-          },
-          {  
-            text: 'Examples', link: '/intents/custom-backends#example-requests',
-            collapsed: true,
-            items: [
-              { text: 'Payments', link: '/intents/custom-backends#payment-requests' },
-              { text: 'Login', link: '/intents/custom-backends#login-intents' },
-            ],
-          },
-          { text: 'Contributing', link: '/intents/custom-backends#contributing' },
         ]
       },
     ],
