@@ -59,6 +59,12 @@ const { button } = code.elements.create('button', {
 - **Fee Total:** The maximum fee percentage cannot exceed 10% of the payment amount.
 - **Compatibility:** Ensure that the destination addresses provided for fees are valid addresses.
 
+::: tip NOTE
+This feature is currently not supported by the PHP, Python, or Go libraries. These SDKs will be updated to support this feature in the future.
+
+In the meantime, you can achieve the same functionality by sending a POST containing a signed `RequestToReceiveBill`. You can read more about this in our [Code API](./custom-backends) section.
+:::
+
 ## Further Reading
 
 - [Payment Intents](../intents/introduction)
