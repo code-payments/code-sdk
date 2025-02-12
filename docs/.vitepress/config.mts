@@ -102,6 +102,7 @@ export default defineConfig({
             text: 'Examples',
             collapsed: true,
             items: [
+              { text: 'Status', link: '/intents/custom-backends#get-status' },
               { text: 'Payments', link: '/intents/custom-backends#payment-requests' },
               { text: 'Login', link: '/intents/custom-backends#login-intents' },
             ],

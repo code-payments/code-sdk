@@ -12,7 +12,7 @@ When possible, we encourage using our SDKs to interact with the Code API. The SD
 
 To begin using the Code API, follow these steps:
 
-1. **Fimilarize yourself with [Protobuf](https://developers.google.com/protocol-buffers)**, the serialization format used by the Code API.
+1. **Familiarize yourself with [Protobuf](https://developers.google.com/protocol-buffers)**, the serialization format used by the Code API.
 2. **Locate the [Protobuf Definition](https://github.com/code-payments/code-protobuf-api)** for the message you intend to send.
 3. **Construct the binary blob** representing the message.
 4. **Sign the binary blob** with your [rendezvous key](../reference/rendezvous).
@@ -67,7 +67,7 @@ You can use the following URLs to interact with the Code API:
 
 **Proxy URL (HTTP/1.1)**
 ```raw
-https://api.getcode.com/v1
+https://cash.getcode.com/v1/api
 ```
 
 Or you can use the direct gRPC URL, which does require a grpc socket connection.
@@ -109,34 +109,31 @@ message Response {
 }
 ```
 
-#### Request Fields:
 
-- **version**: The API version (e.g. `"1.0"`).
-- **service**: The target service (e.g. `"Intents"`).
-- **method**: The method to invoke (e.g. `"createIntent"`).
-- **body**: The binary-serialized payload of your inner message.
-
-#### Response Fields:
-
-- **result**: The outcome of the request (`OK` or `ERROR`).
-- **body**: The binary-encoded response payload.
-
+::: details
 For example, the following `Request`:
 
 ```json
 {
   "version": "1.0",
-  "service": "Intents",
-  "method": "createIntent", 
+  "service": "Messaging",
+  "method": "sendMessage", 
   "body": [1, 2, 3, 4]
 }
+
 ```
+
+- **version**: The API version (e.g. `"1.0"`).
+- **service**: The target service (e.g. `"Messaging"`).
+- **method**: The method to invoke (e.g. `"sendMessage"`).
+- **body**: The binary-serialized payload of your inner message.
 
 Serializes to the following hex string:
 
 ```raw
-0a03312e301207496e74656e74731a0c637265617465496e74656e74220401020304
+0a03312e3012094d6573736167696e671a0b73656e644d657373616765220401020304
 ```
+:::
 
 ### Sending a Request 
 Below is a minimal JavaScript example that wraps your protobuf-serialized payload in a `Request` envelope and sends it via `HTTP/1.1` POST.
@@ -154,8 +151,8 @@ const payload = myProtoMessage.toBinary();
 // Wrap the payload in a Request envelope
 const envelope = new Request({
   version: "1.0",
-  service: "Intents",     // e.g. "Intents"
-  method: "createIntent", // e.g. "createIntent"
+  service: "Intents",     // e.g. "Messaging"
+  method: "sendMessage", // e.g. "sendMessage"
   body: payload,
 });
 
@@ -163,7 +160,7 @@ const envelope = new Request({
 const binaryEnvelope = envelope.toBinary();
 
 // Send the binary envelope using an HTTP POST
-fetch("https://api.getcode.com/api/", {
+fetch("https://cash.getcode.com/v1/api", {
   method: "POST",
   headers: { "Content-Type": "application/octet-stream" },
   body: binaryEnvelope,
@@ -214,8 +211,8 @@ def encode_length_delimited(field_number, data_bytes):
 
 # Prepare the fields for the Request message.
 version = "1.0".encode("utf-8")
-service = "Intents".encode("utf-8")
-method  = "createIntent".encode("utf-8")
+service = "Messaging".encode("utf-8")
+method  = "sendMessage".encode("utf-8")
 body    = bytes([1, 2, 3, 4])  # Example payload
 
 # Manually serialize the Request message by concatenating each field.
@@ -227,12 +224,12 @@ serialized = (
 )
 
 # The expected hex serialization:
-# 0a03312e301207496e74656e74731a0c637265617465496e74656e74220401020304
+# 0a03312e3012094d6573736167696e671a0b73656e644d657373616765220401020304
 print("Serialized Request:", serialized.hex())
 
 # Send the serialized request via HTTP POST.
 response = requests.post(
-    "https://api.getcode.com/api/",
+    "https://cash.getcode.com/v1/api",
     headers={"Content-Type": "application/octet-stream"},
     data=serialized
 )
@@ -288,7 +285,7 @@ $serialized =
 echo "Serialized Request: " . bin2hex($serialized) . "\n";
 
 // Send the serialized request via HTTP POST using cURL.
-$ch = curl_init("https://api.getcode.com/api/");
+$ch = curl_init("https://cash.getcode.com/v1/api");
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/octet-stream"));
 curl_setopt($ch, CURLOPT_POSTFIELDS, $serialized);
@@ -360,7 +357,7 @@ func main() {
 
 	// Send HTTP POST
 	resp, err := http.Post(
-        "https://api.getcode.com/api/", 
+        "https://cash.getcode.com/v1/api", 
         "application/octet-stream",
         bytes.NewReader(serializedBytes)
     )
@@ -379,7 +376,7 @@ The above examples show how to construct a `Request` envelope and send it to the
 
 You can learn more about the payload structure below.
 
-::: info
+::: info Recommendation
 Take a look at the following client implementations that use our `HTTP/1.1` gRPC proxy.
 
 * [TypeScript Client](https://github.com/code-payments/code-sdk/blob/94c5cfa6dc84d380a60b9651b17ddad23b7ad3dc/packages/client/src/client.ts#L50-L55)
@@ -410,6 +407,7 @@ The Code Sequencer expects a binary blob that represents the Intent. The binary 
 
 We have several Intent types, such as `RequestToReceiveBill`, `RequestToPayBill`, and `RequestToLogin`. Each Intent type has its own protobuf definition.
 
+::: details
 At a high level, the Intent structure looks like this:
 
 ```proto
@@ -430,10 +428,11 @@ message Message {
     }
 }
 ```
+:::
 
 The SDKs are basically wrappers around this protobuf definition. They construct the binary blob for you and sign it with the rendezvous key. If you'd like to use a custom backend or a language that isn't supported yet, it is possible to call our `createIntent` API directly. 
 
-::: info
+::: info Recommendation
 Take a look at the internals of the SDKs to see how the binary blob is constructed and signed. This will give you a good idea of how to construct the binary blob yourself.
 
 * [TypeScript Example](https://github.com/code-payments/code-sdk/tree/94c5cfa6dc84d380a60b9651b17ddad23b7ad3dc/packages/intents/src/intents)
@@ -444,7 +443,207 @@ Take a look at the internals of the SDKs to see how the binary blob is construct
 
 Below are some examples of how to construct the binary blob for a payment Intent and a login Intent. These examples are based on the protobuf definitions provided earlier. You'll need to sign and wrap these payloads in a `Request` envelope before sending them to the Code API.
 
-### Payment Example {#payment-requests}
+## GetStatus Example {#get-status}
+
+In this example, we’ll query the status of an intent by sending a `GetStatusRequest` message. This service is simple because it doesn’t require a signature. 
+
+We will:
+
+- Encode a `GetStatusRequest` message.
+- Wrap it in a `Request` envelope.
+- Save the binary payload to a file.
+- Use `cURL` to send the request.
+- Interpret the response.
+
+All without using any SDKs or **writing any code** (JavaScript version is [here](https://github.com/code-payments/code-sdk/blob/4e06113e234f873e2b160f90f27244e6e92c5991/packages/client/test/client.test.ts#L13-L28)).
+
+::: info Recommendation
+We don't recommend constructing the binary blob manually or by hand unless you have a specific reason to do so. It's error-prone and can lead to unexpected behavior. Use a protobuf library to construct the binary blob.
+
+https://protobuf.dev/getting-started/
+:::
+
+
+::: details
+First, here are the relevant protobuf definitions. We will use the [protobuf
+playground](https://www.protobufpal.com/) to encode and decode the messages.
+
+```proto
+syntax = "proto3";
+
+message IntentId {
+    bytes value = 1;
+}
+
+message GetStatusRequest {
+    IntentId intent_id = 1;
+}
+
+message GetStatusResponse {
+    bool exists = 1;
+    bool code_scanned = 2;
+    bool intent_submitted = 3;
+}
+
+message Request {
+    string version = 1;
+    string service = 2;
+    string method = 3;
+    bytes body = 4;
+}
+
+message Response {
+    Result result = 1;
+    bytes body = 2;
+    string message = 3;
+
+    enum Result {
+        OK = 0;
+        ERROR = 1;
+    }
+}
+```
+:::
+
+### Step 1: Convert the Base58 Intent ID to a Byte Array
+Lets assume we made a payment in the past using the Code app and have a Intent id. Our intent ID is given in Base58 as: `9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz`
+
+::: details
+You can convert this Base58 string to a byte array without writing any code by using an online converter:
+
+1) Visit an online Base58 converter:
+For example, try the [AppDevTools Base58 Encoder/Decoder](https://www.appdevtools.com/base58-encoder-decoder).
+
+2) Paste the Base58 string:
+Enter `9sK9x3MC7yEMzfA5VRRcu2P72gCGGsF1htpeAMXae9bz` in the input field.
+
+3) Convert to Hexadecimal:
+The tool will decode the Base58 string and output its hexadecimal representation.
+
+4) Convert Hex to a Decimal Array.
+Copy the hexadecimal string and convert it to a decimal array using the following command:
+```bash
+echo "83c110200748f37e98f0ae36802eebcc605f023a1661f3731c3620b470c78325" \
+ | sed 's/\(..\)/0x\1 /g' \
+ | xargs printf "%d "
+```
+:::
+
+When converted to a byte array, the intent ID is represented as:
+```raw
+[ 131, 193, 16, 32, 7, 72, 243, 126, 152, 240, 174, 54, 128, 46, 235, 204,
+  96, 95, 2, 58, 22, 97, 243, 115, 28, 54, 32, 180, 112, 199, 131, 37 ]
+```
+
+### Step 2: Encode the GetStatusRequest Message
+
+When encoded, this produces the following hex string:
+
+::: details
+Using the byte array from Step 1, construct the JSON for the `GetStatusRequest` message:
+
+```json
+{
+  "intent_id": {
+    "value": [
+      131, 193, 16, 32, 7, 72, 243, 126, 152, 240, 174, 54, 128, 46, 235, 204,
+      96, 95, 2, 58, 22, 97, 243, 115, 28, 54, 32, 180, 112, 199, 131, 37
+    ]
+  }
+}
+```
+:::
+
+```raw
+0a220a2083c110200748f37e98f0ae36802eebcc605f023a1661f3731c3620b470c78325
+```
+
+### Step 3: Create the Request Envelope
+Wrap the `GetStatusRequest` binary payload in a higher-level Request envelope. 
+
+Use the following values:
+
+- **version**: (empty in this example, this field is optional)
+- **service**: "MicroPayment"
+- **method**: "getStatus" (note the camelCase)
+- **body**: The byte array from the previous step
+
+This envelope is encoded into the following final hex string:
+
+```raw
+0a00120c4d6963726f5061796d656e741a0967657453746174757322240a220a2083c110200748f37e98f0ae36802eebcc605f023a1661f3731c3620b470c78325
+```
+
+### Step 4: Save the Binary Payload to a File
+Save the final hex string to a file called request.bin.
+
+::: details
+You can do this using the following command:
+
+```bash
+echo -n "0a00120c4d6963726f5061796d656e741a0967657453746174757322240a220a2083c110200748f37e98f0ae36802eebcc605f023a1661f3731c3620b470c78325" \
+    | xxd -r -p > request.bin
+```
+
+Explanation:
+
+* `echo -n "..."` outputs the hex string without a newline.
+* `xxd -r -p` converts the hex string back into binary.
+:::
+
+The result is saved in `request.bin`.
+
+### Step 5: Send the Request Using cURL
+Now, send the request to the Code API with cURL:
+
+
+```bash
+curl -X POST "https://cash.getcode.com/v1/api" \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @request.bin | xxd
+```
+
+::: details
+Explanation:
+
+- `-X POST` specifies a POST request.
+- `-H "Content-Type: application/octet-stream"` sets the content type to binary.
+- `--data-binary @request.bin` sends the binary data from request.bin.
+
+The response is piped to `xxd` to display it in hex format.
+:::
+
+### Step 6: Interpret the Response
+Use the protobuf definition for `GetStatusResponse` to interpret the response. 
+
+::: details
+A successful response should look like this:
+
+```json
+{
+  "result": "OK",
+  "body": [ 8, 1, 16, 1, 24, 1 ], // hex: 080110011801
+  "message": ""
+}
+```
+:::
+
+When decoded using the GetStatusResponse protobuf definition, it represents:
+
+```json
+{
+  "exists": true,
+  "code_scanned": true,
+  "intent_submitted": true
+}
+```
+
+* The result indicates overall success `(OK)`.
+* The body contains the binary-encoded response, which, when decoded, confirms that the intent `exists`, has been `scanned`, and `submitted`.
+* The message is empty, meaning no error details were provided.
+
+
+## Payment Example {#payment-requests}
 
 A typical server-side integration will look something like this:
 
@@ -467,11 +666,12 @@ You can learn more about the payment flow [here](../intents/payment-requests).
 In order to call the `createIntent` API manually, you'll need to construct the payment Intent binary blob yourself and sign it with the [rendezvous key](../reference/rendezvous). 
 
 You can do that one of two ways:
-* **Use a protobuf library to construct the binary blob**
-* Construct the binary blob manually
+* **Use a protobuf library to create the binary payload**
+* Construct the binary payload manually
 
 The protobuf defenition for `RequestToReceiveBill` is as follows (full definition can be found [here](https://github.com/code-payments/code-protobuf-api)):
 
+::: details
 ```proto
 syntax = "proto3";
 
@@ -517,10 +717,11 @@ message ExchangeDataWithoutRate {
     double native_amount = 2;
 }
 ```
+:::
 
-#### Constructing the binary blob manually
+### Binary Message
 
-Given the above protobuf definition, you can construct a payment Intent as follows:
+Given the protobuf definition, you can construct a `RequestToReceiveBill` as follows:
 
 ```raw
 [
@@ -532,15 +733,20 @@ Given the above protobuf definition, you can construct a payment Intent as follo
 ]
 ```
 
-#### Decoding the binary blob
+For the following data:
 
+```json
+{
+  "requestor_account": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "partial": {
+    "currency": "usd",
+    "native_amount": 10.0
+  }
+}
+```
+
+::: details
 Let's decode the given binary serialization based on the protobuf definitions provided earlier.
-
-::: info Recommendation
-We don't recommend constructing the binary blob manually unless you have a specific reason to do so. It's error-prone and can lead to unexpected behavior. Use a protobuf library to construct the binary blob.
-
-https://protobuf.dev/getting-started/
-:::
 
 #### Message structure
 * `0x2A`: This indicates field number 5 (`request_to_receive_bill`) with a wire type of 2 (length-delimited).
@@ -571,19 +777,23 @@ https://protobuf.dev/getting-started/
 #### Decoded values
 
 From this binary serialization, the values decoded are:
+
+```json
+{
+  "requestor_account": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "partial": {
+    "currency": "usd",
+    "native_amount": 10.0
+  }
+}
 ```
-request_to_receive_bill:
-  requestor_account: 0x00 x 32 (or 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=' in Base64)
-  partial:
-    currency: "usd"
-    native_amount: 10.0
-```
+:::
 
 This is then signed using the rendezvous key and `POST`ed to the Code Sequencer's `createIntent` endpoint.
 
 You can see an example of this in our [Python SDK](https://github.com/code-payments/code-sdk-python/blob/main/code_wallet/library/message.py).
 
-### Login Example {#login-intents}
+## Login Example {#login-intents}
 
 The **Login with Code** flow consists of the following steps, you can learn more about the login flow [here](../intents/login).
 
@@ -603,6 +813,7 @@ sequenceDiagram
 
 The login flow is similar to the payment flow, but instead of a payment Intent, you'll be creating a login Intent. The login Intent is a higher-level abstraction that represents a user's Intent to log in to a website or application.
 
+::: details
 The protobuf definition for [RequestToLogin](https://github.com/code-payments/code-protobuf-api/blob/05e5a67f9e57da8cdeaac122b0256cb997459a69/proto/messaging/v1/messaging_service.proto#L318-L342) is as follows:
 
 ```proto
@@ -645,6 +856,7 @@ message RequestToLogin {
 }
 
 ```
+:::
 
 You can construct a login Intent using similar logic as the payment Intent, but
 with the [RequestToLogin](https://github.com/code-payments/code-protobuf-api/blob/05e5a67f9e57da8cdeaac122b0256cb997459a69/proto/messaging/v1/messaging_service.proto#L318-L342) protobuf definition. 
